@@ -1,0 +1,208 @@
+/* Container utama */
+.provider-container {
+  display: flex;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+  margin-bottom: 90px;
+}
+/* Sidebar untuk kategori provider */
+.provider-sidebar {
+  width: 30%;
+  background-color: #f7faff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+}
+
+.provider-sidebar h3 {
+  font-size: 18px;
+  color: #0082cb;
+  margin-bottom: 15px;
+}
+
+.provider-sidebar ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.provider-sidebar ul li {
+  margin-bottom: 10px;
+}
+
+.provider-sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  padding: 8px 12px;
+  display: block;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.provider-sidebar ul li a:hover {
+  background-color: #0082cb;
+  color: #fff;
+}
+
+/* Konten provider */
+.provider-content {
+  width: 70%;
+}
+
+.provider-item {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.provider-item img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.provider-info h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #0082cb;
+}
+
+.provider-info .specialization {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
+}
+
+.provider-info .location {
+  font-size: 12px;
+  color: #777;
+  margin-top: 5px;
+}
+
+.provider-buttons {
+  margin-left: auto;
+}
+
+.profile-btn,
+.consult-btn {
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.profile-btn {
+  background-color: #f7faff;
+  border: 1px solid #0082cb;
+  color: #0082cb;
+  transition: background-color 0.3s ease;
+}
+
+.profile-btn:hover {
+  background-color: #0082cb;
+  color: #fff;
+}
+
+.consult-btn {
+  background-color: #ffcb05;
+  border: none;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.consult-btn:hover {
+  background-color: #e5b800;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pagination a {
+  margin: 0 5px;
+  text-decoration: none;
+  color: #0082cb;
+  font-size: 14px;
+}
+
+.pagination a:hover {
+  text-decoration: underline;
+}
+
+.address {
+  font-size: 12px;
+  color: #777;
+  margin-top: 5px;
+}
+
+/* Perubahan lainnya tetap sama */
+
+@media (max-width: 768px) {
+  .provider-container {
+    flex-direction: column;
+    margin-bottom: 90px;
+  }
+  .provider-sidebar,
+  .provider-content {
+    width: 100%;
+  }
+  .provider-sidebar {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+  .provider-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  .provider-item img {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  .provider-buttons {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  .address {
+    font-size: 12px;
+    color: #777;
+    margin-top: 5px;
+  }
+}
+@media (max-width: 480px) {
+  /* Aturan untuk layar sangat kecil (ponsel) */
+  .provider-sidebar,
+  .provider-content {
+    width: 100%;
+  }
+  .provider-sidebar {
+    margin-bottom: 20px;
+  }
+  .provider-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  .provider-item img {
+    margin-bottom: 10px;
+  }
+  .provider-info h4,
+  .provider-info .specialization,
+  .provider-info .location {
+    text-align: center;
+  }
+  .provider-buttons {
+    margin-top: 10px;
+  }
+  .address {
+    font-size: 12px;
+    color: #777;
+    margin-top: 5px;
+  }
+}

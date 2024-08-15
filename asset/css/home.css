@@ -1,0 +1,521 @@
+* {
+  box-sizing: border-box;
+}
+body,
+html {
+  overflow-x: hidden;
+}
+
+/*SLIDER  */
+.slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth; /* Untuk transisi mulus */
+}
+
+.slide {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 100%;
+  background-color: #69a9c7;
+}
+
+.slider-content,
+.slider-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  color: #fff;
+  font-weight: 800;
+}
+
+.slider-image img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.rounded-btn {
+  border-radius: 50%; /* Membuat tombol bulat */
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.slider-content button {
+  background-color: #ffff00;
+  color: #004f9e;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+}
+
+.slider-content button:hover {
+  background-color: #1e02f8;
+}
+
+/* Menambahkan Media Query untuk tampilan handphone */
+@media (max-width: 768px) {
+  .slide {
+    flex-direction: column; /* Mengubah arah flex menjadi vertikal */
+    min-width: 100%;
+  }
+
+  .slider-content,
+  .slider-image {
+    flex: none; /* Menghilangkan flex grow, shrink, dan basis */
+    width: 100%; /* Membuat lebar menjadi 100% */
+  }
+
+  .slider-content {
+    order: 2; /* Menempatkan konten teks setelah gambar */
+    align-items: center; /* Menyelaraskan teks ke tengah */
+  }
+
+  .slider-image {
+    order: 1; /* Menempatkan gambar sebelum teks */
+  }
+  .slider-content button:hover {
+    background-color: #1e02f8;
+  }
+}
+/* END OF STYLE SLIDER */
+
+/* about me */
+.wrapper-aboutme {
+  margin: auto;
+  padding: 20px;
+}
+
+.about-info p {
+  font-family: "Arial", sans-serif; /* Gunakan font yang lebih modern */
+  font-size: 16px; /* Ukuran font yang nyaman dibaca */
+  line-height: 1.6; /* Jarak antar baris untuk keterbacaan */
+  margin-bottom: 20px; /* Tambahkan ruang antar paragraf */
+  text-align: justify; /* Rata kiri-kanan untuk tampilan yang rapi */
+}
+
+.about-info p:last-child {
+  margin-bottom: 0; /* Hapus margin bawah pada paragraf terakhir */
+}
+
+/* Responsif untuk tablet */
+@media (max-width: 768px) {
+  .wrapper-aboutme {
+    padding: 15px; /* Kurangi padding */
+  }
+
+  .about-info p {
+    font-size: 14px; /* Kecilkan ukuran font */
+  }
+}
+
+/* Responsif untuk ponsel */
+@media (max-width: 480px) {
+  .wrapper-aboutme {
+    padding: 10px; /* Lebih kecil padding */
+  }
+
+  .about-info p {
+    font-size: 13px; /* Lebih kecil ukuran font */
+    text-align: center; /* Ubah ke rata kiri untuk kenyamanan di layar kecil */
+  }
+}
+/* end about me */
+
+/* layanan */
+.cards-section {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px auto;
+  max-width: 1200px;
+  flex-wrap: wrap; /* Memungkinkan card untuk bungkus jika tidak cukup ruang */
+}
+
+.card {
+  background-color: #004f9e;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: left; /* Menjaga teks rata kiri untuk konsistensi */
+  width: 30%; /* Dinamis berdasarkan ukuran layar */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px; /* Menambahkan margin bawah untuk memisahkan card */
+}
+
+.card-icon {
+  margin-right: 20px;
+  font-size: 40px;
+}
+
+.card-content h2,
+.card-content p {
+  margin: 0;
+  color: #fff;
+  text-align: center; /* Mengubah align menjadi kiri untuk konsistensi */
+}
+
+@media (max-width: 768px) {
+  .cards-section {
+    flex-direction: column;
+    margin: 40px;
+  }
+
+  .card {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .card-icon {
+    margin: 18px;
+  }
+
+  .card-content h2,
+  .card-content p {
+    text-align: center;
+  }
+}
+
+/* end layanan */
+
+/* konsultasi section home */
+.consultation-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f5f7fa;
+}
+
+.consultation-container {
+  display: flex;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  width: 100%;
+}
+
+.consultation-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.consultation-content {
+  padding: 30px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #e6eefc;
+}
+
+.consultation-content h2 {
+  font-size: 24px;
+  color: #004f9e;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.consultation-content h3 {
+  font-size: 20px;
+  color: #004f9e;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.consultation-logo {
+  margin-top: 20px;
+  width: 300px;
+  height: auto;
+  display: block;
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .consultation-container {
+    flex-direction: column;
+  }
+  .consultation-logo {
+    width: 80px;
+    margin-top: 15px;
+  }
+
+  .consultation-content,
+  .consultation-image {
+    width: 100%;
+  }
+
+  .consultation-content {
+    padding: 20px;
+  }
+
+  .consultation-content h2 {
+    font-size: 20px;
+  }
+
+  .consultation-content h3 {
+    font-size: 18px;
+  }
+
+  .consultation-content .btn-warning {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .consultation-content {
+    padding: 15px;
+  }
+
+  .consultation-content h2 {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .consultation-content h3 {
+    font-size: 16px;
+    text-align: center;
+  }
+  .consultation-logo {
+    width: 200px;
+    margin-top: 10px;
+  }
+
+  .consultation-content .btn-warning {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+/* end konsultasi section home*/
+
+/* tenaga kerja */
+.slider-container-tenagakerja {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin: auto;
+  padding-left: 50px; /* Jarak dari sisi kiri */
+  padding-right: 50px; /* Jarak dari sisi kanan */
+}
+
+.slider-tenagakerja {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  animation: slide 20s infinite;
+}
+
+.slide-tenagakerja {
+  flex: 0 0 calc(20% - 20px); /* Adjust width to account for margin */
+  margin: 10px; /* Add margin around each slide */
+  text-align: center;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+.slide-tenagakerja img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.content-tenagakerja {
+  padding: 20px;
+  background-color: #004f9e;
+  color: white;
+}
+
+.content-tenagakerja h3 {
+  margin: 10px 0;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.dokter-umum {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #ffcc00;
+}
+
+.klinik-mitra {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #ffffff;
+}
+
+.consult-btn {
+  background-color: #ffcc00;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #003366;
+  border-radius: 25px;
+}
+
+.consult-btn:hover {
+  background-color: #1e02f8;
+  color: #ffffff;
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+  .slide-tenagakerja {
+    flex: 0 0 50%; /* Show two slides */
+  }
+  .slider-container-tenagakerja {
+    padding-left: 50px; /* Mengurangi jarak dari sisi kiri */
+    padding-right: 50px; /* Mengurangi jarak dari sisi kanan */
+  }
+}
+
+@media (max-width: 768px) {
+  .slide-tenagakerja {
+    flex: 0 0 100%; /* Show one slide */
+  }
+  .slider-container-tenagakerja {
+    padding-left: 50px; /* Mengurangi jarak dari sisi kiri */
+    padding-right: 50px; /* Mengurangi jarak dari sisi kanan */
+  }
+}
+
+/* Animation */
+@keyframes slide {
+  0%,
+  20% {
+    transform: translateX(0);
+  }
+  25%,
+  45% {
+    transform: translateX(-100%);
+  }
+  50%,
+  70% {
+    transform: translateX(-200%);
+  }
+  75%,
+  95% {
+    transform: translateX(-300%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+/* end tenaga kerja */
+
+/* footer */
+.footer {
+  background-color: #69a9c7;
+  padding: 30px 0;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 20px;
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-logo img {
+  max-width: 100px;
+  height: auto;
+  border-radius: 10px;
+  background-color: #ffffff;
+  padding: 10px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.social-icons a img {
+  width: 30px;
+  height: 30px;
+  display: block;
+  border-radius: 50%;
+}
+
+.footer-bottom {
+  font-size: 14px;
+  align-self: flex-end; /* Menempatkan .footer-bottom di kanan bawah */
+}
+
+.footer-bottom p {
+  margin: 5px 0;
+}
+
+.footer-bottom a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .footer-top {
+    flex-direction: column;
+    align-items: center; /* Tengahkan anak-anak .footer-top */
+  }
+
+  .footer-left,
+  .footer-right,
+  .footer-bottom {
+    align-items: center; /* Tengahkan konten dalam div ini */
+  }
+
+  .footer-bottom {
+    align-self: center; /* Tengahkan .footer-bottom */
+    margin-top: 20px; /* Tambahkan margin atas */
+    padding-top: 10px;
+  }
+}
+
+/* header top */
+li.divider {
+  display: inline-block;
+  margin: 0 10px;
+  color: #000000;
+  margin-top: 3px;
+}

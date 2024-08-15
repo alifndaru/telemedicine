@@ -1,0 +1,39 @@
+<?php 
+    echo "<div class='col-md-12'>
+              <div class='box box-info'>
+                <div class='box-header with-border'>
+                  <h3 class='box-title'>Edit Halaman Statis</h3>
+                </div>
+              <div class='box-body'>";
+              $attributes = array('class'=>'form-horizontal','role'=>'form');
+              echo form_open_multipart('administrator/edit_halamanbaru',$attributes); 
+          echo "<div class='col-md-12'>
+                  <table class='table table-condensed table-bordered'>
+                  <tbody>
+                    <input type='hidden' name='id' value='$rows[id_halaman]'>
+                    <tr><th width='120px' scope='row'>Judul</th>   <td><input type='text' class='form-control' name='a' value='$rows[judul]'></td></tr>
+                    <tr><th width='120px' scope='row'>Judul Seo</th>   <td><input type='text' class='form-control' name='seo' value='$rows[judul_seo]'></td></tr>
+                    <tr><th scope='row'>Kategori</th>               <td><select name='aa' class='form-control' required>";
+                                                                            foreach ($record as $row){
+                                                                                if ($rows['id_kategori_halaman'] == $row['id_kategori_halaman']){
+                                                                                  echo "<option value='$row[id_kategori_halaman]' selected>$row[nama_kategori]</option>";
+                                                                                }else{
+                                                                                  echo "<option value='$row[id_kategori_halaman]'>$row[nama_kategori]</option>";
+                                                                                }
+                                                                            }
+                    echo "</td></tr>
+                    <tr><th scope='row'>Isi Halaman</th>           <td><textarea class='ckeditor form-control' name='b' style='height:260px'>$rows[isi_halaman]</textarea></td></tr>
+                    <tr><th scope='row'>Urutan</th>   <td><input type='number' class='form-control' name='urutan_halaman' value='$rows[urutan_halaman]'></td></tr>
+                    <tr><th scope='row'>Ganti Gambar</th>          <td><input type='file' class='form-control' name='c'><hr style='margin:5px'>";
+                                                                   if ($rows['gambar']!=''){ echo " Gambar Saat ini : <a target='_BLANK' href='".base_url()."asset/foto_statis/$rows[gambar]'>$rows[gambar]</a>"; } echo "</td></tr>
+                  </tbody>
+                  </table>
+                </div>
+              
+              <div class='box-footer'>
+                    <button type='submit' name='submit' class='btn btn-info'>Update</button>
+                    <a href='index.php'><button type='button' class='btn btn-default pull-right'>Cancel</button></a>
+                    
+                  </div>
+            </div></div></div>";
+            echo form_close();
