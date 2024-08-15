@@ -437,15 +437,71 @@ class User extends CI_Controller
 	// 	echo json_encode($result);
 	// }
 
-	function klinik()
+	// function klinik()
+	// {
+	// 	$data['title'] = "Daftar Klinik";
+	// 	$data['description'] = description();
+	// 	$data['keywords'] = keywords();
+	// 	$data['klinik'] = $this->db->get('v_klinik')->result_array();
+	// 	$this->template->load(template() . '/template', template() . '/list-klinik', $data);
+	// }
+
+	// function klinik()
+	// {
+	// 	$config = [
+	// 		'base_url' => site_url('user/klinik'), // Sesuaikan dengan route ke fungsi klinik
+	// 		'total_rows' => $this->db->count_all('v_klinik'), // Menghitung total baris di tabel/view
+	// 		'per_page' => 4, // Tentukan jumlah data per halaman
+	// 	];
+
+	// 	$this->load->library('pagination');
+	// 	$this->pagination->initialize($config);
+
+	// 	$data['title'] = "Daftar Klinik";
+	// 	$data['description'] = description();
+	// 	$data['keywords'] = keywords();
+	// 	$start = $this->uri->segment(3) ? $this->uri->segment(3) : 0;
+	// 	$data['klinik'] = $this->db->limit($config['per_page'], $start)->get('v_klinik')->result_array();
+	// 	$data['pagination'] = $this->pagination->create_links();
+
+	// 	// Cek apakah ada query string untuk modal
+	// 	$klinik_id = $this->input->get('klinik_id');
+	// 	if ($klinik_id) {
+	// 		$data['selected_klinik'] = $this->db->where('id', $klinik_id)->get('v_klinik')->row_array();
+	// 	}
+
+	// 	$this->template->load(template() . '/template', template() . '/list-klinik', $data);
+	// }
+
+	public function klinik()
 	{
+		$config = [
+			'base_url' => site_url('user/klinik'), // Sesuaikan dengan route ke fungsi klinik
+			'total_rows' => $this->db->count_all('v_klinik'), // Menghitung total baris di tabel/view
+			'per_page' => 4, // Tentukan jumlah data per halaman
+		];
+
+		$this->load->library('pagination');
+		$this->pagination->initialize($config);
+
 		$data['title'] = "Daftar Klinik";
 		$data['description'] = description();
 		$data['keywords'] = keywords();
-		$data['klinik'] = $this->db->get('v_klinik')->result_array();
-		// var_dump($data['klinik']);
+		$start = $this->uri->segment(3) ? $this->uri->segment(3) : 0;
+		$data['klinik'] = $this->db->limit($config['per_page'], $start)->get('v_klinik')->result_array();
+		$data['pagination'] = $this->pagination->create_links();
+
+		// Cek apakah ada query string untuk modal
+		$klinik_id = $this->input->get('klinik_id');
+		if ($klinik_id) {
+			$data['selected_klinik'] = $this->db->where('id', $klinik_id)->get('v_klinik')->row_array();
+		} else {
+			$data['selected_klinik'] = null; // Pastikan selected_klinik ada meskipun null
+		}
+
 		$this->template->load(template() . '/template', template() . '/list-klinik', $data);
 	}
+
 
 	function fetch_layanan()
 	{
