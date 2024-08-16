@@ -3,14 +3,10 @@
 		<h3>DATA PROVIDER KAMI</h3>
 		<ul>
 			<!-- <li><a href="#">Dokter Spesialis</a></li> -->
-			<!-- <?php foreach ($layanan_ipes as $layanan): ?>
-				<li><?= htmlspecialchars($layanan['nama_kategori_layanan'], ENT_QUOTES, 'UTF-8'); ?></li>
-			<?php endforeach; ?> -->
-
-			<?php foreach ($layanan_ipes as $layanan): ?>
+			<?php foreach ($jabatan as $data): ?>
 				<li>
 					<a href="#">
-						<?= htmlspecialchars($layanan['nama_kategori_layanan'], ENT_QUOTES, 'UTF-8'); ?>
+						<?= htmlspecialchars($data['jabatan'], ENT_QUOTES, 'UTF-8'); ?>
 					</a>
 				</li>
 			<?php endforeach; ?>
