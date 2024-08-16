@@ -8,14 +8,24 @@ class Home extends CI_Controller
 		$data['title'] = title();
 		$data['description'] = description();
 		$data['keywords'] = keywords();
+		// $query = $this->db->query("SELECT * FROM users WHERE level = 'user'");
+		// $data['doctors'] = $query->result_array();
 
-		$data['doctors'] = $this->model_app->view('v_dokter')->result_array();
+		$this->db->select('users.*, klinik.klinik');
+		$this->db->from('users');
+		$this->db->join('klinik', 'klinik.id = users.klinik_id');
+		$this->db->where('users.level', 'user');
+		$query = $this->db->get();
+		$data['doctors'] = $query->result_array();
+
+
 		$data['total_doctors'] = count($data['doctors']);
 
 		$data['berita'] = $this->model_app->latest_news();
 		$data['identitas'] = $this->model_app->view('identitas')->result_array();
 		$data['sliders'] = $this->model_app->view_where('slider', array('status' => 'aktif'))->result_array();
 		$data['comments'] = $this->model_app->comments5();
+
 		$data['kliniks'] = $this->model_app->view('v_klinik')->result_array();
 		$data['total_kliniks'] = count($data['kliniks']);
 

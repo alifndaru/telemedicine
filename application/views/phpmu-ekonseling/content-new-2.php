@@ -93,7 +93,8 @@
                     <div class="content-tenagakerja">
                         <h3><?= $dok['nama_lengkap']; ?></h3>
                         <p class="dokter-umum"><?= $dok['jabatan']; ?></p>
-                        <p class="klinik-mitra">Klinik Mitra Sehat Sejahtera PKU Cabang Tegal</p>
+                        <p class="dokter-umum"><?= $dok['spesialis'] ?> </p>
+                        <p class="klinik-mitra">Klinik <?= $dok['klinik']; ?></p>
                         <a href="<?php echo base_url('user/tambah-konsultasi'); ?>" class="consult-btn"><i class="fa fa-comments"></i> KONSULTASI</a>
                     </div>
                 </div>
