@@ -57,7 +57,7 @@ class Psikolog extends CI_Controller
 			redirect('main');
 		}
 
-		$data['layanan_ipes'] = $this->db->query("SELECT nama_kategori_layanan FROM kategori_layanan WHERE `aktif` = 'Y'")->result_array();
+		$data['jabatan'] = $this->db->query("SELECT DISTINCT jabatan FROM v_jadwal WHERE jabatan IN ('Dokter Spesialis', 'Dokter Umum', 'Bidan', 'Perawat', 'Konselor Psikologi', 'Konselor Remaja / Sebaya', 'Dokter Spesialis Penyakit Dalam')")->result_array();
 		$this->pagination->initialize($config);
 		// $this->template->load(template() . '/template', template() . '/psikolog_list-copy', $data);
 		$this->template->load(template() . '/template', template() . '/psikolog_list', $data);
