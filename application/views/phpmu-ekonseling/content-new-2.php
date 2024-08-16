@@ -47,10 +47,10 @@
         <div class="card-icon">
             <i class="fas fa-clipboard-check"></i>
         </div>
-        <div class="card-content">
+        <a href="<?php echo base_url('list-layanan'); ?>" class="card-content">
             <h2><?= $total_kategori_layanan ?></h2>
             <p>LAYANAN KESPRO SESUAI STANDAR WHO</p>
-        </div>
+        </a>
     </div>
     <div class="card">
         <div class="card-icon">

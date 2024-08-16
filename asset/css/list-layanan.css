@@ -1,0 +1,91 @@
+.data-layanan {
+  padding: 20px 0;
+  background-color: #f4f9ff;
+}
+
+.sidebar-layanan h3 {
+  font-size: 24px;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.layanan-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.layanan-list li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.layanan-list .sub-layanan {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.providers-list h3 {
+  font-size: 24px;
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+.providers-list p {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #333;
+}
+
+.provider-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.provider-item img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.provider-info h4 {
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: #007bff;
+}
+
+.provider-info p {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.konsultasi-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.konsultasi-btn:hover {
+  background-color: #0056b3;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination span {
+  font-size: 14px;
+  color: #007bff;
+  cursor: pointer;
+}
