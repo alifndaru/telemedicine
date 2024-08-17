@@ -148,7 +148,8 @@
                                                 :options="klinik_options"
                                                 @search="fetchOptionsKlinik"
                                                 @search:focus="fetchOptionsKlinik"
-                                                @input="selectedOptionKlinik">
+                                                @input="selectedOptionKlinik"
+                                                required>
                                             </v-select>
                                         </div>
                                     </div>
@@ -156,16 +157,16 @@
                             </tr>
                             <tr v-if="level === 'user'">
                                 <th scope="row">No SIP</th>
-                                <td><input type="text" class="form-control" name="sip"></td>
+                                <td><input type="text" class="form-control" name="sip" required></td>
                             </tr>
 
                             <tr v-if="level === 'user'">
                                 <th scope="row">No STR</th>
-                                <td><input type="text" class="form-control" name="str"></td>
+                                <td><input type="text" class="form-control" name="str" required></td>
                             </tr>
                             <tr v-if="level === 'user'">
                                 <th scope="row">Spesialis</th>
-                                <td><input type="text" class="form-control" name="spesialis"></td>
+                                <td><input type="text" class="form-control" name="spesialis" required></td>
                             </tr>
 
                             </td>
