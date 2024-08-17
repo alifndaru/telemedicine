@@ -6,14 +6,14 @@
 				<?php if (!empty($data['spesialis'])):
 				?>
 					<li>
-						<a href="<?= base_url('psikolog/lists?spesialis=' . urlencode($data['spesialis'])); ?>">
+						<a href="<?= base_url('provider/lists?spesialis=' . urlencode($data['spesialis'])); ?>">
 							<?= $data['spesialis']; ?>
 						</a>
 					</li>
 				<?php endif; ?>
 			<?php endforeach; ?>
 			<li>
-				<a href="<?= base_url('psikolog/lists'); ?>">Semua Spesialis</a>
+				<a href="<?= base_url('provider/lists'); ?>">Semua Spesialis</a>
 			</li>
 		</ul>
 	</div>
@@ -24,7 +24,7 @@
 					<img src="<?= base_url('asset/foto_user/' . trim($row['foto'])); ?>" alt="">
 					<div class="provider-info">
 						<h4><?= $row['nama_lengkap'] ?></h4>
-						<p class="specialization">Jabatan: <?= $row['perangkat_daerah'] ?></p>
+						<p class="specialization">Kualifikasi: <?= $row['perangkat_daerah'] ?></p>
 						<p class="location">Spesialis: <?= $row['spesialis'] ?></p>
 						<p class="address">Klinik: <?= $row['klinik'] ?></p>
 					</div>

@@ -2,6 +2,13 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 class User extends CI_Controller
 {
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('Model_Doctor');
+		$this->load->library('pagination');
+	}
+
 	public function index()
 	{
 		redirect('user/login');
@@ -418,61 +425,6 @@ class User extends CI_Controller
 
 	function laporan() {}
 
-	// function fetch_klinik()
-	// {
-	// 	$d = json_decode(file_get_contents("php://input"), TRUE);
-	// 	$level = $this->session->level;
-	// 	$user_id = $this->session->user_id;
-
-	// 	$d['data']['level'] = $level;
-	// 	$d['data']['user_id'] = $user_id;
-
-	// 	$result = $this->model_app->fetch_klinik_3($d);
-	// 	// $result['recoms'] = $this->model_app->klinik_rekomendasi();
-
-	// 	for ($i = 0; $i < intval($result['total_rows']); $i++) {
-	// 		$idx = $result['items'][$i]['klinik_id'];
-	// 		$result['items'][$i]['klinik_idx'] = $this->mylibrary->e101($idx, strlen($idx));
-	// 	}
-	// 	echo json_encode($result);
-	// }
-
-	// function klinik()
-	// {
-	// 	$data['title'] = "Daftar Klinik";
-	// 	$data['description'] = description();
-	// 	$data['keywords'] = keywords();
-	// 	$data['klinik'] = $this->db->get('v_klinik')->result_array();
-	// 	$this->template->load(template() . '/template', template() . '/list-klinik', $data);
-	// }
-
-	// function klinik()
-	// {
-	// 	$config = [
-	// 		'base_url' => site_url('user/klinik'), // Sesuaikan dengan route ke fungsi klinik
-	// 		'total_rows' => $this->db->count_all('v_klinik'), // Menghitung total baris di tabel/view
-	// 		'per_page' => 4, // Tentukan jumlah data per halaman
-	// 	];
-
-	// 	$this->load->library('pagination');
-	// 	$this->pagination->initialize($config);
-
-	// 	$data['title'] = "Daftar Klinik";
-	// 	$data['description'] = description();
-	// 	$data['keywords'] = keywords();
-	// 	$start = $this->uri->segment(3) ? $this->uri->segment(3) : 0;
-	// 	$data['klinik'] = $this->db->limit($config['per_page'], $start)->get('v_klinik')->result_array();
-	// 	$data['pagination'] = $this->pagination->create_links();
-
-	// 	// Cek apakah ada query string untuk modal
-	// 	$klinik_id = $this->input->get('klinik_id');
-	// 	if ($klinik_id) {
-	// 		$data['selected_klinik'] = $this->db->where('id', $klinik_id)->get('v_klinik')->row_array();
-	// 	}
-
-	// 	$this->template->load(template() . '/template', template() . '/list-klinik', $data);
-	// }
-
 	public function klinik()
 	{
 		$config = [
@@ -526,6 +478,21 @@ class User extends CI_Controller
 		$data['title'] = "Daftar Layanan";
 		$data['description'] = description();
 		$data['keywords'] = keywords();
+
+		$specialization = $this->input->get('kualifikasi');
+		$dari = $this->uri->segment(3, 0);
+
+
+		// Konfigurasi Pagination
+		$config['base_url'] = base_url('list-layanan');
+		$config['total_rows'] = $this->Model_Doctor->count_all_doctorsLayanan('user', $specialization);
+		$config['per_page'] = 5;
+		$config['uri_segment'] = 3;
+		$this->pagination->initialize($config);
+
+		$data['doctors'] = $this->Model_Doctor->get_dokterLayanan('user', $config['per_page'], $dari, $specialization);
+		$data['perangkat_daerah'] = $this->Model_Doctor->get_kualifikasiLayanan();
+
 		$this->template->load(template() . '/template', template() . '/list-layanan', $data);
 	}
 

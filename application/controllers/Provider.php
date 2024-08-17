@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class Psikolog extends CI_Controller
+class Provider extends CI_Controller
 {
 	public function __construct()
 	{
@@ -48,7 +48,7 @@ class Psikolog extends CI_Controller
 
 
 		// Konfigurasi Pagination
-		$config['base_url'] = base_url('psikolog/lists');
+		$config['base_url'] = base_url('provider/lists');
 		$config['total_rows'] = $this->Model_Doctor->count_all_doctors('user', $specialization);
 		$config['per_page'] = 5;
 		$config['uri_segment'] = 3;

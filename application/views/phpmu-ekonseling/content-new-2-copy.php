@@ -2,17 +2,19 @@
 <div id="slider" class="row">
     <div class="wrapper container">
         <div class="main-slider owl-carousel owl-theme">
-            <?php $no = 1; foreach ($sliders as $slider) { ?>
-                <div class="item" style='background-image: url("<?=base_url('asset/foto_slider/').'/'.$slider['image'];?>"); height: 467px; background-size: cover;'>
+            <?php $no = 1;
+            foreach ($sliders as $slider) { ?>
+                <div class="item" style='background-image: url("<?= base_url('asset/foto_slider/') . '/' . $slider['image']; ?>"); height: 467px; background-size: cover;'>
                     <div class="caption">
                         <div class="col-md-offset-1 col-md-10">
-                            <h3><?=$slider['sub_title'];?></h3>
-                            <h1><?=$slider['title'];?></h1>
+                            <h3><?= $slider['sub_title']; ?></h3>
+                            <h1><?= $slider['title']; ?></h1>
                             <!-- <a href="#team" class="section-btn btn btn-default smoothScroll">Meet Our Doctors</a> -->
                         </div>
                     </div>
                 </div>
-            <?php $no++; } ?>
+            <?php $no++;
+            } ?>
         </div>
     </div>
 </div>
@@ -33,7 +35,7 @@
 
         <div class="layanan-items owl-carousel owl-theme">
 
-<div class="col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12">
                 <a href="<?php echo base_url('user/tambah-konsultasi'); ?>">
                     <div class="team-thumb thumbnail wow fadeInUp" data-wow-delay="0.6s">
                         <img src="<?php echo base_url("asset/icon/konsultasi_icon.png"); ?>" class="img-responsive" alt="">
@@ -49,7 +51,7 @@
 
             <!-- Doctors -->
             <div class="col-md-12 col-sm-12">
-                <a href="<?php echo base_url('psikolog/lists'); ?>">
+                <a href="<?php echo base_url('provider/lists'); ?>">
                     <div class="team-thumb thumbnail wow fadeInUp" data-wow-delay="0.2s">
                         <img src="<?php echo base_url("asset/icon/provider_icon.png"); ?>" class="img-responsive" alt="">
                         <div class="team-info">
@@ -79,19 +81,19 @@
 
             <div class="col-md-12 col-sm-12">
                 <a href="<?php echo base_url('list-klinik'); ?>">
-                <div class="team-thumb thumbnail wow fadeInUp" data-wow-delay="0.6s">
-                    <img src="<?php echo base_url("asset/icon/location_icon.png"); ?>" class="img-responsive" alt="">
-                    <div class="team-info">
-                        <div class="team-contact-info text-center">
-                            <h3><?= count($kliniks); ?><br>Daerah</h3>
-                            <!-- <p>Cardiology</p> -->
+                    <div class="team-thumb thumbnail wow fadeInUp" data-wow-delay="0.6s">
+                        <img src="<?php echo base_url("asset/icon/location_icon.png"); ?>" class="img-responsive" alt="">
+                        <div class="team-info">
+                            <div class="team-contact-info text-center">
+                                <h3><?= count($kliniks); ?><br>Daerah</h3>
+                                <!-- <p>Cardiology</p> -->
+                            </div>
                         </div>
                     </div>
-                </div>
                 </a>
             </div>
 
-            
+
         </div>
     </div>
 </div>
@@ -101,7 +103,7 @@
     <div class="wrapper container">
         <div class="col-md-6 col-sm-6">
             <div class="about-info">
-                <h2 class="wow fadeInUp" data-wow-delay="0.1s">Provider Kami - <a href="<?php echo base_url('psikolog/lists'); ?>" class="btn btn-sm btn-warning">Selebihnya <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></h2>
+                <h2 class="wow fadeInUp" data-wow-delay="0.1s">Provider Kami - <a href="<?php echo base_url('provider/lists'); ?>" class="btn btn-sm btn-warning">Selebihnya <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></h2>
             </div>
         </div>
 

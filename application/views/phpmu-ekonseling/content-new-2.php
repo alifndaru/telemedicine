@@ -38,7 +38,7 @@
         <div class="card-icon">
             <i class="fas fa-user-md"></i>
         </div>
-        <a href="<?php echo base_url('psikolog/lists'); ?>" class="card-content">
+        <a href="<?php echo base_url('provider/lists'); ?>" class="card-content">
             <h2><?= $total_doctors; ?></h2>
             <p>TENAGA PROFESIONAL dan TERPERCAYA</p>
         </a>
