@@ -1,52 +1,44 @@
-<section class="data-layanan">
-    <div class="container">
-        <div class="row">
-            <!-- Sidebar Section -->
-            <div class="col-md-4 sidebar-layanan">
-                <h3>DATA LAYANAN KAMI</h3>
-                <ul class="layanan-list">
-                    <li>Kontrasepsi</li>
-                    <li>Infeksi Menular Seksual & Infeksi Saluran Reproduksi (IMS / ISR)</li>
-                    <li>HIV / AIDS</li>
-                    <li>Konseling KTD</li>
-                    <li>Kesehatan Ibu dan Anak</li>
-                    <li>Papsmear</li>
-                    <li>SGBV
-                        <ul class="sub-layanan">
-                            <li>Kekerasan Dalam Rumah Tangga</li>
-                            <li>Kekerasan dalam Pacaran</li>
-                            <li>Kekerasan Seksual</li>
-                        </ul>
+<div class="provider-container">
+    <div class="provider-sidebar">
+        <h3>DATA PROVIDER KAMI</h3>
+        <ul>
+            <?php foreach ($perangkat_daerah as $data): ?>
+                <?php if (!empty($data['perangkat_daerah'])):
+                ?>
+                    <li>
+                        <a href="<?= base_url('list-layanan?kualifikasi=' . urlencode($data['perangkat_daerah'])); ?>">
+                            <?= $data['perangkat_daerah']; ?>
+                        </a>
                     </li>
-                    <li>Psikologi</li>
-                </ul>
-            </div>
-
-            <!-- Providers List Section -->
-            <div class="col-md-8 providers-list">
-                <h3>KONSULTASI</h3>
-                <p>Dalam hal pelayanan kontrasepsi ini provider kami terlatih dalam memberikan konseling, konsultasi dan rujukan untuk jenis kontrasepsi Pil, Suntik, IUD, Implan, Vasektomi tanpa pisau</p>
-                <div class="provider-item">
-                    <img src="provider1.jpg" alt="Provider Name">
-                    <div class="provider-info">
-                        <h4>dr. Adhi Nur Kristianto Nugroho, Sp.OG</h4>
-                        <p>Specialist in Obstetrics and Gynecology</p>
-                        <button class="btn konsultasi-btn">Profil & Layanan</button>
-                    </div>
-                </div>
-                <div class="provider-item">
-                    <img src="provider2.jpg" alt="Provider Name">
-                    <div class="provider-info">
-                        <h4>Lucy Henry</h4>
-                        <p>Specialist in Family Planning</p>
-                        <button class="btn konsultasi-btn">Profil & Layanan</button>
-                    </div>
-                </div>
-                <!-- Additional provider items -->
-                <div class="pagination">
-                    <span>1 2 3 ... next</span>
-                </div>
-            </div>
-        </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <li>
+                <a href="<?= base_url('list-layanan'); ?>">Semua Spesialis</a>
+            </li>
+        </ul>
     </div>
-</section>
+    <div class="provider-content">
+        <?php if (!empty($doctors)): ?>
+            <?php foreach ($doctors as $row): ?>
+                <div class="provider-item">
+                    <img src="<?= base_url('asset/foto_user/' . trim($row['foto'])); ?>" alt="">
+                    <div class="provider-info">
+                        <h4><?= $row['nama_lengkap'] ?></h4>
+                        <p class="specialization">Kualifikasi: <?= $row['perangkat_daerah'] ?></p>
+                        <p class="location">Spesialis: <?= $row['spesialis'] ?></p>
+                        <p class="address">Klinik: <?= $row['klinik'] ?></p>
+                    </div>
+                    <div class="provider-buttons">
+                        <button class="profile-btn">PROFIL</button>
+                        <button class="consult-btn">KONSULTASI</button>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            <div class="pagination">
+                <?= $this->pagination->create_links(); ?>
+            </div>
+        <?php else: ?>
+            <p>Data dokter tidak ditemukan.</p>
+        <?php endif; ?>
+    </div>
+</div>
