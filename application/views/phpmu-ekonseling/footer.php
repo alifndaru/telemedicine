@@ -5,7 +5,7 @@
 				<?php
 				$logo = $this->model_utama->view_ordering_limit('logo', 'id_logo', 'DESC', 0, 1);
 				foreach ($logo->result_array() as $row) {
-					echo "<a class='navbar-brand' style='padding:24px 15px 15px 0px' href='" . base_url() . "'><img class='logo' src='" . base_url() . "asset/logo/$row[gambar]'/></a>";
+					echo "<a href='" . base_url() . "'><img class='logo' src='" . base_url() . "asset/logo/$row[gambar]'/></a>";
 				}
 				?>
 			</div>
@@ -26,5 +26,4 @@
 			</div>
 		</div>
 	</div>
-
 </footer>

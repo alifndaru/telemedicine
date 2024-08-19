@@ -1,0 +1,171 @@
+/* Section utama */
+.consultation-history-section {
+  padding: 20px;
+  gap: 20px;
+  font-family: Arial, sans-serif;
+  margin-bottom: 56px;
+}
+
+.content-wrapper-history {
+  display: flex;
+  flex-direction: row;
+}
+
+/* Bagian kiri (Tabel) */
+.left-section {
+  flex: 2;
+  margin-right: 30px;
+}
+
+.left-section h2 {
+  font-size: 24px;
+  color: #0056a4;
+}
+
+.consultation-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border: 2px solid #0056a4;
+}
+
+.consultation-history-table th,
+.consultation-history-table td {
+  border: 1px solid #0056a4;
+  padding: 12px;
+  text-align: center;
+}
+
+.consultation-history-table th {
+  background-color: #0056a4; /* Header color */
+  color: #ffffff;
+}
+
+/* Status */
+.status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+}
+
+.in-progress {
+  background-color: #f0ad4e; /* Warning color for in-progress */
+  color: #ffffff;
+}
+
+.finished {
+  background-color: #5cb85c; /* Success color for finished */
+  color: #ff0000; /* White text for better contrast */
+}
+
+/* Tombol Edit */
+.edit-btn {
+  background-color: #ffcc00; /* Yellow color */
+  color: #000000;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pagination span {
+  padding: 8px 12px;
+  background-color: #0056a4;
+  color: #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Bagian kanan (Profil) */
+.right-section {
+  flex: 1;
+  background-color: #ffffff; /* White background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.profile-card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.profile-card h3 {
+  font-size: 20px;
+  color: #0056a4;
+}
+
+.profile-card .email {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Button Styles */
+.profile-card button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.profile-user-btn {
+  background-color: #007bff; /* Blue */
+  margin-bottom: 10px;
+}
+
+.consultation-data-btn {
+  background-color: #28a745; /* Green */
+  margin-bottom: 10px;
+}
+
+.start-consultation-btn {
+  background-color: #ffc107; /* Yellow */
+}
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .table-responsive .consultation-history-table th,
+  .table-responsive .consultation-history-table td {
+    padding: 5px; /* Mengurangi padding */
+    font-size: 12px; /* Mengurangi ukuran font */
+  }
+
+  .table-responsive .consultation-history-table .hide-on-mobile {
+    display: none; /* Menyembunyikan kolom pada layar kecil */
+  }
+
+  .table-responsive .consultation-history-table .small-width {
+    width: 50px; /* Menyesuaikan lebar kolom */
+  }
+
+  .content-wrapper-history {
+    flex-direction: column-reverse; /* Mengubah urutan tampilan */
+  }
+
+  .left-section,
+  .right-section {
+    width: 100%; /* Mengatur lebar elemen menjadi penuh */
+  }
+}

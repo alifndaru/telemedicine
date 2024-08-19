@@ -1,12 +1,6 @@
 <div class="wrapper container">
 	<nav id="main-nav" class="main-nav navbar-inverse" role="navigation">
 		<div class="navbar-header">
-			<button class="navbar-toggle navbar-left" type="button" data-toggle="collapse" data-target="#navbar-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button><!--//nav-toggle-->
 			<?php
 			$logo = $this->model_utama->view_ordering_limit('logo', 'id_logo', 'DESC', 0, 1);
 			foreach ($logo->result_array() as $row) {

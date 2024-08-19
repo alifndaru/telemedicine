@@ -39,6 +39,7 @@
   <link rel="stylesheet" href="<?= base_url(); ?>asset/css/provider.css">
   <link rel="stylesheet" href="<?= base_url(); ?>asset/css/list-klinik.css">
   <link rel="stylesheet" href="<?= base_url(); ?>asset/css/list-layanan.css">
+  <link rel="stylesheet" href="<?= base_url(); ?>asset/css/konsultasiHostory.css">
 
 
 
