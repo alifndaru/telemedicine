@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <div class="right-section">
+    <!-- <div class="right-section">
       <div class="profile-card">
         <?php
         $foto_user = (trim($usr['foto']) == '') ? 'users.gif' : $usr['foto'];
@@ -62,6 +62,22 @@
         <button class="profile-user-btn" onclick="window.location.href='<?= base_url() . 'user/profile' ?>'">PROFIL SAYA</button>
         <button class="consultation-data-btn" onclick="window.location.href='<?= base_url() . 'user/konsultasi' ?>'">DATA KONSULTASI</button>
         <button class="start-consultation-btn" onclick="window.location.href='<?= base_url() . 'user/tambah-konsultasi' ?>'">KONSULTASI SEKARANG</button>
+      </div>
+    </div> -->
+    <div class="right-section">
+      <div class="profile-card">
+        <div class="profile-top">
+          <img src="<?= base_url() . 'asset/foto_user/' . $foto_user ?>" alt="Profile Image">
+          <div class="profile-info">
+            <h3><?= $usr['nama_lengkap'] ?></h3>
+            <p class="email"><?= $usr['email'] ?></p>
+            <button class="profile-user-btn" onclick="window.location.href='<?= base_url() . 'user/profile' ?>'">PROFIL SAYA</button>
+          </div>
+        </div>
+        <div class="profile-bottom">
+          <button class="consultation-data-btn" onclick="window.location.href='<?= base_url() . 'user/konsultasi' ?>'">DATA KONSULTASI</button>
+          <button class=" start-consultation-btn" onclick="window.location.href='<?= base_url() . 'user/tambah-konsultasi' ?>'">KONSULTASI SEKARANG</button>
+        </div>
       </div>
     </div>
   </div>
