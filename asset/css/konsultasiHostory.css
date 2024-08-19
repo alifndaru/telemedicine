@@ -91,7 +91,7 @@
 /* Bagian kanan (Profil) */
 .right-section {
   flex: 1;
-  background-color: #ffffff; /* White background */
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -99,10 +99,11 @@
 }
 
 .profile-card img {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   margin-bottom: 15px;
+  display: block;
 }
 
 .profile-card h3 {
@@ -115,10 +116,9 @@
   margin-bottom: 20px;
 }
 
-/* Button Styles */
 .profile-card button {
-  width: 100%;
-  padding: 10px;
+  /* width: 100%;
+  padding: 10px; */
   border: none;
   border-radius: 4px;
   font-size: 14px;
@@ -126,25 +126,158 @@
   color: #ffffff;
 }
 
-.profile-user-btn {
-  background-color: #007bff; /* Blue */
+/* .profile-user-btn {
+  background-color: #007bff;
   margin-bottom: 10px;
+  width: auto;
+  padding: 10px 80px;
 }
 
 .consultation-data-btn {
-  background-color: #28a745; /* Green */
+  background-color: #007bff;
   margin-bottom: 10px;
+  width: auto;
+  padding: 10px 140px;
 }
 
 .start-consultation-btn {
-  background-color: #ffc107; /* Yellow */
+  background-color: #ffc107;
+  width: auto;
+  padding: 10px 116px;
 }
 .table-responsive {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-/* Responsive Styles */
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-info h3,
+p {
+  text-align: left;
+  font-size: 20px;
+}
+
+.profile-bottom {
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .table-responsive .consultation-history-table th,
+  .table-responsive .consultation-history-table td {
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  .table-responsive .consultation-history-table .hide-on-mobile {
+    display: none;
+  }
+
+  .table-responsive .consultation-history-table .small-width {
+    width: 50px;
+  }
+
+  .content-wrapper-history {
+    flex-direction: column-reverse;
+  }
+
+  .left-section,
+  .right-section {
+    width: 100%;
+  }
+
+  .profile-user-btn {
+    background-color: #007bff;
+    margin-bottom: 10px;
+    width: auto;
+    padding: 10px 34px;
+  }
+
+  .consultation-data-btn {
+    background-color: #007bff;
+    margin-bottom: 10px;
+    width: auto;
+    padding: 10px 95px;
+  }
+
+  .start-consultation-btn {
+    background-color: #ffc107;
+    width: auto;
+    padding: 10px 70px;
+  }
+} */
+.profile-user-btn,
+.consultation-data-btn,
+.start-consultation-btn {
+  background-color: #007bff; /* Warna umum untuk dua tombol pertama */
+  margin-bottom: 10px;
+  width: 100%; /* Membuat tombol responsif dengan memenuhi lebar kontainer */
+  box-sizing: border-box; /* Memastikan padding tidak menambah lebar total tombol */
+}
+
+.start-consultation-btn {
+  background-color: #ffc107; /* Warna khusus untuk tombol mulai konsultasi */
+}
+
+/* Mengatur padding secara dinamis berdasarkan ukuran layar */
+@media (max-width: 768px) {
+  .profile-user-btn,
+  .consultation-data-btn,
+  .start-consultation-btn {
+    padding: 10px 5vw; /* Menyesuaikan padding berdasarkan lebar viewport */
+  }
+}
+
+@media (min-width: 769px) {
+  .profile-user-btn {
+    padding: 10px 93px; /* Padding asli untuk layar lebih besar */
+  }
+
+  .consultation-data-btn {
+    padding: 10px 140px; /* Padding asli untuk layar lebih besar */
+  }
+
+  .start-consultation-btn {
+    padding: 10px 116px; /* Padding asli untuk layar lebih besar */
+  }
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-info h3,
+p {
+  text-align: left;
+  font-size: 20px;
+}
+
+.profile-bottom {
+  margin-top: 20px; /* Memberikan jarak antara dua bagian */
+}
+
+/* Responsive Styles untuk elemen lain */
 @media (max-width: 768px) {
   .table-responsive .consultation-history-table th,
   .table-responsive .consultation-history-table td {
@@ -167,5 +300,13 @@
   .left-section,
   .right-section {
     width: 100%; /* Mengatur lebar elemen menjadi penuh */
+  }
+}
+@media (max-width: 360px) {
+  .profile-user-btn {
+    padding: 10px 2%; /* Mengurangi padding untuk menyesuaikan dengan lebar layar yang lebih kecil */
+    font-size: 12px; /* Menyesuaikan ukuran font agar sesuai dengan ukuran layar */
+    margin: 0 auto; /* Menambahkan margin otomatis untuk memusatkan tombol */
+    width: 96%; /* Mengurangi lebar tombol untuk mencegah terlalu ke kanan */
   }
 }
