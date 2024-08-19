@@ -22,6 +22,7 @@ a{
 	color: #00aeff !important;
 }
 
+
 .dropdown-menu > li > a {
 	color:#333 !important;
 }
@@ -133,12 +134,18 @@ ul.nav a:hover{
   background-color: #1e02f8; /* Updated color to yellow */
   color: #ffffff !important;
 }
-/* .navbar-custom1 .nav > li > a:focus,
-.navbar-custom1 .nav > li > a:hover,
-.navbar-custom1 .nav > li.active > a {
-  background-color: #333333;
-  color: #fff !important;
-} */
+
+.navbar-custom1 .nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.navbar-custom1 .nav li {
+    display: flex;
+}
+
 .breadcrumb{
 	margin: 10px 0 0 0;
 }
@@ -1816,6 +1823,25 @@ footer .wrapper {
         width: 20px;
         height: 20px;
     }
+	.navbar-custom1 {
+		display: flex;
+		justify-content: center;
+		align-items: center; /* Opsional, sesuaikan jika perlu */
+		flex-wrap: wrap;
+	}
+	.navbar-header {
+        display: flex;
+        justify-content: center; /* Menengahkan konten secara horizontal */
+        width: 100%; /* Memastikan .navbar-header mengambil lebar penuh */
+    }
+
+    /* Pastikan .navbar-brand mengambil ukuran konten hanya pada mobile */
+    .navbar-brand {
+        display: inline-flex; /* Menggunakan inline-flex agar .navbar-brand tidak mengambil lebar penuh */
+        justify-content: center; /* Menengahkan logo di dalam .navbar-brand */
+        flex-grow: 0; /* Mencegah .navbar-brand tumbuh */
+    }
+	
 }
 
 .hiuser {

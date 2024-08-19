@@ -1,6 +1,6 @@
 <div class="container">
     <nav id="main-nav" class="main-nav navbar-inverse" role="navigation">
-        <div class="navbar-collapse collapse navbar-custom1">
+        <div class="navbar-custom1">
             <?php
             function top_menu()
             {
