@@ -70,19 +70,6 @@ class User extends CI_Controller
 					$last_id_new = intval($last_id['id']) + 1;
 					$user_id_s = substr_replace("0000", $last_id_new, -strlen($last_id_new));
 					$user_id = "";
-					// $klinik = null;
-
-					// if ($this->input->post('g') == 'inovator') {
-					// 	$user_id = "P-".$user_id_s;
-					// } elseif ($this->input->post('g') == 'user') {
-					// 	$user_id = "D-".$user_id_s;
-					// } elseif ($this->input->post('g') == 'admin') {
-					// 	$user_id = "A-".$user_id_s;
-					// } elseif ($this->input->post('g') == 'klinik') {
-					// 	$user_id = "K-".$user_id_s;
-					// } else {
-					// 	$user_id = "";
-					// }
 					$user_id = "P-" . $user_id_s;
 
 					if ($hasil['file_name'] == '') {

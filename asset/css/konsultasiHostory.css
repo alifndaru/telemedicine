@@ -237,19 +237,19 @@ p {
   }
 }
 
-@media (min-width: 769px) {
+/* @media (min-width: 769px) {
   .profile-user-btn {
-    padding: 10px 93px; /* Padding asli untuk layar lebih besar */
+    padding: 10px 93px;
   }
 
   .consultation-data-btn {
-    padding: 10px 140px; /* Padding asli untuk layar lebih besar */
+    padding: 10px 140px;
   }
 
   .start-consultation-btn {
-    padding: 10px 116px; /* Padding asli untuk layar lebih besar */
+    padding: 10px 116px;
   }
-}
+} */
 
 .table-responsive {
   overflow-x: auto;
