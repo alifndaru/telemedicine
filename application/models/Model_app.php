@@ -1,104 +1,123 @@
-<?php 
-class Model_app extends CI_model{
-    public function view($table){
+<?php
+class Model_app extends CI_model
+{
+    public function view($table)
+    {
         return $this->db->get($table);
     }
 
-    public function insert($table,$data){
+    public function insert($table, $data)
+    {
         return $this->db->insert($table, $data);
     }
 
-    public function edit($table, $data){
+    public function edit($table, $data)
+    {
         return $this->db->get_where($table, $data);
     }
- 
-    public function update($table, $data, $where){
-        return $this->db->update($table, $data, $where); 
+
+    public function update($table, $data, $where)
+    {
+        return $this->db->update($table, $data, $where);
     }
 
-    public function delete($table, $where){
+    public function delete($table, $where)
+    {
         return $this->db->delete($table, $where);
     }
 
-    public function view_where($table,$data){
+    public function view_where($table, $data)
+    {
         $this->db->where($data);
         return $this->db->get($table);
     }
 
-    public function view_ordering_limit($table,$order,$ordering,$baris,$dari){
+    public function view_ordering_limit($table, $order, $ordering, $baris, $dari)
+    {
         $this->db->select('*');
-        $this->db->order_by($order,$ordering);
+        $this->db->order_by($order, $ordering);
         $this->db->limit($dari, $baris);
         return $this->db->get($table);
     }
 
-    public function view_where_ordering_limit($table,$data,$order,$ordering,$baris,$dari){
+    public function view_where_ordering_limit($table, $data, $order, $ordering, $baris, $dari)
+    {
         $this->db->select('*');
         $this->db->where($data);
-        $this->db->order_by($order,$ordering);
+        $this->db->order_by($order, $ordering);
         $this->db->limit($dari, $baris);
         return $this->db->get($table);
     }
-    
-    public function view_ordering($table,$order,$ordering){
+
+    public function view_ordering($table, $order, $ordering)
+    {
         $this->db->select('*');
         $this->db->from($table);
-        $this->db->order_by($order,$ordering);
+        $this->db->order_by($order, $ordering);
         return $this->db->get()->result_array();
     }
 
-    public function view_where_ordering($table,$data,$order,$ordering){
+    public function view_where_ordering($table, $data, $order, $ordering)
+    {
         $this->db->where($data);
-        $this->db->order_by($order,$ordering);
+        $this->db->order_by($order, $ordering);
         $query = $this->db->get($table);
         return $query->result_array();
     }
 
-    public function view_join_one($table1,$table2,$field,$order,$ordering){
+    public function view_join_one($table1, $table2, $field, $order, $ordering)
+    {
         $this->db->select('*');
         $this->db->from($table1);
-        $this->db->join($table2, $table1.'.'.$field.'='.$table2.'.'.$field);
-        $this->db->order_by($order,$ordering);
+        $this->db->join($table2, $table1 . '.' . $field . '=' . $table2 . '.' . $field);
+        $this->db->order_by($order, $ordering);
         return $this->db->get()->result_array();
     }
 
-    public function view_join_where($table1,$table2,$field,$where,$order,$ordering){
+    public function view_join_where($table1, $table2, $field, $where, $order, $ordering)
+    {
         $this->db->select('*');
         $this->db->from($table1);
-        $this->db->join($table2, $table1.'.'.$field.'='.$table2.'.'.$field);
+        $this->db->join($table2, $table1 . '.' . $field . '=' . $table2 . '.' . $field);
         $this->db->where($where);
-        $this->db->order_by($order,$ordering);
+        $this->db->order_by($order, $ordering);
         return $this->db->get()->result_array();
     }
 
-    function umenu_akses($link,$id){
+    function umenu_akses($link, $id)
+    {
         return $this->db->query("SELECT * FROM modul,users_modul WHERE modul.id_modul=users_modul.id_modul AND users_modul.id_session='$id' AND modul.link='$link'")->num_rows();
     }
 
-    public function cek_login($username,$password,$table){
+    public function cek_login($username, $password, $table)
+    {
         // echo "SELECT * FROM $table where username='".$this->db->escape_str($username)."' AND password='".$this->db->escape_str($password)."' AND blokir='N'";
-        return $this->db->query("SELECT * FROM $table where username='".$this->db->escape_str($username)."' AND password='".$this->db->escape_str($password)."' AND blokir='N'");
+        return $this->db->query("SELECT * FROM $table where username='" . $this->db->escape_str($username) . "' AND password='" . $this->db->escape_str($password) . "' AND blokir='N'");
     }
 
-    public function cek_login_users($username,$password,$table){
-        return $this->db->query("SELECT * FROM $table where username='".$this->db->escape_str($username)."' AND password='".$this->db->escape_str($password)."'");
+    public function cek_login_users($username, $password, $table)
+    {
+        return $this->db->query("SELECT * FROM $table where username='" . $this->db->escape_str($username) . "' AND password='" . $this->db->escape_str($password) . "'");
     }
 
-    function grafik_kunjungan(){
+    function grafik_kunjungan()
+    {
         return $this->db->query("SELECT count(*) as jumlah, tanggal FROM statistik GROUP BY tanggal ORDER BY tanggal DESC LIMIT 10");
     }
 
     // Tambahan 
-    function last_user_id() {
+    function last_user_id()
+    {
         return $this->db->query("SELECT MAX(id) id FROM users");
     }
 
     // Pemda
-    public function xhrRefPemda($data) {
+    public function xhrRefPemda($data)
+    {
         $search = $data['search'];
         $ref = $data['ref'];
         $data['ref'] = $ref;
-    
+
         if ($ref === 'provinsi') {
             $data['res'] = $this->db->query("SELECT id, provinsi FROM ref_provinsi WHERE provinsi LIKE '%$search%' ORDER BY provinsi ASC")->result_array();
             return $data;
@@ -120,13 +139,15 @@ class Model_app extends CI_model{
         }
     }
 
-    public function xhrMyKlinik($data) {
+    public function xhrMyKlinik($data)
+    {
         $user_id = $data['user_id'];
         $data['res'] = $this->db->query("SELECT b.klinik_id id, b.klinik FROM users a INNER JOIN v_klinik b ON a.klinik_id = b.klinik_id WHERE a.user_id = '$user_id'")->result_array();
         return $data;
     }
 
-    public function xhrLayanan($data) {
+    public function xhrLayanan($data)
+    {
         $search = $data['search'];
         if (!empty($search)) {
             $data['res'] = $this->db->query("SELECT id_kategori_layanan id, nama_kategori_layanan layanan 
@@ -140,12 +161,14 @@ class Model_app extends CI_model{
         }
     }
 
-    public function getLayanan($data) {
+    public function getLayanan($data)
+    {
         $d = $this->db->query("SELECT * FROM kategori_layanan WHERE id_kategori_layanan IN ('$data')");
         return $d;
     }
 
-    public function xhrKlinik($data) {
+    public function xhrKlinik($data)
+    {
         $search = $data['search'];
         $ref = $data['ref'];
         $pro = $data['provinsi'];
@@ -228,7 +251,7 @@ class Model_app extends CI_model{
                 return $data;
             }
         }
-    
+
         if (empty($pro) && empty($kab) && empty($kec) && empty($kec)) {
             if (!empty($search)) {
                 $data['res'] = $this->db->query("SELECT klinik_id id, klinik FROM v_klinik WHERE klinik LIKE '%$search%' ORDER BY klinik ASC")->result_array();
@@ -240,16 +263,17 @@ class Model_app extends CI_model{
         }
     }
 
-    public function xhrDokter($data) {
+    public function xhrDokter($data)
+    {
         $search = $data['search'];
         $ref = $data['ref'];
         $result['res'] = array();
-    
+
         if ($ref === 'dokter') {
             $result['res'] = $this->db->query("SELECT user_id, nama_lengkap FROM v_dokter WHERE nama_lengkap LIKE '%$search%' ORDER BY nama_lengkap ASC")->result_array();
             return $result;
-        } 
-        
+        }
+
         if ($ref === 'dokter-klinik') {
             $klinik = $data['klinik'];
             if (!empty($search)) {
@@ -261,18 +285,19 @@ class Model_app extends CI_model{
                 $result['res'] = $this->db->query("SELECT dokter_id, nama_lengkap, foto_dokter, klinik, jabatan FROM v_jadwal WHERE klinik_id = '$klinik' AND status_jadwal = 'aktif' GROUP BY dokter_id ORDER BY nama_lengkap ASC")->result_array();
                 return $result;
             }
-        } 
-        
+        }
+
         if ($ref === 'dokter-jadwal') {
             $klinik = $data['klinik'];
             $dokter = $data['dokter'];
             $result['res'] = $this->db->query("SELECT * FROM v_jadwal WHERE klinik_id = '$klinik' AND status_jadwal = 'aktif' AND dokter_id = '$dokter' ORDER BY nama_lengkap ASC")->result_array();
             return $result;
-        } 
+        }
     }
 
     // Klinik
-    public function fetch_klinik($d, $ref) {
+    public function fetch_klinik($d, $ref)
+    {
         $search = $d['data']['search'];
         $currentPage = $d['data']['currentPage'];
         $perPage = $d['data']['perPage'];
@@ -297,12 +322,13 @@ class Model_app extends CI_model{
         $data['total_rows'] = $qx;
         $data['items'] = $q1;
         $data['totalPage'] = $total_pages;
-        
+
         return $data;
     }
 
     // Klinik
-    public function fetch_klinik_3($d, $ref) {
+    public function fetch_klinik_3($d, $ref)
+    {
         $filter = $d['data']['filter'];
         $search = $d['data']['search'];
         $currentPage = $d['data']['currentPage'];
@@ -316,7 +342,7 @@ class Model_app extends CI_model{
             if ($filter == 'klinik') {
                 $sql1 .= " WHERE a.klinik LIKE '%$search%'";
                 $sql2 .= " WHERE a.klinik LIKE '%$search%'";
-            } 
+            }
 
             if ($filter == 'provinsi') {
                 $sql1 .= " WHERE a.provinsi LIKE '%$search%'";
@@ -336,12 +362,13 @@ class Model_app extends CI_model{
         $data['total_rows'] = $qx;
         $data['items'] = $q1;
         $data['totalPage'] = $total_pages;
-        
+
         return $data;
     }
 
     // Layanan
-    public function fetch_layanan($d, $ref) {
+    public function fetch_layanan($d, $ref)
+    {
         $search = $d['data']['search'];
         $currentPage = $d['data']['currentPage'];
         $perPage = $d['data']['perPage'];
@@ -366,12 +393,13 @@ class Model_app extends CI_model{
         $data['total_rows'] = $qx;
         $data['items'] = $q1;
         $data['totalPage'] = $total_pages;
-        
+
         return $data;
     }
 
     // Layanan
-    public function fetch_dokter($d, $ref) {
+    public function fetch_dokter($d, $ref)
+    {
         $search = $d['data']['search'];
         $currentPage = $d['data']['currentPage'];
         $perPage = $d['data']['perPage'];
@@ -396,11 +424,12 @@ class Model_app extends CI_model{
         $data['total_rows'] = $qx;
         $data['items'] = $q1;
         $data['totalPage'] = $total_pages;
-        
+
         return $data;
     }
 
-    public function xhrKonsul($d) {
+    public function xhrKonsul($d)
+    {
         $klinik = $d['klinik'];
         $layanan = $d['layanan'];
         $gender = $d['gender'];
@@ -463,11 +492,12 @@ class Model_app extends CI_model{
         $data['total_rows'] = $qx;
         $data['items'] = $q1;
         $data['totalPage'] = $total_pages;
-        
+
         return $data;
     }
 
-    public function fetch_klinik_2($d) {
+    public function fetch_klinik_2($d)
+    {
         $user_id = $d['data']['user_id'];
         $search = $d['data']['search'];
         $currentPage = $d['data']['currentPage'];
@@ -493,29 +523,34 @@ class Model_app extends CI_model{
         $data['total_rows'] = $qx;
         $data['items'] = $q1;
         $data['totalPage'] = $total_pages;
-        
+
         return $data;
     }
 
-    public function klinik_rekomendasi() {
+    public function klinik_rekomendasi()
+    {
         return $this->db->query("SELECT COUNT(a.id_konsul) jumlah, a.klinik_id, a.klinik, a.alamat_klinik, b.foto FROM v_konsul a INNER JOIN v_klinik b ON a.klinik_id = b.klinik_id GROUP BY a.klinik_id ORDER BY jumlah DESC")->result_array();
     }
 
-    public function fetch_single_klinik($kid) {
+    public function fetch_single_klinik($kid)
+    {
         $result = $this->db->query("SELECT * FROM v_klinik WHERE klinik_id = '$kid'")->result_array();
         return $result;
     }
 
-    function myKlinik($user_id) {
+    function myKlinik($user_id)
+    {
         $result = $this->db->query("SELECT a.klinik_id, b.klinik FROM users a INNER JOIN klinik b ON a.klinik_id = b.id WHERE a.user_id = '$user_id'")->result_array();
         return $result;
     }
 
-    public function info_dokter($id) {
-        $result = $this->db->query("SELECT * FROM v_dokter WHERE user_id = '$id'")->row_array();   
+    public function info_dokter($id)
+    {
+        $result = $this->db->query("SELECT * FROM v_dokter WHERE user_id = '$id'")->row_array();
     }
 
-    public function xhrJadwalx($d, $ref) {
+    public function xhrJadwalx($d, $ref)
+    {
         $currentPage = $d['data']['currentPage'];
         $perPage = $d['data']['perPage'];
         $offset = ($currentPage - 1) * $perPage;
@@ -565,25 +600,28 @@ class Model_app extends CI_model{
         $data['total_rows'] = $qx;
         $data['items'] = $q1;
         $data['totalPage'] = $total_pages;
-        
+
         return $data;
     }
 
     // return data if not started yet
-    function timeNo($konsul) {
+    function timeNo($konsul)
+    {
         $result = $this->db->query("SELECT * FROM v_konsul WHERE id_konsul = '$konsul' AND CURTIME() < tstart")->result_array();
         return $result;
     }
 
     // return data if starting
-    function timeYes($konsul) {
+    function timeYes($konsul)
+    {
         // $result = $this->db->query("SELECT * FROM v_konsul WHERE id_konsul = '$konsul' AND (CURTIME() >= tstart AND CURTIME() <= tend)")->result_array();
         $result = $this->db->query("SELECT * FROM v_konsul WHERE id_konsul = '$konsul' AND (DATE_ADD(NOW(), INTERVAL 7 HOUR) >= DATE_FORMAT(CONCAT(DATE_FORMAT(CURRENT_DATE(), '%Y-%m-%d'), ' ', tstart), '%Y-%m-%d %H:%i:%s') AND DATE_ADD(NOW(), INTERVAL 7 HOUR) <= DATE_FORMAT(CONCAT(DATE_FORMAT(CURRENT_DATE(), '%Y-%m-%d'), ' ', tend), '%Y-%m-%d %H:%i:%s'))")->result_array();
         return $result;
     }
 
     // return data if time is expired
-    function timeEx($konsul) {
+    function timeEx($konsul)
+    {
         // $result = $this->db->query("SELECT * FROM v_konsul WHERE id_konsul = '$konsul' AND CURTIME() > tend")->result_array();
         $result = $this->db->query("SELECT * FROM v_konsul WHERE id_konsul = '$konsul' AND DATE_ADD(NOW(), INTERVAL 7 HOUR) > DATE_FORMAT(CONCAT(DATE_FORMAT(CURRENT_DATE(), '%Y-%m-%d'), ' ', tend), '%Y-%m-%d %H:%i:%s')")->result_array();
         return $result;
@@ -611,19 +649,23 @@ class Model_app extends CI_model{
     //     return $result;
     // }
 
-    function disableKonsul($konsul) {
+    function disableKonsul($konsul)
+    {
         $this->db->query("UPDATE konsul SET `status` = 'N' WHERE id_konsul = '$konsul'");
     }
 
-    function latest_news() {
+    function latest_news()
+    {
         return $this->db->query("SELECT a.*, DATE_FORMAT(a.tanggal, '%b %d, %Y') tanggalx FROM berita a ORDER BY a.id_berita DESC LIMIT 3")->result_array();
     }
 
-    function comments5() {
+    function comments5()
+    {
         return $this->db->query("SELECT * FROM hubungi a ORDER BY a.id_hubungi DESC LIMIT 5")->result_array();
     }
 
-    function unread() {
+    function unread()
+    {
         // return $this->db->query("SELECT a.id_konsul, a.id_komentar, a.level FROM v_konsul a WHERE a.id_konsul = 19")->result_array();
         $dokter = $this->session->user_id;
         return $this->db->query("SELECT a.id_konsul, a.id_komentar, a.level FROM v_konsul a WHERE a.`level` IS NOT NULL AND a.dokter = '$dokter' GROUP BY a.id_konsul, a.id_komentar")->result_array();
