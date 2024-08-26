@@ -2396,27 +2396,6 @@ class Administrator extends CI_Controller
         }
     }
 
-    // function fetch_klinik()
-    // {
-    //     $d = json_decode(file_get_contents("php://input"), TRUE);
-    //     $level = $this->session->level;
-    //     $user_id = $this->session->user_id;
-
-    //     $d['data']['level'] = $level;
-    //     $d['data']['user_id'] = $user_id;
-
-    //     if ($level === 'klinik') {
-    //         $result = $this->model_app->fetch_klinik_2($d);
-    //     } else {
-    //         $result = $this->model_app->fetch_klinik($d);
-    //     }
-
-    //     for ($i = 0; $i < intval($result['total_rows']); $i++) {
-    //         $idx = $result['items'][$i]['klinik_id'];
-    //         $result['items'][$i]['klinik_idx'] = $this->mylibrary->e101($idx, strlen($idx));
-    //     }
-    //     echo json_encode($result);
-    // }
     function fetch_klinik()
     {
         $d = json_decode(file_get_contents("php://input"), TRUE);
