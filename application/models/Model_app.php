@@ -568,7 +568,8 @@ class Model_app extends CI_model
             a.timezone, 
             a.status_jadwal `status`, 
             a.nama_lengkap nama_dokter, 
-            a.klinik 
+            a.klinik,
+            a.biaya_tarif 
         FROM v_jadwal a WHERE a.klinik_id = '$kid' ";
         $sql2 = "SELECT 
             a.jadwal_id id,
@@ -580,7 +581,8 @@ class Model_app extends CI_model
             a.timezone, 
             a.status_jadwal `status`, 
             a.nama_lengkap nama_dokter, 
-            a.klinik 
+            a.klinik,
+            a.biaya_tarif
         FROM v_jadwal a WHERE a.klinik_id = '$kid' ";
 
         if (!empty($did)) {
