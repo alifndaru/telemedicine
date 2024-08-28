@@ -1,22 +1,21 @@
-
 <link rel="stylesheet" href="<?php echo base_url('asset/admin/plugins/vue-select/vue-select.css'); ?>">
 
 <style>
-   /* vue-select */
-   .vs__no-options {
-      text-align: left !important;
-      padding-left: 8px;
-   }
+    /* vue-select */
+    .vs__no-options {
+        text-align: left !important;
+        padding-left: 8px;
+    }
 
-   .vs__clear {
-      margin-bottom: 1px;
-   }
+    .vs__clear {
+        margin-bottom: 1px;
+    }
 </style>
 
 <div id="vue-jadwal" class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;">
     <div class="box box-info">
         <div class="box-header with-border">
-            <h3 class="box-title">Jadwal Provider</h3> 
+            <h3 class="box-title">Jadwal Provider</h3>
         </div>
         <div class="box-body">
             <input type="hidden" name='kid' ref="kid" value="<?php echo $kid; ?>">
@@ -29,13 +28,13 @@
                     <tr>
                         <th scope="row">Pilih Provider </th>
                         <td>
-                            <v-select 
-                                :disabled="disops.dokter === true" 
-                                label="dokter" 
-                                v-model="dokter" 
-                                :reduce="dokter => dokter.id" 
-                                :options="dokter_options" 
-                                @search="fetchOptionsDokter" 
+                            <v-select
+                                :disabled="disops.dokter === true"
+                                label="dokter"
+                                v-model="dokter"
+                                :reduce="dokter => dokter.id"
+                                :options="dokter_options"
+                                @search="fetchOptionsDokter"
                                 @input="selectedOptionDokter">
                             </v-select>
                             <input type="hidden" v-model="dokter_id" name="dokter_id">
@@ -49,8 +48,6 @@
                                 <vue-timepicker v-model="tend" input-class="input-time-custom" @change="time_handler($event, 'tend')"></vue-timepicker>&nbsp;&nbsp;
                                 <select style="height: 30.8px; width: 80px;" class="form-control" v-model="timezone">
                                     <option value="wib">WIB</option>
-                                    <!-- <option value="wita">WITA</option>
-                                    <option value="wit">WIT</option> -->
                                 </select>&nbsp;&nbsp;
                                 <select style="height: 30.8px; width: 110px !important;" class="form-control" v-model="timestatus">
                                     <option value="aktif">Aktif</option>
@@ -64,6 +61,10 @@
                     <tr>
                         <th scope="row">Kuota Klien </th>
                         <td><input type="text" class="form-control" style="width: 200px !important;" v-model="kuota_pasien" name="kuota_pasien" value=""></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Biaya Tarif</th>
+                        <td><input type="text" class="form-control" style="width: 200px !important;" v-model="biaya_tarif" name="biaya_tarif"></td>
                     </tr>
                     <tr>
                         <td></td>
@@ -83,7 +84,7 @@
 
             <div>
                 <div class="box-header with-border">
-                    <h3 class="box-title"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></h3> 
+                    <h3 class="box-title"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></h3>
                 </div>
                 <div class="box-body">
                     <table class="table table-hover">
@@ -97,7 +98,7 @@
                                 <th>Kuota</th>
                                 <th>Zona</th>
                                 <th>Status</th>
-                                <th></th>
+                                <th>Tarif</th>
                             </tr>
                         </thead>
                         <tbody v-for="(item, index) in jadwal">
@@ -115,6 +116,7 @@
                                 <td v-else>
                                     <span class="label label-success">{{ item.status }}</span>
                                 </td>
+                                <td>{{ item.biaya_tarif }}</td>
                                 <td style="float: right;">
                                     <button @click="statusJadwal(item.id)" v-if="item.status === 'tidak aktif'" class="btn btn-success btn-xs" type="button">
                                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
@@ -134,19 +136,19 @@
                     </table>
 
                     <span v-if="jadwal !== null">
-                        <paginate 
+                        <paginate
                             first-last-button
-                            :page-count="getPageCount" 
-                            :page-range="3" 
-                            :margin-pages="1" 
-                            :click-handler="clickCallback" 
+                            :page-count="getPageCount"
+                            :page-range="3"
+                            :margin-pages="1"
+                            :click-handler="clickCallback"
                             :disabled-class="'disabled'"
                             :active-class="'active'"
                             :prev-link-class="'page-link'"
-                            :prev-text="'<'" 
+                            :prev-text="'<'"
                             :next-link-class="'page-link'"
                             :next-text="'＞'"
-                            :container-class="'pagination'" 
+                            :container-class="'pagination'"
                             :page-class="'page-item'"
                             :page-link-class="'page-link'">
                         </paginate>

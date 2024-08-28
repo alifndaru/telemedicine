@@ -2523,10 +2523,58 @@ class Administrator extends CI_Controller
     {
         $d = json_decode(file_get_contents("php://input"), TRUE);
         if ($d['data']['ref'] === 'semua') {
-            echo json_encode($this->model_app->xhrJadwalx($d));
+            echo json_encode($this->model_app->xhrJadwalx($d, $ref = null));
         }
     }
 
+    // function xhrJadwal()
+    // {
+    //     $d = json_decode(file_get_contents("php://input"), TRUE);
+    //     if ($d['data']['ref'] === 'tambah') {
+    //         $dt = array(
+    //             'klinik_id' => $d['data']['klinik_id'],
+    //             'dokter_id' => $d['data']['dokter_id'],
+    //             'tstart' => $d['data']['tstart'],
+    //             'tend' => $d['data']['tend'],
+    //             'kuota' => $d['data']['kuota'],
+    //             'timezone' => $d['data']['timezone'],
+    //             'status' => $d['data']['timestatus']
+    //         );
+    //         $this->model_app->insert('klinik_waktu_dokter', $dt);
+    //     }
+
+    //     if ($d['data']['ref'] === 'status') {
+    //         $id = $d['data']['id'];
+    //         $status = $d['data']['status'];
+    //         if (!empty($id) && !empty($status)) {
+    //             if ($status == 'aktif') {
+    //                 $dx = array('status' => 'tidak aktif');
+    //             } else {
+    //                 $dx = array('status' => 'aktif');
+    //             }
+    //             $this->model_app->update('klinik_waktu_dokter', $dx, "id = $id");
+    //         }
+    //     }
+
+    //     if ($d['data']['ref'] === 'delete') {
+    //         $id = $d['data']['id'];
+    //         $this->model_app->delete('klinik_waktu_dokter', "id = $id");
+    //     }
+
+    //     if ($d['data']['ref'] === 'edit') {
+    //         $id = $d['data']['id'];
+    //         $dt = array(
+    //             'klinik_id' => $d['data']['klinik_id'],
+    //             'dokter_id' => $d['data']['dokter_id'],
+    //             'tstart' => $d['data']['tstart'],
+    //             'tend' => $d['data']['tend'],
+    //             'kuota' => $d['data']['kuota'],
+    //             'timezone' => $d['data']['timezone'],
+    //             'status' => $d['data']['timestatus']
+    //         );
+    //         $this->model_app->update('klinik_waktu_dokter', $dt, "id = '$id'");
+    //     }
+    // }
     function xhrJadwal()
     {
         $d = json_decode(file_get_contents("php://input"), TRUE);
@@ -2538,7 +2586,8 @@ class Administrator extends CI_Controller
                 'tend' => $d['data']['tend'],
                 'kuota' => $d['data']['kuota'],
                 'timezone' => $d['data']['timezone'],
-                'status' => $d['data']['timestatus']
+                'status' => $d['data']['timestatus'],
+                'biaya_tarif' => $d['data']['biaya_tarif'] // Tambahkan ini
             );
             $this->model_app->insert('klinik_waktu_dokter', $dt);
         }
@@ -2570,7 +2619,8 @@ class Administrator extends CI_Controller
                 'tend' => $d['data']['tend'],
                 'kuota' => $d['data']['kuota'],
                 'timezone' => $d['data']['timezone'],
-                'status' => $d['data']['timestatus']
+                'status' => $d['data']['timestatus'],
+                'biaya_tarif' => $d['data']['biaya_tarif'] // Tambahkan ini untuk edit
             );
             $this->model_app->update('klinik_waktu_dokter', $dt, "id = '$id'");
         }
