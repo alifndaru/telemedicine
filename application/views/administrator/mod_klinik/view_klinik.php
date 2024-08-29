@@ -1,7 +1,7 @@
 <div id="vue_klinik" class="col-md-12" style="padding-left: 0px !important; padding-right: 0px !important;">
     <div class="box box-info">
         <div class="box-header with-border">
-            <h3 class="box-title">Daftar Daerah</h3> 
+            <h3 class="box-title">Daftar Daerah</h3>
         </div>
         <div class="box-body">
             <div class="row" style="margin-bottom: 10px; ">
@@ -12,16 +12,16 @@
                                 <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                             </a>
                         <?php } else { ?>
-                            
+
                         <?php } ?>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <input class="form-control" v-model="search" placeholder="Cari berdasarkan nama Daerah"> 
-                        <span class="input-group-btn"> 
-                            <button class="btn btn-default" type="button">Cari</button> 
-                        </span> 
+                        <input class="form-control" v-model="search" placeholder="Cari berdasarkan nama Daerah">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Cari</button>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -29,13 +29,15 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                    <th>No.</th>
-                    <th>Daerah</th>
-                    <th>Alamat</th>
-                    <th>Telepon</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th></th>
+                        <th>No.</th>
+                        <th>Daerah</th>
+                        <th>Alamat</th>
+                        <th>Telepon</th>
+                        <th>Email</th>
+                        <th>Bank</th>
+                        <th>No. Rekening</th>
+                        <th>Status</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody v-for="(item, index) in items">
@@ -45,6 +47,8 @@
                         <td>{{ item.alamat }}</td>
                         <td>{{ item.phone }}</td>
                         <td>{{ item.email }}</td>
+                        <td>{{ item.bank }}</td>
+                        <td>{{ item.rekening }}</td>
                         <!-- <td>{{ item.status }}</td> -->
                         <td v-if="item.status === 'tidak aktif'">
                             <span class="label label-danger">{{ item.status }}</span>
@@ -62,7 +66,7 @@
                             <button @click="statusKlinik(item.klinik_id)" v-else class="btn btn-danger btn-xs" type="button">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </button>
-                            
+
                             <a v-bind:href="'edit_klinik?kid='+ item.klinik_idx" class="btn btn-primary btn-xs" type="button">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             </a>
@@ -72,19 +76,19 @@
             </table>
 
             <span v-if="items !== null">
-                <paginate 
+                <paginate
                     first-last-button
-                    :page-count="getPageCount" 
-                    :page-range="3" 
-                    :margin-pages="1" 
-                    :click-handler="clickCallback" 
+                    :page-count="getPageCount"
+                    :page-range="3"
+                    :margin-pages="1"
+                    :click-handler="clickCallback"
                     :disabled-class="'disabled'"
                     :active-class="'active'"
                     :prev-link-class="'page-link'"
-                    :prev-text="'<'" 
+                    :prev-text="'<'"
                     :next-link-class="'page-link'"
                     :next-text="'＞'"
-                    :container-class="'pagination'" 
+                    :container-class="'pagination'"
                     :page-class="'page-item'"
                     :page-link-class="'page-link'">
                 </paginate>
