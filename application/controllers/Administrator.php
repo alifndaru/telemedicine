@@ -2721,4 +2721,120 @@ class Administrator extends CI_Controller
             $this->template->load('administrator/template', 'administrator/mod_klinik/view_manajemen_dokter', $data);
         }
     }
+
+    public function voucher()
+    {
+        cek_session_akses('voucher', $this->session->id_session);
+        $data['voucher'] = $this->model_app->view_ordering('voucher', 'voucher_id', 'ASC');
+        $this->template->load('administrator/template', 'administrator/mod_voucher/view_voucher', $data);
+    }
+
+    public function tambah_voucher()
+    {
+        cek_session_akses('voucher', $this->session->id_session);
+        if (isset($_POST['submit'])) {
+            $kode_voucher = $this->db->escape_str($this->input->post('kode_voucher'));
+            $start_date = $this->db->escape_str($this->input->post('start_date'));
+            $end_date = $this->db->escape_str($this->input->post('end_date'));
+            $current_date = date('Y-m-d'); // Mendapatkan tanggal saat ini
+
+            // Cek keunikan kode_voucher
+            $this->db->where('kode_voucher', $kode_voucher);
+            $cek = $this->db->get('voucher')->num_rows();
+
+            if ($cek > 0) {
+                $this->session->set_flashdata('error', 'Kode voucher sudah Ada. Silakan gunakan kode lain.');
+                redirect('administrator/tambah_voucher');
+            } elseif ($start_date < $current_date) {
+                // Validasi jika start_date di masa lalu
+                $this->session->set_flashdata('error', 'Start date tidak boleh di masa lalu.');
+                redirect('administrator/tambah_voucher');
+            } elseif ($end_date < $start_date) {
+                // Validasi jika end_date sebelum start_date
+                $this->session->set_flashdata('error', 'End date tidak boleh sebelum start date.');
+                redirect('administrator/tambah_voucher');
+            } else {
+                // Jika semua validasi terpenuhi, lanjutkan proses penyimpanan
+                $data = array(
+                    'kode_voucher' => $kode_voucher,
+                    'start_date' => $start_date,
+                    'end_date' => $end_date,
+                    'aktif' => $this->db->escape_str($this->input->post('aktif')),
+                );
+                $this->model_app->insert('voucher', $data);
+                redirect('administrator/voucher');
+            }
+        } else {
+            $this->template->load('administrator/template', 'administrator/mod_voucher/view_voucher_tambah');
+        }
+    }
+
+    public function edit_voucher()
+    {
+        // Check if form was submitted
+        if (isset($_POST['submit'])) {
+            // Retrieve form data
+            $id_voucher = $this->input->post('voucher_id');
+            $kode_voucher = $this->input->post('kode_voucher');
+            $start_date = $this->input->post('start_date');
+            $end_date = $this->input->post('end_date');
+            $aktif = $this->input->post('aktif');
+
+            // Get current date
+            $current_date = date('Y-m-d');
+
+            // Validasi start_date tidak boleh di masa lalu
+            if ($start_date < $current_date) {
+                $this->session->set_flashdata('error', 'Tanggal mulai tidak boleh di masa lalu.');
+                redirect('administrator/edit_voucher/' . $id_voucher);
+            } elseif (empty($start_date) || empty($end_date)) {
+                $this->session->set_flashdata('error', 'Tanggal mulai dan tanggal berakhir tidak boleh kosong.');
+                redirect('administrator/edit_voucher/' . $id_voucher);
+            } elseif (strtotime($start_date) > strtotime($end_date)) {
+                $this->session->set_flashdata('error', 'Tanggal mulai tidak boleh lebih besar dari tanggal berakhir.');
+                redirect('administrator/edit_voucher/' . $id_voucher);
+            } else {
+                // Prepare data for update
+                $data = array(
+                    'kode_voucher' => $kode_voucher,
+                    'start_date' => $start_date,
+                    'end_date' => $end_date,
+                    'aktif' => $aktif
+                );
+
+                // Specify where to update
+                $where = array('voucher_id' => $id_voucher);
+
+                // Perform update operation
+                $update = $this->model_app->update('voucher', $data, $where);
+
+                // Check if update was successful
+                if ($update) {
+                    $this->session->set_flashdata('success', 'Voucher berhasil diperbarui.');
+                } else {
+                    $this->session->set_flashdata('error', 'Gagal memperbarui voucher.');
+                }
+
+                // Redirect to a certain page
+                redirect('administrator/voucher');
+            }
+        } else {
+            // If not submitted, show the edit form
+            $id_voucher = $this->uri->segment(3);
+            $data['voucher'] = $this->model_app->edit('voucher', array('voucher_id' => $id_voucher))->row_array();
+            $data['title'] = 'Edit Voucher';
+            $this->template->load('administrator/template', 'administrator/mod_voucher/view_voucher_edit', $data);
+        }
+    }
+    public function delete_voucher($voucher_id)
+    {
+        cek_session_akses('voucher', $this->session->id_session);
+        $result = $this->model_app->delete('voucher', array('voucher_id' => $voucher_id));
+        if ($result) {
+            $this->session->set_flashdata('success', 'Voucher berhasil dihapus.');
+        } else {
+            $this->session->set_flashdata('error', 'Voucher gagal dihapus.');
+        }
+        redirect('administrator/voucher');
+    }
 }
