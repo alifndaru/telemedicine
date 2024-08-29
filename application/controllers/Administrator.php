@@ -2736,7 +2736,9 @@ class Administrator extends CI_Controller
             $kode_voucher = $this->db->escape_str($this->input->post('kode_voucher'));
             $start_date = $this->db->escape_str($this->input->post('start_date'));
             $end_date = $this->db->escape_str($this->input->post('end_date'));
-            $current_date = date('Y-m-d'); // Mendapatkan tanggal saat ini
+            $nilai = $this->db->escape_str($this->input->post('nilai'));
+            $current_date = date('Y-m-d');
+
 
             // Cek keunikan kode_voucher
             $this->db->where('kode_voucher', $kode_voucher);
@@ -2759,6 +2761,7 @@ class Administrator extends CI_Controller
                     'kode_voucher' => $kode_voucher,
                     'start_date' => $start_date,
                     'end_date' => $end_date,
+                    'nilai' => $nilai,
                     'aktif' => $this->db->escape_str($this->input->post('aktif')),
                 );
                 $this->model_app->insert('voucher', $data);
@@ -2778,6 +2781,7 @@ class Administrator extends CI_Controller
             $kode_voucher = $this->input->post('kode_voucher');
             $start_date = $this->input->post('start_date');
             $end_date = $this->input->post('end_date');
+            $nilai = $this->input->post('nilai');
             $aktif = $this->input->post('aktif');
 
             // Get current date
@@ -2799,6 +2803,7 @@ class Administrator extends CI_Controller
                     'kode_voucher' => $kode_voucher,
                     'start_date' => $start_date,
                     'end_date' => $end_date,
+                    'nilai' => $nilai,
                     'aktif' => $aktif
                 );
 

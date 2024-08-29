@@ -1,6 +1,6 @@
 <?php
 if ($this->session->flashdata('error')) {
-    echo "<div class='alert alert-danger'>" . $this->session->flashdata('error') . "</div>";
+  echo "<div class='alert alert-danger'>" . $this->session->flashdata('error') . "</div>";
 }
 echo "<div class='col-md-12'>
               <div class='box box-info'>
@@ -22,6 +22,8 @@ echo "<div class='col-md-12'>
                     <td><input type='date' class='form-control' name='end_date' required></td></tr>
                     <tr><th scope='row'>Aktif</th>                          
                     <td><input type='radio' name='aktif' value='Y' checked> Ya &nbsp; <input type='radio' name='aktif' value='N'> Tidak</td></tr>
+                    <tr><th width='120px' scope='row'>Nilai Persentase</th>    
+                    <td><input type='number' class='form-control' name='nilai' required min='0' max='100' step='0.01' placeholder='0-100%'></td></tr>
                    </tbody>
                   </table>
                 </div>

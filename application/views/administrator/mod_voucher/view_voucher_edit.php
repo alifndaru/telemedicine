@@ -24,6 +24,8 @@ if ($voucher['aktif'] == 'Y') {
     echo "<input type='radio' name='aktif' value='Y'> Ya &nbsp; <input type='radio' name='aktif' value='N' checked> Tidak";
 }
 echo "</td></tr>
+        <tr><th width='120px' scope='row'>Nilai Persentase</th>    
+        <td><input type='number' class='form-control' name='nilai' value='" . $voucher['nilai'] . "' required min='0' max='100' step='0.01' placeholder='0-100%'></td></tr>
     </tbody>
     </table>
 </div>
