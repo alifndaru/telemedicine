@@ -2304,7 +2304,9 @@ class Administrator extends CI_Controller
                     !empty($_POST['alamat_klinik']) &&
                     !empty($_POST['pos_klinik']) &&
                     !empty($_POST['email_klinik']) &&
-                    !empty($_POST['telp_klinik'])
+                    !empty($_POST['telp_klinik']) &&
+                    !empty($_POST['bank']) &&
+                    !empty($_POST['rekening'])
                 ) {
 
                     $config['upload_path'] = 'asset/foto_klinik/';
@@ -2327,7 +2329,9 @@ class Administrator extends CI_Controller
                         'pos' => $this->db->escape_str($this->input->post('pos_klinik')),
                         'email' => $this->db->escape_str($this->input->post('email_klinik')),
                         'phone' => $this->db->escape_str($this->input->post('telp_klinik')),
-                        'foto' => $foto
+                        'foto' => $foto,
+                        'bank' => $this->db->escape_str($this->input->post('bank')),
+                        'rekening' => $this->db->escape_str($this->input->post('rekening'))
                     );
                     $this->model_app->insert('klinik', $data_klinik);
                     redirect('administrator/klinik');
@@ -2346,7 +2350,9 @@ class Administrator extends CI_Controller
                     !empty($_POST['alamat_klinik']) &&
                     !empty($_POST['pos_klinik']) &&
                     !empty($_POST['email_klinik']) &&
-                    !empty($_POST['telp_klinik'])
+                    !empty($_POST['telp_klinik']) &&
+                    !empty($_POST['bank']) &&
+                    !empty($_POST['rekening'])
                 ) {
 
                     $kid = $_POST['kid'];
@@ -2372,7 +2378,9 @@ class Administrator extends CI_Controller
                             'pos' => $this->db->escape_str($this->input->post('pos_klinik')),
                             'email' => $this->db->escape_str($this->input->post('email_klinik')),
                             'phone' => $this->db->escape_str($this->input->post('telp_klinik')),
-                            'foto' => $foto
+                            'foto' => $foto,
+                            'bank' => $this->db->escape_str($this->input->post('bank')),
+                            'rekening' => $this->db->escape_str($this->input->post('rekening'))
                         );
                         $this->model_app->update('klinik', $data_klinik, "id = $kid");
                         redirect('administrator/klinik');
@@ -2386,7 +2394,9 @@ class Administrator extends CI_Controller
                             'alamat' => $this->db->escape_str($this->input->post('alamat_klinik')),
                             'pos' => $this->db->escape_str($this->input->post('pos_klinik')),
                             'email' => $this->db->escape_str($this->input->post('email_klinik')),
-                            'phone' => $this->db->escape_str($this->input->post('telp_klinik'))
+                            'phone' => $this->db->escape_str($this->input->post('telp_klinik')),
+                            'bank' => $this->db->escape_str($this->input->post('bank')),
+                            'rekening' => $this->db->escape_str($this->input->post('rekening'))
                         );
                         $this->model_app->update('klinik', $data_klinik, "id = $kid");
                         redirect('administrator/klinik');
