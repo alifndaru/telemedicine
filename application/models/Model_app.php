@@ -672,4 +672,10 @@ class Model_app extends CI_model
         $dokter = $this->session->user_id;
         return $this->db->query("SELECT a.id_konsul, a.id_komentar, a.level FROM v_konsul a WHERE a.`level` IS NOT NULL AND a.dokter = '$dokter' GROUP BY a.id_konsul, a.id_komentar")->result_array();
     }
+
+
+    // function getVoucher()
+    // {
+    //     return $this->db->query("SELECT * FROM voucher")->result_array();
+    // }
 }
