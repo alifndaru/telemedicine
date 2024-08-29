@@ -13,6 +13,7 @@
                         <th>Start</th>
                         <th>Expaired</th>
                         <th>Aktif</th>
+                        <th>Nilai (%)</th>
                         <th style='width:50px'>Aksi</th>
                     </tr>
                 </thead>
@@ -25,6 +26,7 @@
                               <td>$row[start_date]</td>
                               <td>$row[end_date]</td>
 							  <td>$row[aktif]</td>
+                                <td>$row[nilai]</td>
 
                               <td><center>
                                 <a class='btn btn-success btn-xs' title='Edit Data' href='" . base_url() . "administrator/edit_voucher/$row[voucher_id]'><span class='glyphicon glyphicon-edit'></span></a>
