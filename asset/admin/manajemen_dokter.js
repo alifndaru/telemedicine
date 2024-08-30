@@ -1,3 +1,6 @@
+Vue.component("v-select", VueSelect.VueSelect);
+Vue.component("paginate", VuejsPaginate);
+
 var application = new Vue({
   el: "#vue-jadwal",
   components: { VueTimepicker: VueTimepicker.default },
