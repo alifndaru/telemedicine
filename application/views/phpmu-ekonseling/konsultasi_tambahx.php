@@ -62,6 +62,39 @@
     .style15 {
         font-size: 36
     }
+
+    .dokter-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .foto-dokter {
+        width: 50px;
+        height: 50px;
+        margin-right: 15px;
+        border-radius: 50%;
+    }
+
+    .dokter-info h5 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .dokter-info p {
+        margin: 0;
+        font-size: 12px;
+        color: #666;
+    }
+
+    /* Tambahkan ini ke dalam style yang ada */
+    #kode_voucher {
+        margin-top: 10px;
+    }
+
+    .btn-primary {
+        margin-top: 10px;
+    }
 </style>
 <?php
 // Fetch user data
@@ -75,13 +108,14 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
         </div>
         <h2><?php echo "$title"; ?></h2><br>
 
-        <!-- Form -->
-        <form method="post" action="konsultasi_proses">
+        <!-- Form for selecting province, clinic, and doctor -->
+        <form action="">
+            <!-- Select Province -->
             <div class="form-group">
                 <label class="col-sm-3 control-label pl-0">Provinsi</label>
                 <div class="col-sm-9 mb-10">
                     <v-select
-                        :disabled="disops.provinsi === true"
+                        :disabled="disops.provinsi"
                         label="provinsi"
                         placeholder="Pilih Provinsi"
                         v-model="provinsi"
@@ -89,243 +123,79 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                         :options="provinsi_options"
                         @search="fetchOptionsProvinsi"
                         @input="selectedOptionProvinsi">
-                        <span slot="no-options"> Silahkan Ketikan Nama Daerah </span>
+                        <span slot="no-options">Silahkan Ketikan Nama Daerah</span>
                     </v-select>
-                    <input type="hidden" v-model="prov_klinik" name="prov_klinik">
+                    <input type="hidden" v-model="provinsi" name="prov_klinik">
                 </div>
             </div>
+
+            <!-- Select Clinic -->
             <div class="form-group">
                 <label class="col-sm-3 control-label pl-0">Klinik <span class="red">*</span></label>
                 <div class="col-sm-9 mb-10">
                     <v-select
-                        :disabled="disops.klinik === true"
+                        :disabled="disops.klinik"
                         label="klinik"
                         v-model="klinik"
                         placeholder="Pilih Klinik"
                         :reduce="klinik => klinik.id"
                         :options="klinik_options"
                         @search="fetchOptionsKlinik"
-                        @search:focus="fetchOptionsKlinik"
                         @input="selectedOptionKlinik">
                     </v-select>
                     <input type="hidden" v-model="klinik" name="klinik">
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label pl-0">Provider <span class="red">*</span></label>
-                <div class="col-sm-9 mb-10">
-                    <v-select
-                        :disabled="disops.dokter === true"
-                        label="dokter"
-                        v-model="dokter"
-                        placeholder="Pilih Provider"
-                        :reduce="dokter => dokter.id"
-                        :options="dokter_options"
-                        @search="fetchOptionsDokter"
-                        @search:focus="fetchOptionsDokter"
-                        @input="selectedOptionDokter">
-                        <span slot="no-options"> Silahkan Pilih Nama Provider </span>
-                    </v-select>
-                    <input type="hidden" v-model="dokter" name="dokter">
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label class="col-sm-3 control-label pl-0"></label>
+            <!-- Display Available Doctors -->
+            <div v-if="dokter_options.length > 0" class="form-group">
+                <label class="col-sm-3 control-label pl-0">Dokter</label>
                 <div class="col-sm-9 mb-10">
-                    <div v-for="(d, i) in dokter_selected">
-                        <div class="col-sm-6 thumbnail">
-                            <img v-bind:src="'../asset/foto_user/' + d.foto_dokter" />
-                            <div class="caption">
-                                <h3 style="margin-bottom: 15px;">{{ d.dokter }}</h3>
-                                <div class="panel panel-default panel-default-dokter">
-                                    <div class="panel-heading panel-dokter">
-                                        <h3 class="panel-title">ID</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item" v-for="dokter in dokter_options" :key="dokter.id">
+                            <div class="dokter-item">
+                                <img :src="`${baseUrl}asset/foto_user/${dokter.foto_dokter}`" alt="Foto Dokter" class="foto-dokter">
+                                <div class="dokter-info">
+                                    <h5>{{ dokter.dokter }}</h5>
+                                    <p>{{ dokter.jabatan }} di {{ dokter.klinik }}</p>
+                                    <div v-if="dokter.kuota.length > 0">
+                                        <div v-for="(kuota, index) in dokter.kuota" :key="index">
+                                            <label class="radio-inline">
+                                                <input type="radio"
+                                                    :name="'selected_kuota_' + dokter.id"
+                                                    :value="index"
+                                                    v-model="selected_kuota[dokter.id]"
+                                                    @change="handleKuotaChange(dokter, index)">
+                                                Kuota: {{ kuota }} - {{ dokter.tstart[index] }} to {{ dokter.tend[index] }} (Tarif: {{ dokter.biaya_tarif[index] | currency }})
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="panel-body">
-                                        {{ d.dokter_id }}
-                                    </div>
-                                </div>
-                                <div class="panel panel-default panel-default-dokter">
-                                    <div class="panel-heading panel-dokter">
-                                        <h3 class="panel-title">Provider</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        {{ d.jabatan }}
-                                    </div>
-                                </div>
-                                <div class="panel panel-default panel-default-dokter">
-                                    <div class="panel-heading panel-dokter">
-                                        <h3 class="panel-title">Praktek</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        {{ d.klinik }}
-                                    </div>
+                                    <p v-else>Kuota: Tidak tersedia</p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div v-for="(d, i) in jadwal_options">
-                            <div class="col-sm-6 mb-10">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <input :disabled="d.sisa <= 0" type="radio" name="jadwal_selected" v-model="jadwal_selected" v-bind:value="[d.tstart, d.tend, d.jadwal_id]">
-                                    </span>
-                                    <input class="jadwal-dokter-text" type="text" v-bind:value="d.tstart + ' - ' + d.tend" disabled class="form-control">
-                                    <span class="style2"> -- </span><span class="kuota-pasien style5" :class="(d.sisa <= 0)? 'kuota-habis':'kuota-ada'"><strong>Kuota Tersisa Adalah:::</strong><strong>{{ d.sisa }}</strong></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div v-if="dokter_selected.length !== 0" class="timedifinfo col-sm-6 mb-10">
-                            <hr>Zona waktu yang tertera adalah WIB, lebih lambat 1 jam dengan WITA, dan lebih lambat 2 jam dengan WIT
-                            <hr>
-                        </div>
-                    </div>
-
+                        </li>
+                    </ul>
                 </div>
             </div>
 
 
-            <div class="form-group">
-                <label class="col-sm-3 control-label pl-0"></label>
+            <!-- Section untuk menampilkan informasi pembayaran -->
+            <div v-if="Object.keys(selected_kuota).length > 0" class="form-group">
+                <label class="col-sm-3 control-label pl-0">Detail Pembayaran</label>
                 <div class="col-sm-9 mb-10">
-                    <hr>
-                </div>
-            </div>
-
-            <!-- <div class="form-group">
-                <label class="col-sm-3 control-label pl-0">Kategori <span class="red">*</span></label>
-                <div class="col-sm-9 mb-10">
-                    <select name="kategori" class="form-control" required="">
-                        <?php foreach ($kategori as $row) { ?>
-                            <option value="<?php echo $row['id_kategori_konsul']; ?>"><?php echo $row['nama_kategori']; ?></option>;
-                        <?php } ?>
-                    </select>
-                </div>
-            </div> -->
-            <div class="form-group">
-                <label class="control-label col-sm-3 pl-0">Judul <span class="red">*</span></span></label>
-
-                <div class="controls col-sm-9 ">
-                    <input class="input-md emailinput form-control mb-10" v-model="judul" name="judul" type="text" placeholder="Isi judul">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-3 pl-0">Keluhan <span class="red">*</span></label>
-                <div class="controls col-sm-9 ">
-                    <textarea class="input-md  textinput textInput form-control mb-10" v-model="keluhan" name="keluhan" type="text" placeholder="Isi Keluhan">></textarea>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div>
-                    <label class="control-label col-sm-3 pl-0"></label>
-                    <div class="controls col-sm-9 ">
-                        <table width="517" bordercolor="#FFFFFF">
-                            <tr>
-                                <td colspan="3"><strong>Lembar Persetujuan </strong></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><span class="style15">I</span></td>
-                                <td width="473">
-                                    <ol>
-                                        <strong> Layanan Telemedicine PKBI adalah: </strong>
-                                        <p align="justify">Pelayanan kesehatan yang dilakukan oleh PKBI dengan metode pelayanan kesehatan jarak jauh yang dilakukan professional Kesehatan kepada klien dengan menggunakan teknologi informasi dan komunikasi untuk kepentingan peningkatan kesehatan individu dan masyarakat, sesuai dengan kompetensi dan kewenangannya dengan tetap memperhatikan mutu pelayanan dan keselamatan pasien</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="16" rowspan="6">
-                                    <div align="justify"><span class="style15">II</span></div>
-                                </td>
-                                <td width="12">
-                                    <div align="justify"><span class="style15"></span></div>
-                                </td>
-                                <td>
-                                    <div align="justify"><strong>Pernyataan dan persetujuan terkait Profil dan informasi yang disampaikan</strong></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div align="justify"><span class="style15">1.</span></div>
-                                </td>
-                                <td>
-                                    <ol>
-                                        <div align="justify">Saya, menyatakan bahwa telah menyampaikan data diri / Demografi saya secara Lengkap dan benar</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div align="justify"><span class="style15">2.</span></div>
-                                </td>
-                                <td>
-                                    <ol>
-                                        <div align="justify">Saya, setuju &nbsp;akan menyampaikan segala informasi melalui suara, dan atau tulisan, dan atau atau gambar dengan jujur untuk mendukung&nbsp; hasil diagnose yang maksimal</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div align="justify"><span class="style15">3.</span></div>
-                                </td>
-                                <td>
-                                    <ol>
-                                        <div align="justify">Saya menyetujui bahwa segala percakapan melalui suara, tulisan, gambar dan video yang saya kirimkan akan direkam dan disimpan sebagai dokumentasi dan saya tidak berkeberatan akan hal tersebut</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div align="justify"><span class="style15">4.</span></div>
-                                </td>
-                                <td>
-                                    <ol>
-                                        <div align="justify">Saya menyatakan bahwa saya memiliki hak untuk menghentikan konsultasi kapanpun tanpa menyebutkan alasan dan tidak akan mempengaruhi dan menyalahkan petugas telemedicine dalam proses pelayanan</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div align="justify"><span class="style15">5.</span></div>
-                                </td>
-                                <td>
-                                    <ol>
-                                        <div align="justify">Saya, menyatakan bahwa saya memiliki hak yang dilindungi atas semua informasi yang saya berikan untuk tidak disebarluaskan tanpa persetujuan, kecuali untuk kepentingan PKBI dalam proses pemberian layanan, Pendidikan dan penelitian tanpa menyebutkan data diri </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div align="justify"><span class="style15">III</span></div>
-                                </td>
-                                <td>
-                                    <p align="justify"><strong>Risiko</strong></p>
-                                    <p align="justify"> Dalam keadaan tertentu kegagalan pelayanan informasi dan atau konseling dan atau konsultasi dan atau pengobatan yang dikarenakan masalah digital (resolusi gambar, sinyal dan masalah digital lainnya) mungkin terjadi meskipun jarang</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td height="23" colspan="3">
-                                    <ol>
-                                        <div align="justify"></div>
-                                </td>
-                            </tr>
-                        </table>
-                        <table width="516">
-                            <tr>
-                                <td width="506">
-                                    <div align="justify">Melalui dokumen surat pernyataan dan persetujuan umum untuk semua informasi dan layanan telemedicine ini saya (sesuai nama yang ada di registrasi), telah membaca dan dengan sadar tanpa paksaan &nbsp;memberikan kewenangan pada petugas telemedicine PKBI untuk melakukan layanan informasi dan atau konseling dan atau konsultasi dan atau pengobatan pada permasalahan medis dan atau non medis&nbsp; dengan meng klik tanda/ kolom setuju di bawah ini</div>
-                                </td>
-                            </tr>
-                        </table>
-                        <br>
-                        <label class="control-label col-sm-3 pl-0"></label>
-                        <input type="checkbox" name="inform-consent" v-model="consent" :disabled="jadwal_selected.length <= 0 || keluhan == '' || judul == ''">
-                        <label id="inform-consent"> </label>
-                        <label>Saya setuju dengan lembar persetujuan</label>
-                        <br><br>
+                    <div v-if="biaya_tarif">
+                        <div>Biaya Tarif: {{ formatCurrency(biaya_tarif) }}</div>
                     </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="controls col-sm-3 "></div>
-                <div class="controls col-sm-9 ">
-                    <input type="submit" :disabled="consent == false" name="submit" value="Kirim" class="btn btn-info">
+                    <div v-if="bank && rekening" class="form-group">
+                        <label>Metode Pembayaran</label>
+                        <div>Bank: {{ bank }}</div>
+                        <div>Rekening: {{ rekening }}</div>
+                        <p>Atas Nama: PT. Kesehatan Sehat</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Bukti Pembayaran</label>
+                        <input type="file" class="form-control">
+                    </div>
                 </div>
             </div>
         </form>
@@ -337,10 +207,16 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
     </div>
 </div>
 
+<script>
+    var baseUrl = "<?php echo base_url(); ?>";
+</script>
+
+
+
 <script src="<?php echo base_url('asset/admin/plugins/vue-timepicker/VueTimepicker.umd.js'); ?>"></script>
 <script src="<?php echo base_url('asset/admin/plugins/vue/vue.min.js'); ?>"></script>
 <script src="<?php echo base_url('asset/admin/plugins/vue-select/vue-select.js') ?>"></script>
 <script src="<?php echo base_url('asset/admin/plugins/axios/axios.min.js'); ?>"></script>
 <script src="<?php echo base_url('asset/admin/plugins/lodash/lodash.min.js'); ?>"></script>
 <script src="<?php echo base_url('asset/admin/plugins/vue-pagination/vue-pagination.min.js'); ?>"></script>
-<script src="<?php echo base_url('asset/tambah-konsultasi.js'); ?>"></script>
+<script src="<?php echo base_url('asset/tambah-konsultasi-dokter.js'); ?>"></script>

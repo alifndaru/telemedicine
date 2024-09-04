@@ -295,6 +295,64 @@ class Model_app extends CI_model
         }
     }
 
+
+    public function xhrDokter1($data)
+    {
+        $search = $data['search'];
+        $klinik = $data['klinik'];
+        $result['res'] = $this->db->query("
+        SELECT dokter_id, nama_lengkap, foto_dokter, klinik, jabatan, kuota, tstart, tend,biaya_tarif, bank, rekening
+        FROM v_jadwal 
+        WHERE klinik_id = '$klinik' 
+        AND status_jadwal = 'aktif' 
+        AND nama_lengkap LIKE '%$search%' 
+        GROUP BY dokter_id 
+        ORDER BY nama_lengkap ASC
+    ")->result_array();
+        return $result;
+    }
+
+
+    public function getAvailableDoctors($provinsi_id, $klinik_id)
+    {
+        $this->db->select('dokter_id, nama_lengkap, foto_dokter, klinik, jabatan, kuota, tstart, tend, biaya_tarif, bank, rekening');
+        $this->db->from('v_jadwal');
+        $this->db->where('provinsi_id', $provinsi_id);
+        $this->db->where('klinik_id', $klinik_id);
+        $this->db->where('status_jadwal', 'aktif');
+        $query = $this->db->get();
+        $result = $query->result_array();
+
+        // Organize data by dokter_id
+        $doctors = [];
+        foreach ($result as $row) {
+            $dokter_id = $row['dokter_id'];
+            if (!isset($doctors[$dokter_id])) {
+                $doctors[$dokter_id] = [
+                    'id' => $dokter_id,
+                    'dokter' => $row['nama_lengkap'],
+                    'foto_dokter' => $row['foto_dokter'],
+                    'klinik' => $row['klinik'],
+                    'jabatan' => $row['jabatan'],
+                    'kuota' => [],
+                    'tstart' => [],
+                    'tend' => [],
+                    'biaya_tarif' => [],
+                    'bank' => [],
+                    'rekening' => []
+                ];
+            }
+            $doctors[$dokter_id]['kuota'][] = $row['kuota'];
+            $doctors[$dokter_id]['tstart'][] = $row['tstart'];
+            $doctors[$dokter_id]['tend'][] = $row['tend'];
+            $doctors[$dokter_id]['biaya_tarif'][] = $row['biaya_tarif'];
+            $doctors[$dokter_id]['bank'][] = $row['bank'];
+            $doctors[$dokter_id]['rekening'][] = $row['rekening'];
+        }
+
+        return ['res' => array_values($doctors)];
+    }
+
     // Klinik
     public function fetch_klinik($d, $ref)
     {

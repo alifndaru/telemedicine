@@ -2529,6 +2529,111 @@ class Administrator extends CI_Controller
         echo json_encode($response_arr);
     }
 
+
+    public function xhrDokter1()
+    {
+        try {
+            $d = json_decode(file_get_contents("php://input"), TRUE);
+            $response_arr = array();
+
+            if ($d['params']['ref'] === 'dokter-klinik') {
+                $r = $this->model_app->xhrDokter1($d['params']);
+                if (count($r['res']) > 0) {
+                    foreach ($r['res'] as $i) {
+                        $response_arr[] = array(
+                            "id" => $i['dokter_id'],
+                            "dokter" => $i['nama_lengkap'],
+                            'foto_dokter' => $i['foto_dokter'],
+                            'klinik' => $i['klinik'],
+                            'jabatan' => $i['jabatan'],
+                            'kuota' => $i['kuota'],
+                            'tstart' => $i['tstart'],
+                            'tend' => $i['tend'],
+                            'biaya_tarif' => $i['biaya_tarif'],
+                            'bank' => $i['bank'],
+                            'rekening' => $i['rekening']
+                        );
+                    }
+                }
+            }
+
+            echo json_encode($response_arr);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            http_response_code(500);
+            echo json_encode(array('error' => 'Internal Server Error'));
+        }
+    }
+
+    public function getDoctorsByProvinceAndClinic()
+    {
+        try {
+            $data = json_decode(file_get_contents("php://input"), TRUE);
+            $provinsi_id = $data['params']['provinsi'];
+            $klinik_id = $data['params']['klinik'];
+            $response_arr = array();
+
+            $result = $this->model_app->getAvailableDoctors($provinsi_id, $klinik_id);
+
+            if (count($result['res']) > 0) {
+                foreach ($result['res'] as $doctor) {
+                    $response_arr[] = array(
+                        "id" => $doctor['dokter_id'],
+                        "dokter" => $doctor['nama_lengkap'],
+                        'foto_dokter' => $doctor['foto_dokter'],
+                        'klinik' => $doctor['klinik'],
+                        'jabatan' => $doctor['jabatan'],
+                        'kuota' => $doctor['kuota'],
+                        'tstart' => $doctor['tstart'],
+                        'tend' => $doctor['tend'],
+                        'biaya_tarif' => $doctor['biaya_tarif'],
+                        'bank' => $doctor['bank'],
+                        'rekening' => $doctor['rekening']
+                    );
+                }
+            }
+
+            echo json_encode($response_arr);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            http_response_code(500);
+            echo json_encode(array('error' => 'Internal Server Error'));
+        }
+    }
+
+    public function applyVoucher()
+    {
+        try {
+            $data = json_decode(file_get_contents("php://input"), TRUE);
+            if (isset($data['kode_voucher'])) {
+                $voucher_code = $data['kode_voucher'];
+            } else {
+                throw new Exception('Kode voucher tidak ditemukan di input.');
+            }
+
+            $voucher = $this->model_app->applyVoucher($voucher_code);
+
+            if ($voucher) {
+                $response = array(
+                    'valid' => true,
+                    'voucher' => array(
+                        'nilai' => $voucher['nilai']
+                    )
+                );
+            } else {
+                $response = array(
+                    'valid' => false
+                );
+            }
+
+            echo json_encode($response);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            http_response_code(500);
+            echo json_encode(array('error' => 'Internal Server Error'));
+        }
+    }
+
     function xhrJadwalDokter()
     {
         $d = json_decode(file_get_contents("php://input"), TRUE);
@@ -2537,54 +2642,6 @@ class Administrator extends CI_Controller
         }
     }
 
-    // function xhrJadwal()
-    // {
-    //     $d = json_decode(file_get_contents("php://input"), TRUE);
-    //     if ($d['data']['ref'] === 'tambah') {
-    //         $dt = array(
-    //             'klinik_id' => $d['data']['klinik_id'],
-    //             'dokter_id' => $d['data']['dokter_id'],
-    //             'tstart' => $d['data']['tstart'],
-    //             'tend' => $d['data']['tend'],
-    //             'kuota' => $d['data']['kuota'],
-    //             'timezone' => $d['data']['timezone'],
-    //             'status' => $d['data']['timestatus']
-    //         );
-    //         $this->model_app->insert('klinik_waktu_dokter', $dt);
-    //     }
-
-    //     if ($d['data']['ref'] === 'status') {
-    //         $id = $d['data']['id'];
-    //         $status = $d['data']['status'];
-    //         if (!empty($id) && !empty($status)) {
-    //             if ($status == 'aktif') {
-    //                 $dx = array('status' => 'tidak aktif');
-    //             } else {
-    //                 $dx = array('status' => 'aktif');
-    //             }
-    //             $this->model_app->update('klinik_waktu_dokter', $dx, "id = $id");
-    //         }
-    //     }
-
-    //     if ($d['data']['ref'] === 'delete') {
-    //         $id = $d['data']['id'];
-    //         $this->model_app->delete('klinik_waktu_dokter', "id = $id");
-    //     }
-
-    //     if ($d['data']['ref'] === 'edit') {
-    //         $id = $d['data']['id'];
-    //         $dt = array(
-    //             'klinik_id' => $d['data']['klinik_id'],
-    //             'dokter_id' => $d['data']['dokter_id'],
-    //             'tstart' => $d['data']['tstart'],
-    //             'tend' => $d['data']['tend'],
-    //             'kuota' => $d['data']['kuota'],
-    //             'timezone' => $d['data']['timezone'],
-    //             'status' => $d['data']['timestatus']
-    //         );
-    //         $this->model_app->update('klinik_waktu_dokter', $dt, "id = '$id'");
-    //     }
-    // }
     function xhrJadwal()
     {
         $d = json_decode(file_get_contents("php://input"), TRUE);
