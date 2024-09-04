@@ -120,6 +120,10 @@
                                 <td><input type="number" class="form-control" name="rekening" value=""></td>
                             </tr>
                             <tr>
+                                <th scope="row">Nama Pemilik Rekening</th>
+                                <td><input type="text" class="form-control" name="atas_nama" value=""></td>
+                            </tr>
+                            <tr>
                                 <th scope="row">Foto </th>
                                 <td><input type="file" class="form-control" name="foto_klinik"></td>
                             </tr>

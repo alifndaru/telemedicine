@@ -36,6 +36,7 @@
                         <th>Email</th>
                         <th>Bank</th>
                         <th>No. Rekening</th>
+                        <th>Atas Nama</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
@@ -49,6 +50,7 @@
                         <td>{{ item.email }}</td>
                         <td>{{ item.bank }}</td>
                         <td>{{ item.rekening }}</td>
+                        <td>{{ item.atas_nama }}</td>
                         <!-- <td>{{ item.status }}</td> -->
                         <td v-if="item.status === 'tidak aktif'">
                             <span class="label label-danger">{{ item.status }}</span>
