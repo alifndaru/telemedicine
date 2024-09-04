@@ -125,6 +125,9 @@
                                 <td><input type="number" class="form-control" name="rekening" value=""></td>
                             </tr>
                             <tr>
+                                <th scope="row">Atas Nama</th>
+                                <td><input type="text" class="form-control" name="atas_nama" value=""></td>
+                            <tr>
                                 <th scope="row"></th>
                                 <td><img class="zoomable" height="150" v-bind:src="'../asset/foto_klinik/' + foto_klinik" /> </td>
                             </tr>
