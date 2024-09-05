@@ -295,13 +295,12 @@ class Model_app extends CI_model
         }
     }
 
-
     public function xhrDokter1($data)
     {
         $search = $data['search'];
         $klinik = $data['klinik'];
         $result['res'] = $this->db->query("
-        SELECT dokter_id, nama_lengkap, foto_dokter, klinik, jabatan, kuota, tstart, tend,biaya_tarif, bank, rekening
+        SELECT dokter_id, nama_lengkap, foto_dokter, klinik, jabatan, kuota, tstart, tend,biaya_tarif, bank, rekening, atas_nama, spesialis
         FROM v_jadwal 
         WHERE klinik_id = '$klinik' 
         AND status_jadwal = 'aktif' 
@@ -312,10 +311,9 @@ class Model_app extends CI_model
         return $result;
     }
 
-
     public function getAvailableDoctors($provinsi_id, $klinik_id)
     {
-        $this->db->select('dokter_id, nama_lengkap, foto_dokter, klinik, jabatan, kuota, tstart, tend, biaya_tarif, bank, rekening');
+        $this->db->select('dokter_id, nama_lengkap, foto_dokter, klinik, jabatan, kuota, tstart, tend, biaya_tarif, bank, rekening, atas_nama, spesialis');
         $this->db->from('v_jadwal');
         $this->db->where('provinsi_id', $provinsi_id);
         $this->db->where('klinik_id', $klinik_id);
@@ -334,12 +332,14 @@ class Model_app extends CI_model
                     'foto_dokter' => $row['foto_dokter'],
                     'klinik' => $row['klinik'],
                     'jabatan' => $row['jabatan'],
+                    'spesialis' => $row['spesialis'],
                     'kuota' => [],
                     'tstart' => [],
                     'tend' => [],
                     'biaya_tarif' => [],
                     'bank' => [],
-                    'rekening' => []
+                    'rekening' => [],
+                    'atas_nama' => [],
                 ];
             }
             $doctors[$dokter_id]['kuota'][] = $row['kuota'];
@@ -348,9 +348,28 @@ class Model_app extends CI_model
             $doctors[$dokter_id]['biaya_tarif'][] = $row['biaya_tarif'];
             $doctors[$dokter_id]['bank'][] = $row['bank'];
             $doctors[$dokter_id]['rekening'][] = $row['rekening'];
+            $doctors[$dokter_id]['atas_nama'][] = $row['atas_nama'];
         }
 
         return ['res' => array_values($doctors)];
+    }
+
+    public function applyVoucher($kode_voucher)
+    {
+        // Query the database to find a voucher with the given kode_voucher
+        $this->db->select('voucher_id, kode_voucher, nilai, aktif, start_date, end_date');
+        $this->db->from('voucher');
+        $this->db->where('kode_voucher', $kode_voucher);
+        $query = $this->db->get();
+
+        // Check if the voucher exists
+        if ($query->num_rows() > 0) {
+            // Return the voucher details as an associative array
+            return $query->row_array();
+        } else {
+            // Return false if no voucher is found
+            return false;
+        }
     }
 
     // Klinik
@@ -687,28 +706,6 @@ class Model_app extends CI_model
         return $result;
     }
 
-    // Ini digunakan apabila timezone waktu di mysql server tidak dapat disamakan dengan waktu di server
-    // // return data if not started yet
-    // function timeNo($konsul) {
-    //     // $result = $this->db->query("SELECT * FROM v_konsul WHERE id_konsul = '$konsul' AND CURTIME() < tstart")->result_array();
-    //     $result = $this->db->query("SELECT * FROM v_konsul WHERE id_konsul = '$konsul' AND DATE_ADD(NOW(), INTERVAL 7 HOUR) < DATE_FORMAT(CONCAT(DATE_FORMAT(CURRENT_DATE(), '%Y-%m-%d'), ' ', tstart), '%Y-%m-%d %H:%i:%s')")->result_array();
-    //     return $result;
-    // }
-
-    // // return data if starting
-    // function timeYes($konsul) {
-    //     // $result = $this->db->query("SELECT * FROM v_konsul WHERE id_konsul = '$konsul' AND (CURTIME() >= tstart AND CURTIME() <= tend)")->result_array();
-    //     $result = $this->db->query("SELECT * FROM v_konsul WHERE id_konsul = '$konsul' AND (DATE_ADD(NOW(), INTERVAL 7 HOUR) >= DATE_FORMAT(CONCAT(DATE_FORMAT(CURRENT_DATE(), '%Y-%m-%d'), ' ', tstart), '%Y-%m-%d %H:%i:%s') AND DATE_ADD(NOW(), INTERVAL 7 HOUR) <= DATE_FORMAT(CONCAT(DATE_FORMAT(CURRENT_DATE(), '%Y-%m-%d'), ' ', tend), '%Y-%m-%d %H:%i:%s'))")->result_array();
-    //     return $result;
-    // }
-
-    // // return data if time is expired
-    // function timeEx($konsul) {
-    //     // $result = $this->db->query("SELECT * FROM v_konsul WHERE id_konsul = '$konsul' AND CURTIME() > tend")->result_array();
-    //     $result = $this->db->query("SELECT * FROM v_konsul WHERE id_konsul = '$konsul' AND DATE_ADD(NOW(), INTERVAL 7 HOUR) > DATE_FORMAT(CONCAT(DATE_FORMAT(CURRENT_DATE(), '%Y-%m-%d'), ' ', tend), '%Y-%m-%d %H:%i:%s')")->result_array();
-    //     return $result;
-    // }
-
     function disableKonsul($konsul)
     {
         $this->db->query("UPDATE konsul SET `status` = 'N' WHERE id_konsul = '$konsul'");
@@ -731,9 +728,17 @@ class Model_app extends CI_model
         return $this->db->query("SELECT a.id_konsul, a.id_komentar, a.level FROM v_konsul a WHERE a.`level` IS NOT NULL AND a.dokter = '$dokter' GROUP BY a.id_konsul, a.id_komentar")->result_array();
     }
 
+    public function getKuotaByJadwalId($jadwal_id)
+    {
+        $this->db->select('kuota, tstart, tend');
+        $this->db->from('klinik_waktu_dokter');
+        $this->db->where('id', $jadwal_id);
+        $query = $this->db->get();
 
-    // function getVoucher()
-    // {
-    //     return $this->db->query("SELECT * FROM voucher")->result_array();
-    // }
+        if ($query->num_rows() > 0) {
+            return $query->row();  // Return the entire row, which includes kuota, tstart, and tend
+        } else {
+            return null;  // Return null if no data is found
+        }
+    }
 }

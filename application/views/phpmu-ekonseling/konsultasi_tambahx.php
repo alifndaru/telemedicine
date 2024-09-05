@@ -26,8 +26,24 @@
     }
 
     .foto-dokter {
-        width: 200px;
+        width: 50px;
+        height: 50px;
+        margin-right: 15px;
+        border-radius: 50%;
     }
+
+    .dokter-info h5 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .dokter-info p {
+        margin: 0;
+        font-size: 12px;
+        color: #666;
+    }
+
 
     .jadwal-dokter-text {
         background-color: #e4eff9;
@@ -68,26 +84,21 @@
         align-items: center;
     }
 
-    .foto-dokter {
-        width: 50px;
-        height: 50px;
-        margin-right: 15px;
-        border-radius: 50%;
+    .vs__no-options {
+        text-align: left !important;
+        padding-left: 8px;
     }
 
-    .dokter-info h5 {
-        margin: 0;
-        font-size: 14px;
-        font-weight: bold;
+    .vs__clear {
+        margin-bottom: 1px;
     }
 
-    .dokter-info p {
-        margin: 0;
-        font-size: 12px;
-        color: #666;
+    input[type="search"] {
+        border: none !important;
+        padding: 0px 10px 0px 10px !important;
     }
 
-    /* Tambahkan ini ke dalam style yang ada */
+    /* Voucher Input */
     #kode_voucher {
         margin-top: 10px;
     }
@@ -103,6 +114,7 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
 <!-- HTML -->
 <div id="tambah-konsultasi" class="row container">
     <div class="col-md-8 col-sm-12 clearfix">
+        <!-- Breadcrumb -->
         <div class="breadcrumb">
             <a href="<?php echo base_url('/'); ?>"><i class="fa fa-home"></i> Home</a> <?php echo $title; ?>
         </div>
@@ -158,11 +170,12 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                                 <div class="dokter-info">
                                     <h5>{{ dokter.dokter }}</h5>
                                     <p>{{ dokter.jabatan }} di {{ dokter.klinik }}</p>
+                                    <p>{{ dokter.spesialis }}</p>
                                     <div v-if="dokter.kuota.length > 0">
                                         <div v-for="(kuota, index) in dokter.kuota" :key="index">
                                             <label class="radio-inline">
                                                 <input type="radio"
-                                                    :name="'selected_kuota_' + dokter.id"
+                                                    :name="'selected_kuota_' + dokter.id +"
                                                     :value="index"
                                                     v-model="selected_kuota[dokter.id]"
                                                     @change="handleKuotaChange(dokter, index)">
@@ -178,8 +191,7 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                 </div>
             </div>
 
-
-            <!-- Section untuk menampilkan informasi pembayaran -->
+            <!-- Payment Details -->
             <div v-if="Object.keys(selected_kuota).length > 0" class="form-group">
                 <label class="col-sm-3 control-label pl-0">Detail Pembayaran</label>
                 <div class="col-sm-9 mb-10">
@@ -190,22 +202,50 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                         <label>Metode Pembayaran</label>
                         <div>Bank: {{ bank }}</div>
                         <div>Rekening: {{ rekening }}</div>
-                        <p>Atas Nama: PT. Kesehatan Sehat</p>
+                        <div>Atas Nama: {{ atas_nama }}</div>
                     </div>
                     <div class="form-group">
                         <label>Upload Bukti Pembayaran</label>
-                        <input type="file" class="form-control">
+                        <input type="file" class="form-control" name="image">
                     </div>
                 </div>
             </div>
+
+            <!-- Voucher Input -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label pl-0">Kode Voucher</label>
+                <div class="col-sm-9 mb-10">
+                    <input type="text" id="kode_voucher" v-model="kodeVoucher" class="form-control" placeholder="Masukkan Kode Voucher">
+                    <button type="button" class="btn btn-primary" @click="applyVoucher">Apply Voucher</button>
+                    <p v-if="voucher_info" class="text-success">
+                        Voucher berhasil diterapkan! Diskon: {{ discount }}%
+                    </p>
+                    <p v-else-if="voucher_info === false" class="text-danger">
+                        Kode voucher tidak valid atau tidak aktif.
+                    </p>
+                    <p v-if="total_biaya !== null" class="text-info">
+                        Total setelah diskon: {{ formatCurrency(total_biaya) }}
+                    </p>
+                </div>
+            </div>
+            <!-- Submit Button -->
+            <div class="form-group">
+                <div class="col-sm-9 col-sm-offset-3">
+                    <button type="button" class="btn btn-success" @click="submitForm">Submit</button>
+                </div>
+            </div>
+
         </form>
     </div>
+
+    <!-- Sidebar -->
     <div class='col-md-4 sidebar col-sm-12'>
         <div class="right-section">
             <?php include "sidebar.php"; ?>
         </div>
     </div>
 </div>
+
 
 <script>
     var baseUrl = "<?php echo base_url(); ?>";
