@@ -16,13 +16,16 @@ var application = new Vue({
     provinsi_options: [],
     klinik: null,
     klinik_options: [],
-    dokter_options: [], // To store available doctors
-    selected_kuota: {}, // To store selected kuota for each doctor
+    dokter_options: [],
+    selected_kuota: {},
     biaya_tarif: null,
     bank: null,
     rekening: null,
-    kodeVoucher: "",
-    voucher_info: null, // Properti data baru untuk menyimpan informasi voucher
+    atas_nama: null,
+    kodeVoucher: "", // Voucher code input
+    voucher_info: null, // To store voucher information after applying
+    discount: 0, // New property to hold the discount amount
+    total_biaya: 0, // New property to hold the total amount after discount
   },
   watch: {
     klinik: function (newKlinik) {
@@ -33,7 +36,6 @@ var application = new Vue({
   },
   methods: {
     formatCurrency(value) {
-      // Convert value to number first
       const numberValue = Number(value);
       if (isNaN(numberValue)) {
         return value;
@@ -46,18 +48,19 @@ var application = new Vue({
       }).format(numberValue);
     },
     handleKuotaChange(dokter, kuotaIndex) {
-      this.$set(this.selected_kuota, dokter.id, kuotaIndex); // Gunakan Vue's reactivity system untuk men-set value
+      this.$set(this.selected_kuota, dokter.id, kuotaIndex);
 
-      // Update biaya_tarif, bank, dan rekening berdasarkan kuota yang dipilih
       const selectedKuotaIndex = this.selected_kuota[dokter.id];
       if (selectedKuotaIndex !== undefined) {
         this.biaya_tarif = dokter.biaya_tarif[selectedKuotaIndex] || null;
         this.bank = dokter.bank[selectedKuotaIndex] || null;
         this.rekening = dokter.rekening[selectedKuotaIndex] || null;
+        this.atas_nama = dokter.atas_nama[selectedKuotaIndex] || null;
       } else {
         this.biaya_tarif = null;
         this.bank = null;
         this.rekening = null;
+        this.atas_nama = null;
       }
     },
     fetchOptionsProvinsi(search) {
@@ -77,11 +80,12 @@ var application = new Vue({
       this.provinsi = value;
       this.klinik = null;
       this.klinik_options = [];
-      this.dokter_options = []; // Reset daftar dokter
-      this.selected_kuota = {}; // Reset pilihan kuota
-      this.biaya_tarif = null; // Reset biaya tarif
-      this.bank = null; // Reset informasi bank
-      this.rekening = null; // Reset informasi rekening
+      this.dokter_options = [];
+      this.selected_kuota = {};
+      this.biaya_tarif = null;
+      this.bank = null;
+      this.rekening = null;
+      this.atas_nama = null;
     },
     fetchOptionsKlinik(search) {
       axios
@@ -99,14 +103,13 @@ var application = new Vue({
         });
     },
     selectedOptionKlinik(value) {
-      // this.klinik = value;
-      // this.dokter_options = [];
       this.klinik = value;
-      this.dokter_options = []; // Reset daftar dokter
-      this.selected_kuota = {}; // Reset pilihan kuota
-      this.biaya_tarif = null; // Reset biaya tarif
-      this.bank = null; // Reset informasi bank
-      this.rekening = null; // Reset informasi rekening
+      this.dokter_options = [];
+      this.selected_kuota = {};
+      this.biaya_tarif = null;
+      this.bank = null;
+      this.rekening = null;
+      this.atas_nama = null;
     },
     fetchAvailableDoctors() {
       const params = { provinsi: this.provinsi, klinik: this.klinik };
@@ -118,21 +121,106 @@ var application = new Vue({
         )
         .then((res) => {
           this.dokter_options = res.data;
-          console.log(res.data);
           if (res.data.length > 0) {
             const firstDoctor = res.data[0];
-            // this.biaya_tarif = firstDoctor.biaya_tarif;
-            this.biaya_tarif = Number(firstDoctor.biaya_tarif[0]) || null; // Convert to number
+            this.biaya_tarif = Number(firstDoctor.biaya_tarif[0]) || null;
             this.bank = firstDoctor.bank;
             this.rekening = firstDoctor.rekening;
+            this.atas_nama = firstDoctor.atas_nama;
           } else {
             this.biaya_tarif = null;
             this.bank = null;
             this.rekening = null;
+            this.atas_nama = null;
           }
         })
         .catch((err) => {
           console.log("Error:", err);
+        });
+    },
+    applyVoucher() {
+      if (this.kodeVoucher.trim() === "") {
+        alert("Silakan masukkan kode voucher.");
+        return;
+      }
+
+      axios
+        .post(
+          "../administrator/applyVoucher",
+          JSON.stringify({ kode_voucher: this.kodeVoucher })
+        )
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.valid) {
+            this.voucher_info = res.data.voucher;
+            this.discount = res.data.voucher.nilai || 0; // Menyimpan nilai diskon dari voucher
+            this.calculateTotal(); // Hitung total setelah diskon
+            alert("Voucher berhasil diterapkan.");
+          } else {
+            this.voucher_info = false;
+            this.discount = 0;
+            alert(res.data.message || "Kode voucher tidak valid.");
+          }
+        })
+        .catch((err) => {
+          console.log("Error:", err);
+          alert("Terjadi kesalahan saat mengaplikasikan voucher.");
+        });
+    },
+
+    calculateTotal() {
+      if (this.biaya_tarif && this.discount > 0) {
+        let discountAmount = (this.biaya_tarif * this.discount) / 100;
+        this.total_biaya = this.biaya_tarif - discountAmount;
+      } else {
+        this.total_biaya = this.biaya_tarif;
+      }
+    },
+    submitForm() {
+      // Ensure that required data is present
+      if (!this.provinsi || !this.klinik || !this.selected_kuota) {
+        alert("Please complete all required fields.");
+        return;
+      }
+
+      // Create FormData object
+      let formData = new FormData();
+
+      // Append the basic form data
+      formData.append("provinsi_id", this.provinsi);
+      formData.append("klinik_id", this.klinik);
+      formData.append("users_id", "<?php echo $usr['users_id']; ?>");
+      formData.append("jadwal_id", this.selected_kuota);
+      formData.append("biaya", this.total_biaya);
+      formData.append("aktif", "tidak aktif");
+
+      // Append the uploaded image
+      const imageFile = document.querySelector('input[name="image"]').files[0];
+      if (imageFile) {
+        formData.append("image", imageFile);
+      } else {
+        alert("Please upload a payment proof image.");
+        return;
+      }
+
+      // Send form data via Axios
+      axios
+        .post("../administrator/insertPayment", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          if (response.data.success) {
+            alert("Konsultasi berhasil ditambahkan.");
+            window.location.href = "../user/konsultasi_tambahx";
+          } else {
+            alert("Terjadi kesalahan: " + response.data.message);
+          }
+        })
+        .catch((err) => {
+          console.log("Error:", err);
+          alert("Terjadi kesalahan saat mengirim data.");
         });
     },
   },

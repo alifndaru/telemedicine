@@ -2306,7 +2306,8 @@ class Administrator extends CI_Controller
                     !empty($_POST['email_klinik']) &&
                     !empty($_POST['telp_klinik']) &&
                     !empty($_POST['bank']) &&
-                    !empty($_POST['rekening'])
+                    !empty($_POST['rekening']) &&
+                    !empty($_POST['atas_nama'])
                 ) {
 
                     $config['upload_path'] = 'asset/foto_klinik/';
@@ -2331,7 +2332,8 @@ class Administrator extends CI_Controller
                         'phone' => $this->db->escape_str($this->input->post('telp_klinik')),
                         'foto' => $foto,
                         'bank' => $this->db->escape_str($this->input->post('bank')),
-                        'rekening' => $this->db->escape_str($this->input->post('rekening'))
+                        'rekening' => $this->db->escape_str($this->input->post('rekening')),
+                        'atas_nama' => $this->db->escape_str($this->input->post('atas_nama'))
                     );
                     $this->model_app->insert('klinik', $data_klinik);
                     redirect('administrator/klinik');
@@ -2352,7 +2354,8 @@ class Administrator extends CI_Controller
                     !empty($_POST['email_klinik']) &&
                     !empty($_POST['telp_klinik']) &&
                     !empty($_POST['bank']) &&
-                    !empty($_POST['rekening'])
+                    !empty($_POST['rekening']) &&
+                    !empty($_POST['atas_nama'])
                 ) {
 
                     $kid = $_POST['kid'];
@@ -2380,7 +2383,8 @@ class Administrator extends CI_Controller
                             'phone' => $this->db->escape_str($this->input->post('telp_klinik')),
                             'foto' => $foto,
                             'bank' => $this->db->escape_str($this->input->post('bank')),
-                            'rekening' => $this->db->escape_str($this->input->post('rekening'))
+                            'rekening' => $this->db->escape_str($this->input->post('rekening')),
+                            'atas_nama' => $this->db->escape_str($this->input->post('atas_nama'))
                         );
                         $this->model_app->update('klinik', $data_klinik, "id = $kid");
                         redirect('administrator/klinik');
@@ -2396,7 +2400,8 @@ class Administrator extends CI_Controller
                             'email' => $this->db->escape_str($this->input->post('email_klinik')),
                             'phone' => $this->db->escape_str($this->input->post('telp_klinik')),
                             'bank' => $this->db->escape_str($this->input->post('bank')),
-                            'rekening' => $this->db->escape_str($this->input->post('rekening'))
+                            'rekening' => $this->db->escape_str($this->input->post('rekening')),
+                            'atas_nama' => $this->db->escape_str($this->input->post('atas_nama'))
                         );
                         $this->model_app->update('klinik', $data_klinik, "id = $kid");
                         redirect('administrator/klinik');
@@ -2546,12 +2551,14 @@ class Administrator extends CI_Controller
                             'foto_dokter' => $i['foto_dokter'],
                             'klinik' => $i['klinik'],
                             'jabatan' => $i['jabatan'],
+                            'spesialis' => $i['spesialis'],
                             'kuota' => $i['kuota'],
                             'tstart' => $i['tstart'],
                             'tend' => $i['tend'],
                             'biaya_tarif' => $i['biaya_tarif'],
                             'bank' => $i['bank'],
-                            'rekening' => $i['rekening']
+                            'rekening' => $i['rekening'],
+                            'atas_nama' => $i['atas_nama']
                         );
                     }
                 }
@@ -2583,12 +2590,14 @@ class Administrator extends CI_Controller
                         'foto_dokter' => $doctor['foto_dokter'],
                         'klinik' => $doctor['klinik'],
                         'jabatan' => $doctor['jabatan'],
+                        'spesialis' => $doctor['spesialis'],
                         'kuota' => $doctor['kuota'],
                         'tstart' => $doctor['tstart'],
                         'tend' => $doctor['tend'],
                         'biaya_tarif' => $doctor['biaya_tarif'],
                         'bank' => $doctor['bank'],
-                        'rekening' => $doctor['rekening']
+                        'rekening' => $doctor['rekening'],
+                        'atas_nama' => $doctor['atas_nama']
                     );
                 }
             }
@@ -2604,35 +2613,70 @@ class Administrator extends CI_Controller
     public function applyVoucher()
     {
         try {
-            $data = json_decode(file_get_contents("php://input"), TRUE);
-            if (isset($data['kode_voucher'])) {
-                $voucher_code = $data['kode_voucher'];
+            // Decode the JSON input data
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            // Check if the voucher code is present in the input data
+            if (isset($data['kode_voucher']) && !empty($data['kode_voucher'])) {
+                $voucher_code = trim($data['kode_voucher']);
+
+                // Attempt to retrieve voucher details from the model
+                $voucher = $this->model_app->applyVoucher($voucher_code);
+
+                if ($voucher) {
+                    // Check if the voucher is active and within the valid date range
+                    if ($this->isVoucherValid($voucher)) {
+                        $response = array(
+                            'valid' => true,
+                            'voucher' => array(
+                                'voucher_id' => $voucher['voucher_id'],
+                                'kode_voucher' => $voucher['kode_voucher'],
+                                'nilai' => $voucher['nilai'],  // Assuming 'nilai' is the discount value
+                            )
+                        );
+                    } else {
+                        $response = array(
+                            'valid' => false,
+                            'message' => 'Voucher sudah kadaluarsa atau tidak aktif.'
+                        );
+                    }
+                } else {
+                    $response = array(
+                        'valid' => false,
+                        'message' => 'Voucher tidak ditemukan.'
+                    );
+                }
             } else {
                 throw new Exception('Kode voucher tidak ditemukan di input.');
             }
 
-            $voucher = $this->model_app->applyVoucher($voucher_code);
-
-            if ($voucher) {
-                $response = array(
-                    'valid' => true,
-                    'voucher' => array(
-                        'nilai' => $voucher['nilai']
-                    )
-                );
-            } else {
-                $response = array(
-                    'valid' => false
-                );
-            }
-
+            // Return the response in JSON format
             echo json_encode($response);
         } catch (Exception $e) {
+            // Log the error for debugging
             error_log($e->getMessage());
+            // Send a 500 HTTP response code
             http_response_code(500);
+            // Return a JSON error message
             echo json_encode(array('error' => 'Internal Server Error'));
         }
     }
+    private function isVoucherValid($voucher)
+    {
+        // Check if the voucher is active
+        if ($voucher['aktif'] !== 'Y') {
+            return false;
+        }
+
+        // Check if the current date is within the start and end date range
+        $current_date = date('Y-m-d');
+        if ($current_date < $voucher['start_date'] || $current_date > $voucher['end_date']) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     function xhrJadwalDokter()
     {
@@ -2657,6 +2701,7 @@ class Administrator extends CI_Controller
                 'biaya_tarif' => $d['data']['biaya_tarif'] // Tambahkan ini
             );
             $this->model_app->insert('klinik_waktu_dokter', $dt);
+            var_dump($dt);
         }
 
         if ($d['data']['ref'] === 'status') {
@@ -2908,5 +2953,68 @@ class Administrator extends CI_Controller
             $this->session->set_flashdata('error', 'Voucher gagal dihapus.');
         }
         redirect('administrator/voucher');
+    }
+
+    public function insertPayment()
+    {
+        if ($_FILES['image']['name']) {
+            $config['upload_path'] = 'asset/payment_proofs/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['max_size'] = '2048';  // max size in KB
+            $config['file_name'] = time() . '_' . $_FILES['image']['name'];
+
+            $this->load->library('upload', $config);
+
+            if ($this->upload->do_upload('image')) {
+                $uploadData = $this->upload->data();
+                $image = $uploadData['file_name'];
+            } else {
+                $image = NULL;
+            }
+        } else {
+            $image = NULL;  // or set a default image if necessary
+        }
+
+        // Check if the image is uploaded successfully
+        if ($image !== NULL) {
+            $data = array(
+                'provinsi_id' => $this->input->post('provinsi_id'),
+                'klinik_id' => $this->input->post('klinik_id'),
+                'users_id' => $this->session->userdata('user_id'),
+                'jadwal_id' => json_encode($this->input->post('jadwal_id')),
+                'biaya' => $this->input->post('biaya'),
+                'image' => $image,
+                'aktif' => 'tidak aktif',
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
+            $this->db->insert('payment', $data);
+        } else {
+            // Handle the error - image is required
+            $this->session->set_flashdata('error', 'Payment proof image is required.');
+            redirect('administrator/tambah_konsultasi');
+        }
+    }
+
+    public function get_kuota()
+    {
+        $jadwal_id = $this->input->post('jadwal_id');
+
+        if (!empty($jadwal_id)) {
+            $result = $this->KlinikWaktuDokterModel->getKuotaByJadwalId($jadwal_id);
+
+            if ($result) {
+                // Return both kuota, tstart, and tend as JSON
+                echo json_encode([
+                    'kuota' => $result->kuota,
+                    'tstart' => $result->tstart,
+                    'tend' => $result->tend
+                ]);
+            } else {
+                echo json_encode(['kuota' => 0, 'tstart' => '', 'tend' => '']);
+            }
+        } else {
+            echo json_encode(['kuota' => 0, 'tstart' => '', 'tend' => '']);
+        }
     }
 }
