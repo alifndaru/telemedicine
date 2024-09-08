@@ -3001,7 +3001,7 @@ class Administrator extends CI_Controller
         $jadwal_id = $this->input->post('jadwal_id');
 
         if (!empty($jadwal_id)) {
-            $result = $this->KlinikWaktuDokterModel->getKuotaByJadwalId($jadwal_id);
+            $result = $this->model_app->getKuotaByJadwalId($jadwal_id);
 
             if ($result) {
                 // Return both kuota, tstart, and tend as JSON
