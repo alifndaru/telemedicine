@@ -1,5 +1,4 @@
 Vue.component("v-select", VueSelect.VueSelect);
-var baseUrl = "http://localhost:8080/";
 
 var application = new Vue({
   el: "#tambah-konsultasi",
@@ -7,25 +6,23 @@ var application = new Vue({
   created() {
     axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
   },
-  data() {
-    return {
-      baseUrl: baseUrl,
-      disops: {
-        provinsi: false,
-        klinik: false,
-      },
-      provinsi: null,
-      provinsi_options: [],
-      klinik: null,
-      klinik_options: [],
-      dokter_options: [], // To store available doctors
-      selected_kuota: {}, // To store selected kuota for each doctor
-      biaya_tarif: null,
-      bank: null,
-      rekening: null,
-      kodeVoucher: "",
-      voucher_info: null, // Properti data baru untuk menyimpan informasi voucher
-    };
+  data: {
+    baseUrl: baseUrl,
+    disops: {
+      provinsi: false,
+      klinik: false,
+    },
+    provinsi: null,
+    provinsi_options: [],
+    klinik: null,
+    klinik_options: [],
+    dokter_options: [], // To store available doctors
+    selected_kuota: {}, // To store selected kuota for each doctor
+    biaya_tarif: null,
+    bank: null,
+    rekening: null,
+    kodeVoucher: "",
+    voucher_info: null, // Properti data baru untuk menyimpan informasi voucher
   },
   watch: {
     klinik: function (newKlinik) {
@@ -35,10 +32,6 @@ var application = new Vue({
     },
   },
   methods: {
-    handleSubmit() {
-      // Handle form submission
-      this.applyVoucher();
-    },
     formatCurrency(value) {
       // Convert value to number first
       const numberValue = Number(value);
@@ -106,6 +99,8 @@ var application = new Vue({
         });
     },
     selectedOptionKlinik(value) {
+      // this.klinik = value;
+      // this.dokter_options = [];
       this.klinik = value;
       this.dokter_options = []; // Reset daftar dokter
       this.selected_kuota = {}; // Reset pilihan kuota
@@ -139,39 +134,6 @@ var application = new Vue({
         .catch((err) => {
           console.log("Error:", err);
         });
-    },
-    applyVoucher() {
-      if (this.kodeVoucher.trim() !== "") {
-        axios
-          .post(baseUrl + "administrator/apply-voucher", {
-            kode_voucher: this.kodeVoucher,
-          })
-          .then((response) => {
-            console.log("Response data:", response.data); // Debugging
-            if (response.data.valid) {
-              const voucher = response.data.voucher;
-              const discount = (this.biaya_tarif * voucher.nilai) / 100; // Hitung potongan
-              const total_payment = this.biaya_tarif - discount; // Hitung total pembayaran
-
-              this.voucher_info = {
-                discount: discount,
-                total_payment: total_payment,
-              };
-
-              alert("Voucher berhasil diterapkan!");
-            } else {
-              alert("Kode voucher tidak valid atau sudah digunakan.");
-              this.voucher_info = null; // Hapus informasi voucher jika tidak valid
-            }
-          })
-          .catch((error) => {
-            console.error("Error applying voucher:", error);
-            // alert("Terjadi kesalahan saat memproses voucher.");
-            this.voucher_info = null; // Hapus informasi voucher jika terjadi kesalahan
-          });
-      } else {
-        alert("Masukkan kode voucher.");
-      }
     },
   },
 });
