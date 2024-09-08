@@ -28,6 +28,3 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 docker-compose.yml
 Dockerfile
-application/config/config.php
-application/config/database.php
-.htaccess
