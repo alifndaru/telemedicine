@@ -347,8 +347,9 @@ class User extends CI_Controller
 		// cek_session_user();
 		if (isset($this->session->level) && !empty($this->session->level)) {
 			$data['title'] = "Konsultasi";
+			$data['subtitle'] = "Provider";
 			$data['kategori'] = $this->model_app->view_ordering('kategori_konsul', 'id_kategori_konsul', 'ASC');
-			$this->template->load(template() . '/template', template() . '/konsultasi_tambahx', $data);
+			$this->template->load(template() . '/template', template() . '/konsultasi_tambah_provider', $data);
 		} else {
 			redirect('user/login');
 		}

@@ -49,8 +49,8 @@ var application = new Vue({
     },
     handleKuotaChange(dokter, kuotaIndex) {
       this.$set(this.selected_kuota, dokter.id, kuotaIndex);
-
       const selectedKuotaIndex = this.selected_kuota[dokter.id];
+      console.log('selectedKuotaIndex', selectedKuotaIndex)
       if (selectedKuotaIndex !== undefined) {
         this.biaya_tarif = dokter.biaya_tarif[selectedKuotaIndex] || null;
         this.bank = dokter.bank[selectedKuotaIndex] || null;
