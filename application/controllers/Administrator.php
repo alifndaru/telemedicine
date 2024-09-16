@@ -2585,8 +2585,8 @@ class Administrator extends CI_Controller
             if (count($result['res']) > 0) {
                 foreach ($result['res'] as $doctor) {
                     $response_arr[] = array(
-                        "id" => $doctor['dokter_id'],
-                        "dokter" => $doctor['nama_lengkap'],
+                        "id" => $doctor['id'],
+                        "dokter" => $doctor['dokter'],
                         'foto_dokter' => $doctor['foto_dokter'],
                         'klinik' => $doctor['klinik'],
                         'jabatan' => $doctor['jabatan'],
