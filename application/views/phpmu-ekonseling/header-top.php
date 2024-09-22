@@ -57,7 +57,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <?php if ($this->session->level == 'inovator') { ?>
                     <li class="hiuser">
-                        <img src="<?php echo base_url('asset/foto_user/') . '/' . $this->session->foto; ?>" class="img-thumbnail img-circle">
+                        <img src="<?= !empty($this->session->foto) ? base_url('asset/foto_user/') . '/' . $this->session->foto : base_url('asset/foto_user/').'blank.png' ?>" class="img-thumbnail img-circle" alt="profile">
                         <a class='topm' href='<?php echo base_url(); ?>user/profile'>Hi <?php $y = explode(" ", $this->session->nama_lengkap);
                                                                                         echo ucwords(strtolower($y[0])); ?></a>
                     </li>

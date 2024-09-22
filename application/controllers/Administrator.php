@@ -2597,7 +2597,8 @@ class Administrator extends CI_Controller
                         'biaya_tarif' => $doctor['biaya_tarif'],
                         'bank' => $doctor['bank'],
                         'rekening' => $doctor['rekening'],
-                        'atas_nama' => $doctor['atas_nama']
+                        'atas_nama' => $doctor['atas_nama'],
+                        'jadwal_id' => $doctor['jadwal_id']
                     );
                 }
             }
@@ -2690,7 +2691,9 @@ class Administrator extends CI_Controller
     {
         $d = json_decode(file_get_contents("php://input"), TRUE);
         if ($d['data']['ref'] === 'tambah') {
+            $lastKlinikWaktuDokter = $this->db->order_by('id', 'DESC')->limit(1)->get('klinik_waktu_dokter');
             $dt = array(
+                'id' => $lastKlinikWaktuDokter->row()->id + 1,
                 'klinik_id' => $d['data']['klinik_id'],
                 'dokter_id' => $d['data']['dokter_id'],
                 'tstart' => $d['data']['tstart'],
@@ -2957,9 +2960,10 @@ class Administrator extends CI_Controller
 
     public function insertPayment()
     {
+        $image = null;
         if ($_FILES['image']['name']) {
             $config['upload_path'] = 'asset/payment_proofs/';
-            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['allowed_types'] = 'jpg|jpeg|png';
             $config['max_size'] = '2048';  // max size in KB
             $config['file_name'] = time() . '_' . $_FILES['image']['name'];
 
@@ -2969,31 +2973,33 @@ class Administrator extends CI_Controller
                 $uploadData = $this->upload->data();
                 $image = $uploadData['file_name'];
             } else {
-                $image = NULL;
+                $image = null;
             }
         } else {
-            $image = NULL;  // or set a default image if necessary
+            $image = null;  // or set a default image if necessary
         }
+
+        log_message('error', $image);
 
         // Check if the image is uploaded successfully
-        if ($image !== NULL) {
-            $data = array(
-                'provinsi_id' => $this->input->post('provinsi_id'),
-                'klinik_id' => $this->input->post('klinik_id'),
-                'users_id' => $this->session->userdata('user_id'),
-                'jadwal_id' => json_encode($this->input->post('jadwal_id')),
-                'biaya' => $this->input->post('biaya'),
-                'image' => $image,
-                'aktif' => 'tidak aktif',
-                'created_at' => date('Y-m-d H:i:s')
-            );
+        $lastPayment = $this->db->order_by('payment_id', 'DESC')->limit(1)->get('payment');
+        $data = array(
+            'provinsi_id' => $this->input->post('provinsi_id'),
+            'klinik_id' => $this->input->post('klinik_id'),
+            'users_id' => $this->session->userdata('user_id'),
+            'jadwal_id' => $this->input->post('jadwal_id'),
+            'biaya' => $this->input->post('biaya'),
+            'image' => $image,
+            'aktif' => 'tidak aktif',
+            'created_at' => date('Y-m-d H:i:s'),
+            'payment_id' => $lastPayment->payment_id + 1
+        );
+        log_message('error', json_encode($data));
 
-            $this->db->insert('payment', $data);
-        } else {
-            // Handle the error - image is required
-            $this->session->set_flashdata('error', 'Payment proof image is required.');
-            redirect('administrator/tambah_konsultasi');
-        }
+        $this->db->insert('payment', $data);
+
+        http_response_code(200);
+        echo json_encode(array('success' => true));
     }
 
     public function get_kuota()
