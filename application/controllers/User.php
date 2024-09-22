@@ -87,6 +87,7 @@ class User extends CI_Controller
 							'agama' => cetak($this->input->post('agama')),
 							//  'perangkat_daerah'=>cetak($this->input->post('perangkat_daerah')),
 							'perangkat_daerah' => "Klien",
+							'foto' => 'blank.png',
 							'level' => 'inovator',
 							'blokir' => 'N',
 							'user_id' => $user_id,
@@ -107,7 +108,7 @@ class User extends CI_Controller
 							'agama' => cetak($this->input->post('agama')),
 							//  'perangkat_daerah'=>cetak($this->input->post('perangkat_daerah')),
 							'perangkat_daerah' => "Klien",
-							'foto' => $hasil['file_name'],
+							'foto' => empty($hasil['file_name']) ? 'blank.png' : $hasil['file_name'],
 							'level' => 'inovator',
 							'blokir' => 'N',
 							'user_id' => $user_id,
@@ -251,7 +252,7 @@ class User extends CI_Controller
 			$this->load->library('upload', $config);
 			$this->upload->do_upload('f');
 			$hasil = $this->upload->data();
-			if ($hasil['file_name'] != '') {
+			if (!empty($hasil['file_name'])) {
 				$data = array('foto' => $hasil['file_name']);
 				$where = array('username' => $this->session->username);
 				$this->model_app->update('users', $data, $where);

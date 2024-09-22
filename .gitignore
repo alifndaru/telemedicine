@@ -5,6 +5,7 @@ application/cache/*
 !application/cache/.htaccess
 
 application/logs/*
+asset/payment_proofs/*
 !application/logs/index.html
 !application/logs/.htaccess
 

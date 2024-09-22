@@ -313,7 +313,7 @@ class Model_app extends CI_model
 
     public function getAvailableDoctors($provinsi_id, $klinik_id)
     {
-        $this->db->select('dokter_id, nama_lengkap, foto_dokter, klinik, jabatan, kuota, tstart, tend, biaya_tarif, bank, rekening, atas_nama, spesialis');
+        $this->db->select('jadwal_id, dokter_id, nama_lengkap, foto_dokter, klinik, jabatan, kuota, tstart, tend, biaya_tarif, bank, rekening, atas_nama, spesialis');
         $this->db->from('v_jadwal');
         $this->db->where('provinsi_id', $provinsi_id);
         $this->db->where('klinik_id', $klinik_id);
@@ -349,6 +349,7 @@ class Model_app extends CI_model
             $doctors[$dokter_id]['bank'][] = $row['bank'];
             $doctors[$dokter_id]['rekening'][] = $row['rekening'];
             $doctors[$dokter_id]['atas_nama'][] = $row['atas_nama'];
+            $doctors[$dokter_id]['jadwal_id'][] = $row['jadwal_id'];
         }
 
         return ['res' => array_values($doctors)];

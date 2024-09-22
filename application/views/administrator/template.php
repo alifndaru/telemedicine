@@ -46,7 +46,7 @@ if ($this->session->level==''){
     <script type="text/javascript" src="<?php echo base_url(); ?>/asset/admin/plugins/jQuery/jquery-1.12.3.min.js"></script>
     <script src="<?php echo base_url(''); ?>asset/ckeditor/ckeditor.js"></script>
     <style type="text/css">.checkbox-scroll { border:1px solid #ccc; width:100%; height: 114px; padding-left:8px; overflow-y: scroll; }</style>
-      <link rel="stylesheet" href="https://almsaeedstudio.com/themes/AdminLTE/plugins/pace/pace.min.css">
+      <!-- <link rel="stylesheet" href="https://almsaeedstudio.com/themes/AdminLTE/plugins/pace/pace.min.css"> -->
     <script type="text/javascript">
     function nospaces(t){
         if(t.value.match(/\s/g)){
@@ -91,7 +91,7 @@ if ($this->session->level==''){
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <!-- Bootstrap 3.3.5 -->
     <script src="<?php echo base_url(); ?>asset/admin/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://almsaeedstudio.com/themes/AdminLTE/plugins/pace/pace.min.js"></script>
+    <!-- <script src="https://almsaeedstudio.com/themes/AdminLTE/plugins/pace/pace.min.js"></script> -->
     <!-- DataTables -->
     <script src="<?php echo base_url(); ?>asset/admin/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="<?php echo base_url(); ?>asset/admin/plugins/datatables/dataTables.bootstrap.min.js"></script>

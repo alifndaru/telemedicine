@@ -1,23 +1,7 @@
-Login admin : http://localhost/ekonseling/administrator
+Login admin : http://localhost/administrator
 user : admin
 pass : admin
 
-Login Psikolog : http://localhost/ekonseling/psikolog
-user : sulissw
-Pass : sandi_88
-
-Login Pasien: 
-user : puji
-Pass : puji
-
-Login Pasien: 
-user : gon
-Pass : 123
-
-Login Klinik: http://localhost/ekonseling/administrator
-user: klinik1
-pass: 123
-
-Login Klinik: http://localhost/ekonseling/administrator
-user: klinik2
-pass: 123
+Login Klinik: http://localhost/administrator
+user: dki
+pass: ival

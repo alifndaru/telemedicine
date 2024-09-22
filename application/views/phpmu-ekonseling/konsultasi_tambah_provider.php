@@ -107,13 +107,6 @@
     }
 
     /* Voucher Input */
-    #kode_voucher {
-        margin-top: 10px;
-    }
-
-    .btn-primary {
-        margin-top: 10px;
-    }
 
     .my-auto {
         margin-top: auto;
@@ -126,6 +119,11 @@
         background-color: #0056a4;
         border: none;
         margin: 20px auto;
+    }
+
+    .table-payment td {
+        border: none !important;
+        padding: 2px !important;
     }
 
     /* Wizard Form */
@@ -296,13 +294,32 @@
     }
 
     @media (max-width: 767px) {
-        .wizard .nav-tabs>li a i {
+        .wizard .wizard-inner {
             display: none;
+        }
+
+        /* .wizard .nav-tabs>li {
+            display: none;
+        }
+        .connecting-line {
+            display: none;
+        } */
+    }
+
+    /* End Wizard Form */
+    @media (max-width: 768px) {
+        .content-wrapper-history {
+            flex-direction: column-reverse;
         }
     }
 
+    .one {
+        flex: 2;
+    }
 
-    /* End Wizard Form */
+    .two {
+        flex: 1;
+    }
 </style>
 <?php
 // Fetch user data
@@ -310,13 +327,9 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
 ?>
 <!-- HTML -->
 <div id="tambah-konsultasi" class="container" style="margin-top: 30px;">
-    <div class="row">
-        <div class="col-md-8 col-sm-12 clearfix">
-            <!-- Breadcrumb -->
-            <!-- <div class="breadcrumb">
-            <a href="<?php echo base_url('/'); ?>"><i class="fa fa-home"></i> Home</a> > <?php echo $title; ?>
-        </div> -->
-            <div class="wizard">
+    <div class="row content-wrapper-history">
+        <div class="col-xs-12 col-md-8 one">
+            <div class="wizard clearfix">
                 <div class="wizard-inner">
                     <div class="connecting-line"></div>
                     <ul class="nav nav-tabs" role="tablist">
@@ -324,114 +337,113 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                             <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" aria-expanded="true"><span class="round-tab"></span> <i>Pilih Provider</i></a>
                         </li>
                         <li role="presentation" class="disabled">
-                            <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" aria-expanded="false"><span class="round-tab"></span> <i>Step 2</i></a>
+                            <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" aria-expanded="false"><span class="round-tab"></span> <i>Pembayaran</i></a>
                         </li>
                         <li role="presentation" class="disabled">
-                            <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab"><span class="round-tab"></span> <i>Step 3</i></a>
+                            <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab"><span class="round-tab"></span> <i>Validasi</i></a>
                         </li>
                         <li role="presentation" class="disabled">
-                            <a href="#step4" data-toggle="tab" aria-controls="step4" role="tab"><span class="round-tab"></span> <i>Step 4</i></a>
+                            <a href="#step4" data-toggle="tab" aria-controls="step4" role="tab"><span class="round-tab"></span> <i>Mulai Konsultasi</i></a>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Form for selecting province, clinic, and doctor -->
-                <form action="">
-                    <div class="tab-content" id="main_form">
-                        <div class="tab-pane active" role="tabpanel" id="step1">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h4 class="text-left text-primary">Konsultasi > Beranda</h4>
-                                    <hr class="custom-hr">
-                                    <!-- Select Province -->
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label pl-0 text-primary">Provinsi</label>
-                                        <div class="col-sm-9 mb-10">
-                                            <v-select
-                                                :disabled="disops.provinsi"
-                                                label="provinsi"
-                                                placeholder="Pilih Provinsi"
-                                                v-model="provinsi"
-                                                :reduce="provinsi => provinsi.id"
-                                                :options="provinsi_options"
-                                                @search="fetchOptionsProvinsi"
-                                                @input="selectedOptionProvinsi">
-                                                <span slot="no-options">Silahkan Ketikan Nama Daerah</span>
-                                            </v-select>
-                                            <input type="hidden" v-model="provinsi" name="prov_klinik">
-                                        </div>
+                <div class="tab-content" id="main_form">
+                    <div class="tab-pane active" role="tabpanel" id="step1">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-left text-primary">Konsultasi > Beranda</h4>
+                                <hr class="custom-hr">
+                                <!-- Select Province -->
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label pl-0 text-primary">Provinsi</label>
+                                    <div class="col-sm-9 mb-10">
+                                        <v-select
+                                            :disabled="disops.provinsi"
+                                            label="provinsi"
+                                            placeholder="Pilih Provinsi"
+                                            v-model="provinsi"
+                                            :reduce="provinsi => provinsi.id"
+                                            :options="provinsi_options"
+                                            @search="fetchOptionsProvinsi"
+                                            @input="selectedOptionProvinsi">
+                                            <span slot="no-options">Silahkan Ketikan Nama Daerah</span>
+                                        </v-select>
+                                        <input type="hidden" v-model="provinsi" name="prov_klinik">
                                     </div>
+                                </div>
 
-                                    <!-- Select Clinic -->
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label pl-0 text-primary">Klinik</label>
-                                        <div class="col-sm-9 mb-10">
-                                            <v-select
-                                                :disabled="disops.klinik"
-                                                label="klinik"
-                                                v-model="klinik"
-                                                placeholder="Pilih Klinik"
-                                                :reduce="klinik => klinik.id"
-                                                :options="klinik_options"
-                                                @search="fetchOptionsKlinik"
-                                                @input="selectedOptionKlinik">
-                                            </v-select>
-                                            <input type="hidden" v-model="klinik" name="klinik">
-                                        </div>
+                                <!-- Select Clinic -->
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label pl-0 text-primary">Klinik</label>
+                                    <div class="col-sm-9 mb-10">
+                                        <v-select
+                                            :disabled="disops.klinik"
+                                            label="klinik"
+                                            v-model="klinik"
+                                            placeholder="Pilih Klinik"
+                                            :reduce="klinik => klinik.id"
+                                            :options="klinik_options"
+                                            @search="fetchOptionsKlinik"
+                                            @input="selectedOptionKlinik">
+                                        </v-select>
+                                        <input type="hidden" v-model="klinik" name="klinik">
                                     </div>
+                                </div>
 
-                                    <!-- Display Available Doctors -->
-                                    <div v-if="dokter_options.length > 0" class="form-group">
-                                        <div class="row d-flex">
-                                            <label class="col-sm-3 my-auto text-primary">PILIH PROVIDER</label>
-                                            <hr class="col-sm-9 custom-hr text-primary" />
-                                        </div>
-                                        <div class="col-sm-12 mb-10">
-                                            <div class="row">
-                                                <div class="col-md-2 p-0">
-                                                    <label for="" class="text-primary">Provider</label>
-                                                </div>
-                                                <div class="col-md-10">
-                                                    <div class="dokter-item" v-for="dokter in dokter_options" :key="dokter.id">
-                                                        <img :src="`${baseUrl}asset/foto_user/${dokter.foto_dokter}`" alt="Foto Dokter" class="foto-dokter mr-8">
-                                                        <div class="dokter-info">
-                                                            <h5 class="text-primary">{{ dokter.dokter }}</h5>
-                                                            <p class="text-primary">{{ dokter.jabatan }} di {{ dokter.klinik }}</p>
-                                                            <p class="text-primary">{{ dokter.spesialis }}</p>
-                                                            <template v-if="dokter.kuota.length > 0">
-                                                                <div v-for="(kuota, index) in dokter.kuota" :key="index" class="col-md-12">
-                                                                    <label class="radio">
-                                                                        <input type="radio"
-                                                                            :name="selected_kuota"
-                                                                            :value="index"
-                                                                            v-model="selected_kuota[dokter.id]"
-                                                                            @change="handleKuotaChange(dokter, index)">
-                                                                        <table>
-                                                                            <tr>
-                                                                                <td class="text-primary">{{ dokter.tstart[index].split(':').slice(0, 2).join(':') }} - {{ dokter.tend[index].split(':').slice(0, 2).join(':') }} </td>
-                                                                                <td class="text-primary">&nbsp;WIB |</td>
-                                                                                <td><span class="text-danger">&nbsp;Kuota: {{ kuota }}</span></td>
-                                                                                <td class=`tarif-${dokter}` style="display: none;">{{ dokter.biaya_tarif[index] | currency }}</td>
-                                                                            </tr>
-                                                                        </table>
-                                                                    </label>
-                                                            </template>
-                                                            </template>
-                                                            <p v-else>Kuota: Tidak tersedia</p>
-                                                        </div>
+                                <!-- Display Available Doctors -->
+                                <div v-if="dokter_options.length > 0" class="form-group">
+                                    <div class="row d-flex">
+                                        <label class="col-sm-3 my-auto text-primary">PILIH PROVIDER</label>
+                                        <hr class="col-sm-9 custom-hr text-primary" />
+                                    </div>
+                                    <div class="col-sm-12 mb-10">
+                                        <div class="row">
+                                            <div class="col-md-2 p-0">
+                                                <label for="" class="text-primary">Provider</label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="dokter-item mb-5" v-for="dokter in dokter_options" :key="dokter.id">
+                                                    <img :src="dokter.foto_dokter ? `${baseUrl}asset/foto_user/${dokter.foto_dokter}` : `${baseUrl}asset/foto_user/blank.png`" alt="Foto Dokter" class="foto-dokter mr-8">
+                                                    <div class="dokter-info">
+                                                        <h5 class="text-primary">{{ dokter.dokter }}</h5>
+                                                        <p class="text-primary">{{ dokter.jabatan }} di {{ dokter.klinik }}</p>
+                                                        <p class="text-primary">{{ dokter.spesialis }}</p>
+                                                        <template v-if="dokter.kuota.length > 0">
+                                                            <div v-for="(kuota, index) in dokter.kuota" :key="index" class="col-md-12">
+                                                                <label class="radio">
+                                                                    <input type="radio"
+                                                                        :name="selected_kuota"
+                                                                        :value="index"
+                                                                        v-model="selected_kuota[dokter.id]"
+                                                                        @change="handleKuotaChange(dokter, index)">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td class="text-primary">{{ dokter.tstart[index].split(':').slice(0, 2).join(':') }} - {{ dokter.tend[index].split(':').slice(0, 2).join(':') }} </td>
+                                                                            <td class="text-primary">&nbsp;WIB |</td>
+                                                                            <td><span class="text-danger">&nbsp;Kuota: {{ kuota }}</span></td>
+                                                                            <td class=`tarif-${dokter}` style="display: none;">{{ dokter.biaya_tarif[index] | currency }}</td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </label>
+                                                        </template>
+                                                        </template>
+                                                        <p v-else>Kuota: Tidak tersedia</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 mt-5">
-                                    <!-- Payment Details -->
-                                    <div v-if="Object.keys(selected_kuota).length > 0" class="form-group">
-                                        <div v-if="biaya_tarif" class="bg-danger p-4 radius-5">
-                                            <h3 class="text-white mb-0">Tarif Layanan Konsultasi {{ formatCurrency(biaya_tarif) }}</h3>
-                                        </div>
-                                        <!-- <div v-if="bank && rekening" class="form-group">
+                            </div>
+                            <div class="col-md-12 mt-5">
+                                <!-- Payment Details -->
+                                <div v-if="Object.keys(selected_kuota).length > 0" class="form-group">
+                                    <div v-if="biaya_tarif" class="bg-danger p-4 radius-5">
+                                        <h3 class="text-white mb-0">Tarif Layanan Konsultasi {{ formatCurrency(biaya_tarif) }}</h3>
+                                    </div>
+                                    <!-- <div v-if="bank && rekening" class="form-group">
                                             <label>Metode Pembayaran</label>
                                             <div>Bank: {{ bank }}</div>
                                             <div>Rekening: {{ rekening }}</div>
@@ -441,56 +453,102 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                                             <label>Upload Bukti Pembayaran</label>
                                             <input type="file" class="form-control" name="image">
                                         </div> -->
-                                    </div>
                                 </div>
                             </div>
-                            <ul class="list-inline pull-right">
-                                <li><button type="button" class="default-btn next-step">Continue to next step</button></li>
-                            </ul>
                         </div>
-                        <div class="tab-pane" role="tabpanel" id="step2">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h4 class="text-left text-primary">Konsultasi > Beranda</h4>
-                                    <hr class="custom-hr">
-                                    <!-- Voucher Input -->
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label pl-0">Kode Voucher</label>
-                                        <div class="col-sm-9 mb-10">
-                                            <input type="text" id="kode_voucher" v-model="kodeVoucher" class="form-control" placeholder="Masukkan Kode Voucher">
-                                            <button type="button" class="btn btn-primary" @click="applyVoucher">Apply Voucher</button>
-                                            <p v-if="voucher_info" class="text-success">
-                                                Voucher berhasil diterapkan! Diskon: {{ discount }}%
+                        <ul class="list-inline pull-right">
+                            <li><button type="button" class="btn btn-primary next-step">SELANJUTNYA</button></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="step2">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-left text-primary">Pembayaran</h4>
+                                <hr class="custom-hr">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <table class="table table-responsive table-payment">
+                                            <tbody>
+                                                <tr>
+                                                    <td><b class="text-info">Tarif Layanan</b></td>
+                                                    <td><b class="text-info">{{ formatCurrency(biaya_tarif) }}</b></td>
+                                                </tr>
+                                                <tr v-if="discount > 0">
+                                                    <td><b class="text-info">Potongan</b> <b class="text-warning">{{discount}}%</b></td>
+                                                    <td><b class="text-warning">- {{formatCurrency(discountAmount)}}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>
+                                                        <hr style="margin-top: 0px; margin-left: 0px">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b class="text-danger">Total Bayar</b></td>
+                                                    <td><b class="text-danger">{{ formatCurrency(total_biaya) }}</b></td>
+                                                </tr>
+                                                </thead>
+                                        </table>
+                                        <div class="d-flex">
+                                            <span class="text-info mr-5" style="white-space: nowrap;"><b>Metode Bayar</b></span>
+                                            <div>
+                                                <span>Transfer via Rekening</span><br>
+                                                <span class="text-info" style="font-size: 14px;"><b>Metode Pembayaran</b></span><br>
+                                                <p class="text-info" style="font-size: 14px;">
+                                                    Bank: {{ bank }}<br>
+                                                    No. Rekening: {{ rekening }}<br>
+                                                    Atas Nama: {{ atas_nama }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="text-info mr-5" class="form-control" style="white-space: nowrap;"><b>Bukti Bayar</b></div>
+                                            <input type="file" class="mr-2 form-control" name="image" accept="image/png, image/jpeg">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <!-- Voucher Input -->
+                                        <div class="form-group">
+                                            <label class="control-label text-info" style="white-space: nowrap;">Masukkan Voucher</label>
+                                            <div class="d-flex">
+                                                <input type="text" id="kode_voucher" v-model="kodeVoucher" class="form-control mr-3" placeholder="Masukkan Kode Voucher">
+                                                <button type="button" class="btn btn-primary" @click="applyVoucher">Konfirmasi</button>
+                                            </div>
+                                            <p v-if="voucher_info" class="text-success" style="font-size: 14px;">
+                                                Voucher berhasil diterapkan!
                                             </p>
-                                            <p v-else-if="voucher_info === false" class="text-danger">
+                                            <p v-else-if="voucher_info === false" class="text-danger" style="font-size: 14px;">
                                                 Kode voucher tidak valid atau tidak aktif.
                                             </p>
-                                            <p v-if="total_biaya !== null" class="text-info">
+                                            <p v-if="total_biaya !== null" class="text-info" style="font-size: 14px;">
                                                 Total setelah diskon: {{ formatCurrency(total_biaya) }}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <ul class="list-inline pull-right">
-                                <li><button type="button" class="default-btn prev-step">Back</button></li>
-                                <li><button type="button" class="default-btn next-step skip-btn">Skip</button></li>
-                                <li><button type="button" class="default-btn next-step">Continue</button></li>
-                            </ul>
                         </div>
-                        <!-- Submit Button -->
-                        <div class="form-group">
-                            <div class="col-sm-9 col-sm-offset-3">
-                                <button type="button" class="btn btn-success" @click="submitForm">Submit</button>
+                        <ul class="list-inline pull-right">
+                            <li><button type="button" class="btn btn-danger prev-step">KEMBALI</button></li>
+                            <li><button type="button" class="btn btn-primary" style="font-size: 13px;padding: 8px 24px;border: none;border-radius: 4px;margin-top: 30px;" @click="submitForm">SELANJUTNYA</button></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="step3">
+                        <div class="panel">
+                            <div class="panel-body text-center" style="background-color: skyblue;">
+                                <p class="text-center">Bukti Pembayaran Anda Sedang Divalidasi</p>
+                                <i class="fa fa-spinner fa-spin-pulse fa-4x"></i>
+                                <div class="text-center" style="background: aliceblue;max-width: fit-content;padding: 0px 100px;">HARAP TUNGGU</div>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
 
         <!-- Sidebar -->
-        <div class='col-md-4 sidebar col-sm-12'>
+        <div class="col-xs-12 col-md-4 two sidebar">
             <div class="right-section">
                 <?php include "sidebar.php"; ?>
             </div>
