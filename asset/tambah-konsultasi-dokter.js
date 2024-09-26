@@ -5,6 +5,7 @@ var application = new Vue({
   components: { VueTimepicker: VueTimepicker.default },
   created() {
     axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+    this.users_id = localStorage.getItem("users_id") || null;
   },
   data: {
     baseUrl: baseUrl,
@@ -28,6 +29,7 @@ var application = new Vue({
     total_biaya: 0, // New property to hold the total amount after discount
     discountAmount: 0,
     jadwalId: 0,
+    users_id: null,
   },
   watch: {
     klinik: function (newKlinik) {
@@ -50,11 +52,11 @@ var application = new Vue({
       }).format(numberValue);
     },
     handleKuotaChange(dokter, kuotaIndex) {
-      console.log('dokter', dokter)
+      console.log("dokter", dokter);
       this.$set(this.selected_kuota, dokter.id, kuotaIndex);
       const selectedKuotaIndex = this.selected_kuota[dokter.id];
-      this.jadwalId = dokter.jadwal_id[selectedKuotaIndex]
-      console.log('this.jadwalId', this.jadwalId)
+      this.jadwalId = dokter.jadwal_id[selectedKuotaIndex];
+      console.log("this.jadwalId", this.jadwalId);
       if (selectedKuotaIndex !== undefined) {
         this.biaya_tarif = dokter.biaya_tarif[selectedKuotaIndex] || null;
         this.bank = dokter.bank[selectedKuotaIndex] || null;
@@ -165,8 +167,8 @@ var application = new Vue({
             this.discount = 0;
             alert(res.data.message || "Kode voucher tidak valid.");
           }
-          console.log('discount', this.discount)
-          console.log('voucher_info', this.voucher_info)
+          console.log("discount", this.discount);
+          console.log("voucher_info", this.voucher_info);
         })
         .catch((err) => {
           console.log("Error:", err);
@@ -175,25 +177,28 @@ var application = new Vue({
     },
 
     calculateTotal() {
-      console.log('tes')
-      if (this.biaya_tarif && this.discount > 0) {
-        let discountAmount = (this.biaya_tarif * this.discount) / 100;
-        this.discountAmount = discountAmount
-        this.total_biaya = this.biaya_tarif - this.discountAmount;
-      } else {
-        this.total_biaya = this.biaya_tarif;
+      if (this.biaya_tarif) {
+        if (this.discount > 0) {
+          let discountAmount = (this.biaya_tarif * this.discount) / 100;
+          this.discountAmount = discountAmount;
+          this.total_biaya = this.biaya_tarif - this.discountAmount;
+        } else {
+          // Jika tidak ada diskon, total_biaya sama dengan biaya_tarif
+          this.total_biaya = this.biaya_tarif;
+        }
       }
-      console.log('total_biaya', this.total_biaya)
-      console.log('biaya_tarif', this.biaya_tarif)
+      console.log("total_biaya", this.total_biaya);
+      console.log("biaya_tarif", this.biaya_tarif);
     },
     submitForm() {
+      this.calculateTotal();
       // Ensure that required data is present
       if (!this.provinsi || !this.klinik || !this.selected_kuota) {
         alert("Please complete all required fields.");
         return;
       }
 
-      console.log('selected_kuota', this.selected_kuota)
+      console.log("selected_kuota", this.selected_kuota);
 
       // Create FormData object
       let formData = new FormData();
@@ -204,10 +209,12 @@ var application = new Vue({
       formData.append("jadwal_id", this.jadwalId);
       formData.append("biaya", this.total_biaya);
       formData.append("aktif", "tidak aktif");
+      formData.append("users_id", this.users_id); // Tambahkan users_id ke FormData
 
       // Append the uploaded image
       if (this.total_biaya > 0) {
-        const imageFile = document.querySelector('input[name="image"]').files[0];
+        const imageFile = document.querySelector('input[name="image"]')
+          .files[0];
         if (imageFile) {
           formData.append("image", imageFile);
         } else {
@@ -216,7 +223,7 @@ var application = new Vue({
         }
       }
 
-      console.log('formdata', formData)
+      console.log("formdata", formData);
 
       // Send form data via Axios
       axios
@@ -228,14 +235,16 @@ var application = new Vue({
         .then((response) => {
           if (response.data.success) {
             alert("Konsultasi berhasil ditambahkan.");
-            var active = document.querySelector('.wizard .nav-tabs li.active');
+            var active = document.querySelector(".wizard .nav-tabs li.active");
             // Enable the next tab by removing the 'disabled' class
             if (active.nextElementSibling) {
-              active.nextElementSibling.classList.remove('disabled');
+              active.nextElementSibling.classList.remove("disabled");
             }
 
             // Simulate a click event on the next tab link
-            var nextTab = active.nextElementSibling.querySelector('a[data-toggle="tab"]');
+            var nextTab = active.nextElementSibling.querySelector(
+              'a[data-toggle="tab"]'
+            );
 
             if (nextTab) {
               nextTab.click();

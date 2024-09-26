@@ -5,3 +5,7 @@ pass : admin
 Login Klinik: http://localhost/administrator
 user: dki
 pass: ival
+
+Login admin : http://localhost/administrator
+user : pkbi
+pass : pkbi

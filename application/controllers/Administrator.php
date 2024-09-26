@@ -2979,22 +2979,19 @@ class Administrator extends CI_Controller
             $image = null;  // or set a default image if necessary
         }
 
-        log_message('error', $image);
-
-        // Check if the image is uploaded successfully
-        $lastPayment = $this->db->order_by('payment_id', 'DESC')->limit(1)->get('payment');
+        $users_id = $this->session->userdata('user_id');
+        log_message('error', $users_id);
         $data = array(
             'provinsi_id' => $this->input->post('provinsi_id'),
             'klinik_id' => $this->input->post('klinik_id'),
-            'users_id' => $this->session->userdata('user_id'),
+            'users_id' => $users_id,
             'jadwal_id' => $this->input->post('jadwal_id'),
             'biaya' => $this->input->post('biaya'),
             'image' => $image,
             'aktif' => 'tidak aktif',
             'created_at' => date('Y-m-d H:i:s'),
-            'payment_id' => $lastPayment->payment_id + 1
         );
-        log_message('error', json_encode($data));
+        // log_message('error', json_encode($data));
 
         $this->db->insert('payment', $data);
 
