@@ -28,7 +28,8 @@ class Administrator extends CI_Controller
                     'foto' => $row['foto'],
                     'level' => $row['level'],
                     'user_id' => $row['user_id'],
-                    'id_session' => $row['id_session']
+                    'id_session' => $row['id_session'],
+                    'klinik_id' => $row['klinik_id']
                 ));
 
                 redirect('administrator/home');
@@ -3020,4 +3021,62 @@ class Administrator extends CI_Controller
             echo json_encode(['kuota' => 0, 'tstart' => '', 'tend' => '']);
         }
     }
+
+
+    public function payment()
+    {
+        cek_session_akses('payment', $this->session->id_session);
+        $this->template->load('administrator/template', 'administrator/mod_payment/view_payment');
+    }
+
+    public function fetch_payment()
+    {
+        cek_session_akses('payment', $this->session->id_session);
+
+        $klinik_id = $this->session->userdata('klinik_id');
+        $user_level = $this->session->userdata('level');
+
+        if ($user_level == 'admin') {
+            $data['payment'] = $this->model_app->view_ordering('payment', 'payment_id', 'ASC');
+        } else if ($user_level == 'klinik') {
+            $data['payment'] = $this->model_app->view_where_ordering('payment', array('klinik_id' => $klinik_id), 'payment_id', 'ASC');
+        } else {
+            $data['payment'] = [];
+        }
+
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    public function update_payment_status()
+    {
+        // Pastikan hanya request POST yang diterima
+        if ($this->input->server('REQUEST_METHOD') !== 'POST') {
+            $this->output->set_status_header(405); // Method Not Allowed
+            echo json_encode(['error' => 'Method not allowed']);
+            return;
+        }
+
+        // Decode JSON input
+        $data = json_decode($this->input->raw_input_stream, true);
+        $payment_id = filter_var($data['id'] ?? null, FILTER_VALIDATE_INT);
+        $new_status = $data['aktif'] ?? null;
+
+        // Validasi input
+        if (is_null($payment_id) || !in_array($new_status, ['aktif', 'tidak aktif'])) {
+            $this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode(['error' => 'Invalid input']));
+            return;
+        }
+
+        // Update status pembayaran
+        $update_data = array('aktif' => $new_status);
+        $this->db->where('payment_id', $payment_id);
+        $result = $this->db->update('payment', $update_data);
+
+        if ($result) {
+            $this->output->set_content_type('application/json')->set_output(json_encode(['success' => 'Payment status updated successfully.']));
+        } else {
+            $this->output->set_content_type('application/json')->set_output(json_encode(['error' => 'Failed to update payment status.']));
+        }
+    }
+
 }

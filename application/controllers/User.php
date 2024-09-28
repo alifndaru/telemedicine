@@ -30,7 +30,8 @@ class User extends CI_Controller
 					'foto' => $row['foto'],
 					'level' => $row['level'],
 					'user_id' => $row['user_id'],
-					'id_session' => $row['id_session']
+					'id_session' => $row['id_session'],
+					'klinik_id' => $row['klinik_id']
 				));
 				redirect('user/konsultasi');
 			} else {
