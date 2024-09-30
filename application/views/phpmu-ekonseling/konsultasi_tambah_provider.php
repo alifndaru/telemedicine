@@ -443,16 +443,6 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                                     <div v-if="biaya_tarif" class="bg-danger p-4 radius-5">
                                         <h3 class="text-white mb-0">Tarif Layanan Konsultasi {{ formatCurrency(biaya_tarif) }}</h3>
                                     </div>
-                                    <!-- <div v-if="bank && rekening" class="form-group">
-                                            <label>Metode Pembayaran</label>
-                                            <div>Bank: {{ bank }}</div>
-                                            <div>Rekening: {{ rekening }}</div>
-                                            <div>Atas Nama: {{ atas_nama }}</div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Upload Bukti Pembayaran</label>
-                                            <input type="file" class="form-control" name="image">
-                                        </div> -->
                                 </div>
                             </div>
                         </div>
@@ -503,7 +493,7 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                                         </div>
                                         <div class="d-flex">
                                             <div class="text-info mr-5" class="form-control" style="white-space: nowrap;"><b>Bukti Bayar</b></div>
-                                            <input type="file" class="mr-2 form-control" name="image" accept="image/png, image/jpeg">
+                                            <input type="file" class="mr-2 form-control" name="image" accept="image/png, image/jpeg, image/jpg">
                                         </div>
 
                                     </div>
@@ -543,6 +533,18 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane" role="tabpanel" id="step4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-left text-primary">Konsultasi Dimulai</h4>
+                                <hr class="custom-hr">
+                                <p>Anda sudah memasuki sesi konsultasi. Silakan mulai bertanya!</p>
+                            </div>
+                        </div>
+                        <ul class="list-inline pull-right">
+                            <li><button type="button" class="btn btn-default prev-step">Kembali</button></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -560,7 +562,6 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
 <script src="<?php echo base_url(); ?>/asset/admin/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <script>
     var baseUrl = "<?php echo base_url(); ?>";
-
     $(document).ready(function() {
         $('.nav-tabs > li a[title]').tooltip();
 

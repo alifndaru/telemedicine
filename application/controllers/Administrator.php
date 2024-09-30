@@ -2996,8 +2996,14 @@ class Administrator extends CI_Controller
 
         $this->db->insert('payment', $data);
 
+        // Ambil ID pembayaran yang baru saja dimasukkan
+        $paymentId = $this->db->insert_id();
+
         http_response_code(200);
-        echo json_encode(array('success' => true));
+        echo json_encode(array(
+            'success' => true,
+            'paymentId' => $paymentId // Kembalikan ID pembayaran
+        ));
     }
 
     public function get_kuota()
@@ -3079,4 +3085,20 @@ class Administrator extends CI_Controller
         }
     }
 
+    public function checkPaymentStatus($paymentId)
+    {
+        if (!$paymentId) {
+            echo json_encode(['error' => 'ID Pembayaran tidak tersedia.']);
+            return;
+        }
+
+        $paymentStatus = $this->model_app->view_where('payment', array('payment_id' => $paymentId))->row('aktif');
+
+        if ($paymentStatus) {
+            echo json_encode(['aktif' => $paymentStatus]);
+        } else {
+            // Handle kasus ketika status pembayaran tidak ditemukan atau terjadi error
+            echo json_encode(['error' => 'Terjadi kesalahan saat memeriksa status pembayaran.']);
+        }
+    }
 }

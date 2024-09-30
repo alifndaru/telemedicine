@@ -30,6 +30,7 @@ var application = new Vue({
     discountAmount: 0,
     jadwalId: 0,
     users_id: null,
+    paymentStatus: null, // Deklarasikan paymentStatus di sini
   },
   watch: {
     klinik: function (newKlinik) {
@@ -190,6 +191,62 @@ var application = new Vue({
       console.log("total_biaya", this.total_biaya);
       console.log("biaya_tarif", this.biaya_tarif);
     },
+
+    // checkPaymentStatus() {
+    //   if (!this.paymentId) {
+    //     alert("ID Pembayaran tidak tersedia.");
+    //     clearInterval(this.paymentCheckInterval); // Hentikan interval jika tidak ada paymentId
+    //     return;
+    //   }
+
+    //   axios
+    //     .get(`../administrator/checkPaymentStatus/${this.paymentId}`)
+    //     .then((response) => {
+    //       this.paymentStatus = response.data.aktif; // Simpan status pembayaran
+    //       if (this.paymentStatus === "aktif") {
+    //         clearInterval(this.paymentCheckInterval); // Hentikan pengecekan
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error checking payment status:", error);
+    //       alert("Terjadi kesalahan saat memeriksa status pembayaran.");
+    //     });
+    // },
+    checkPaymentStatus() {
+      if (!this.paymentId) {
+        alert("ID Pembayaran tidak tersedia.");
+        clearInterval(this.paymentCheckInterval); // Hentikan interval jika tidak ada paymentId
+        return;
+      }
+
+      axios
+        .get(`../administrator/checkPaymentStatus/${this.paymentId}`)
+        .then((response) => {
+          this.paymentStatus = response.data.aktif; // Simpan status pembayaran
+          if (this.paymentStatus === "aktif") {
+            clearInterval(this.paymentCheckInterval); // Hentikan pengecekan
+
+            // Pindah ke step 4 jika status pembayaran aktif
+            var active = document.querySelector(".wizard .nav-tabs li.active");
+            if (active.nextElementSibling) {
+              active.nextElementSibling.classList.remove("disabled");
+            }
+
+            // Simulate a click event on the next tab link (step 4)
+            var nextTab = active.nextElementSibling.querySelector(
+              'a[data-toggle="tab"]'
+            );
+            if (nextTab) {
+              nextTab.click(); // Pindah ke step selanjutnya (step 4)
+            }
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking payment status:", error);
+          alert("Terjadi kesalahan saat memeriksa status pembayaran.");
+        });
+    },
+
     submitForm() {
       this.calculateTotal();
       // Ensure that required data is present
@@ -197,9 +254,6 @@ var application = new Vue({
         alert("Please complete all required fields.");
         return;
       }
-
-      console.log("selected_kuota", this.selected_kuota);
-
       // Create FormData object
       let formData = new FormData();
 
@@ -234,9 +288,11 @@ var application = new Vue({
         })
         .then((response) => {
           if (response.data.success) {
-            alert("Konsultasi berhasil ditambahkan.");
+            alert("Pembayaran sudah Tersimpan,Mohon pilih OK untuk next Step.");
+
+            // Ambil paymentId dari response
+            this.paymentId = response.data.paymentId;
             var active = document.querySelector(".wizard .nav-tabs li.active");
-            // Enable the next tab by removing the 'disabled' class
             if (active.nextElementSibling) {
               active.nextElementSibling.classList.remove("disabled");
             }
@@ -249,6 +305,10 @@ var application = new Vue({
             if (nextTab) {
               nextTab.click();
             }
+            // Mulai pengecekan status pembayaran setiap 5 detik
+            this.paymentCheckInterval = setInterval(() => {
+              this.checkPaymentStatus(); // Cek status pembayaran
+            }, 5000); // Interval 5 detik
           } else {
             alert("Terjadi kesalahan: " + response.data.message);
           }
