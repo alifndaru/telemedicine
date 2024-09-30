@@ -192,26 +192,6 @@ var application = new Vue({
       console.log("biaya_tarif", this.biaya_tarif);
     },
 
-    // checkPaymentStatus() {
-    //   if (!this.paymentId) {
-    //     alert("ID Pembayaran tidak tersedia.");
-    //     clearInterval(this.paymentCheckInterval); // Hentikan interval jika tidak ada paymentId
-    //     return;
-    //   }
-
-    //   axios
-    //     .get(`../administrator/checkPaymentStatus/${this.paymentId}`)
-    //     .then((response) => {
-    //       this.paymentStatus = response.data.aktif; // Simpan status pembayaran
-    //       if (this.paymentStatus === "aktif") {
-    //         clearInterval(this.paymentCheckInterval); // Hentikan pengecekan
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error checking payment status:", error);
-    //       alert("Terjadi kesalahan saat memeriksa status pembayaran.");
-    //     });
-    // },
     checkPaymentStatus() {
       if (!this.paymentId) {
         alert("ID Pembayaran tidak tersedia.");
