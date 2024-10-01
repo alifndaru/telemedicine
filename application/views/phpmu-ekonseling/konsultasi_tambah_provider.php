@@ -593,6 +593,38 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
     function prevTab(elem) {
         $(elem).prev().find('a[data-toggle="tab"]').click();
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Misalnya, ketika tab step3 diaktifkan, nonaktifkan tab sebelumnya
+        $('#step3').on('shown.bs.tab', function(e) {
+            // Nonaktifkan tab step1 dan step2
+            disablePreviousTabs(['#step1', '#step2']);
+
+            // Disable Back Button
+            $(".prev-step").hide();
+        });
+
+        // Ulangi logika serupa untuk step4 jika diperlukan
+        $('#step4').on('shown.bs.tab', function(e) {
+            // Nonaktifkan tab step1, step2, dan step3
+            disablePreviousTabs(['#step1', '#step2', '#step3']);
+
+            // Disable Back Button
+            $(".prev-step").hide();
+        });
+
+        function disablePreviousTabs(tabs) {
+            tabs.forEach(function(tab) {
+                $('a[href="' + tab + '"]').parent().addClass('disabled');
+            });
+
+            // Opsional: Hapus kemampuan untuk klik pada tab yang dinonaktifkan
+            $('.disabled a').click(function(event) {
+                event.preventDefault(); // Mencegah tab berubah
+                return false; // Mencegah aksi default
+            });
+        }
+    });
 </script>
 
 
