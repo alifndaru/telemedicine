@@ -28,7 +28,8 @@ class Administrator extends CI_Controller
                     'foto' => $row['foto'],
                     'level' => $row['level'],
                     'user_id' => $row['user_id'],
-                    'id_session' => $row['id_session']
+                    'id_session' => $row['id_session'],
+                    'klinik_id' => $row['klinik_id']
                 ));
 
                 redirect('administrator/home');
@@ -2585,8 +2586,8 @@ class Administrator extends CI_Controller
             if (count($result['res']) > 0) {
                 foreach ($result['res'] as $doctor) {
                     $response_arr[] = array(
-                        "id" => $doctor['dokter_id'],
-                        "dokter" => $doctor['nama_lengkap'],
+                        "id" => $doctor['id'],
+                        "dokter" => $doctor['dokter'],
                         'foto_dokter' => $doctor['foto_dokter'],
                         'klinik' => $doctor['klinik'],
                         'jabatan' => $doctor['jabatan'],
@@ -2597,7 +2598,8 @@ class Administrator extends CI_Controller
                         'biaya_tarif' => $doctor['biaya_tarif'],
                         'bank' => $doctor['bank'],
                         'rekening' => $doctor['rekening'],
-                        'atas_nama' => $doctor['atas_nama']
+                        'atas_nama' => $doctor['atas_nama'],
+                        'jadwal_id' => $doctor['jadwal_id']
                     );
                 }
             }
@@ -2690,7 +2692,9 @@ class Administrator extends CI_Controller
     {
         $d = json_decode(file_get_contents("php://input"), TRUE);
         if ($d['data']['ref'] === 'tambah') {
+            $lastKlinikWaktuDokter = $this->db->order_by('id', 'DESC')->limit(1)->get('klinik_waktu_dokter');
             $dt = array(
+                'id' => $lastKlinikWaktuDokter->row()->id + 1,
                 'klinik_id' => $d['data']['klinik_id'],
                 'dokter_id' => $d['data']['dokter_id'],
                 'tstart' => $d['data']['tstart'],
@@ -2957,9 +2961,10 @@ class Administrator extends CI_Controller
 
     public function insertPayment()
     {
+        $image = null;
         if ($_FILES['image']['name']) {
             $config['upload_path'] = 'asset/payment_proofs/';
-            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['allowed_types'] = 'jpg|jpeg|png';
             $config['max_size'] = '2048';  // max size in KB
             $config['file_name'] = time() . '_' . $_FILES['image']['name'];
 
@@ -2969,31 +2974,36 @@ class Administrator extends CI_Controller
                 $uploadData = $this->upload->data();
                 $image = $uploadData['file_name'];
             } else {
-                $image = NULL;
+                $image = null;
             }
         } else {
-            $image = NULL;  // or set a default image if necessary
+            $image = null;  // or set a default image if necessary
         }
 
-        // Check if the image is uploaded successfully
-        if ($image !== NULL) {
-            $data = array(
-                'provinsi_id' => $this->input->post('provinsi_id'),
-                'klinik_id' => $this->input->post('klinik_id'),
-                'users_id' => $this->session->userdata('user_id'),
-                'jadwal_id' => json_encode($this->input->post('jadwal_id')),
-                'biaya' => $this->input->post('biaya'),
-                'image' => $image,
-                'aktif' => 'tidak aktif',
-                'created_at' => date('Y-m-d H:i:s')
-            );
+        $users_id = $this->session->userdata('user_id');
+        log_message('error', $users_id);
+        $data = array(
+            'provinsi_id' => $this->input->post('provinsi_id'),
+            'klinik_id' => $this->input->post('klinik_id'),
+            'users_id' => $users_id,
+            'jadwal_id' => $this->input->post('jadwal_id'),
+            'biaya' => $this->input->post('biaya'),
+            'image' => $image,
+            'aktif' => 'tidak aktif',
+            'created_at' => date('Y-m-d H:i:s'),
+        );
+        // log_message('error', json_encode($data));
 
-            $this->db->insert('payment', $data);
-        } else {
-            // Handle the error - image is required
-            $this->session->set_flashdata('error', 'Payment proof image is required.');
-            redirect('administrator/tambah_konsultasi');
-        }
+        $this->db->insert('payment', $data);
+
+        // Ambil ID pembayaran yang baru saja dimasukkan
+        $paymentId = $this->db->insert_id();
+
+        http_response_code(200);
+        echo json_encode(array(
+            'success' => true,
+            'paymentId' => $paymentId // Kembalikan ID pembayaran
+        ));
     }
 
     public function get_kuota()
@@ -3015,6 +3025,80 @@ class Administrator extends CI_Controller
             }
         } else {
             echo json_encode(['kuota' => 0, 'tstart' => '', 'tend' => '']);
+        }
+    }
+
+
+    public function payment()
+    {
+        cek_session_akses('payment', $this->session->id_session);
+        $this->template->load('administrator/template', 'administrator/mod_payment/view_payment');
+    }
+
+    public function fetch_payment()
+    {
+        cek_session_akses('payment', $this->session->id_session);
+
+        $klinik_id = $this->session->userdata('klinik_id');
+        $user_level = $this->session->userdata('level');
+
+        if ($user_level == 'admin') {
+            $data['payment'] = $this->model_app->view_ordering('payment', 'payment_id', 'ASC');
+        } else if ($user_level == 'klinik') {
+            $data['payment'] = $this->model_app->view_where_ordering('payment', array('klinik_id' => $klinik_id), 'payment_id', 'ASC');
+        } else {
+            $data['payment'] = [];
+        }
+
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    public function update_payment_status()
+    {
+        // Pastikan hanya request POST yang diterima
+        if ($this->input->server('REQUEST_METHOD') !== 'POST') {
+            $this->output->set_status_header(405); // Method Not Allowed
+            echo json_encode(['error' => 'Method not allowed']);
+            return;
+        }
+
+        // Decode JSON input
+        $data = json_decode($this->input->raw_input_stream, true);
+        $payment_id = filter_var($data['id'] ?? null, FILTER_VALIDATE_INT);
+        $new_status = $data['aktif'] ?? null;
+
+        // Validasi input
+        if (is_null($payment_id) || !in_array($new_status, ['aktif', 'tidak aktif'])) {
+            $this->output->set_content_type('application/json')->set_status_header(400)->set_output(json_encode(['error' => 'Invalid input']));
+            return;
+        }
+
+        // Update status pembayaran
+        $update_data = array('aktif' => $new_status);
+        $this->db->where('payment_id', $payment_id);
+        $result = $this->db->update('payment', $update_data);
+
+        if ($result) {
+            $this->output->set_content_type('application/json')->set_output(json_encode(['success' => 'Payment status updated successfully.']));
+        } else {
+            $this->output->set_content_type('application/json')->set_output(json_encode(['error' => 'Failed to update payment status.']));
+        }
+    }
+
+    public function checkPaymentStatus($paymentId)
+    {
+        if (!$paymentId) {
+            echo json_encode(['error' => 'ID Pembayaran tidak tersedia.']);
+            return;
+        }
+
+        $paymentStatus = $this->model_app->view_where('payment', array('payment_id' => $paymentId))->row('aktif');
+
+        if ($paymentStatus) {
+            echo json_encode(['aktif' => $paymentStatus]);
+        } else {
+            // Handle kasus ketika status pembayaran tidak ditemukan atau terjadi error
+            echo json_encode(['error' => 'Terjadi kesalahan saat memeriksa status pembayaran.']);
         }
     }
 }

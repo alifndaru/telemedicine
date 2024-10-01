@@ -8,7 +8,7 @@
               } else {
                 $foto = $usr['foto'];
               } ?>
-              <img src="<?php echo base_url(); ?>/asset/foto_user/<?php echo $foto; ?>" class="img-circle" alt="User Image">
+              <img src="<?php echo base_url(); ?>asset/foto_user/<?php echo $foto; ?>" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
               <?php echo "<p>$usr[nama_lengkap]</p>"; ?>
@@ -109,8 +109,19 @@
               <ul class="treeview-menu">
                 <?php
                 $cek = $this->model_app->umenu_akses("voucher", $this->session->id_session);
-                if ($cek == 1 or $this->session->level == 'admin') {
+                if ($cek == 1 or $this->session->level == 'admin' or $this->session->level == 'klinik') {
                   echo "<li><a href='" . base_url() . "administrator/voucher'><i class='fa fa-circle-o'></i> Manajemen Voucher</a></li>";
+                }
+                ?>
+              </ul>
+            </li>
+            <li class="treeview">
+              <a href="#"><i class="fa fa-ticket" aria-hidden="true"></i><span>Modul Konfirmasi Payment</span><i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+                <?php
+                $cek = $this->model_app->umenu_akses("payment", $this->session->id_session);
+                if ($cek == 1 or $this->session->level == 'admin') {
+                  echo "<li><a href='" . base_url() . "administrator/payment'><i class='fa fa-circle-o'></i> Manajemen Payment</a></li>";
                 }
                 ?>
               </ul>
