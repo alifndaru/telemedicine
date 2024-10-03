@@ -292,3 +292,321 @@ p {
     width: 96%; /* Mengurangi lebar tombol untuk mencegah terlalu ke kanan */
   }
 }
+
+.pl-0 {
+  padding-left: 0px !important;
+}
+
+.mb-10 {
+  margin-bottom: 10px !important;
+}
+
+.vs__no-options {
+  text-align: left !important;
+  padding-left: 8px;
+}
+
+.vs__clear {
+  margin-bottom: 1px;
+}
+
+input[type="search"] {
+  border: none !important;
+  padding: 0px 10px 0px 10px !important;
+}
+
+.foto-dokter {
+  width: 250px;
+  height: 250px;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.dokter-info h5 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.dokter-info p {
+  margin: 0;
+  font-size: 12px;
+  color: #0056a4;
+}
+
+.jadwal-dokter-text {
+  background-color: #e4eff9;
+  color: #000 !important;
+  font-weight: 400;
+  width: 135px;
+  border-radius: 0px !important;
+}
+
+.panel-dokter {
+  margin-bottom: 5px;
+}
+
+.panel-default-dokter {
+  border: none !important;
+}
+
+.timedifinfo {
+  font-weight: 400;
+  width: 230px;
+}
+
+.style2 {
+  color: #ffffff;
+}
+
+.p-0 {
+  padding: 0;
+}
+
+.text-primary {
+  color: #0056a4;
+}
+
+.style5 {
+  font-size: 16px;
+  color: #ff0000;
+}
+
+.style15 {
+  font-size: 36;
+}
+
+.dokter-item {
+  display: flex;
+  align-items: center;
+}
+
+.vs__no-options {
+  text-align: left !important;
+  padding-left: 8px;
+}
+
+.vs__clear {
+  margin-bottom: 1px;
+}
+
+input[type="search"] {
+  border: none !important;
+  padding: 0px 10px 0px 10px !important;
+}
+
+/* Voucher Input */
+
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.custom-hr {
+  width: 100%;
+  height: 2px;
+  background-color: #0056a4;
+  border: none;
+  margin: 20px auto;
+}
+
+.table-payment td {
+  border: none !important;
+  padding: 2px !important;
+}
+
+/* Wizard Form */
+.d-flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.wizard .nav-tabs {
+  position: relative;
+  margin-bottom: 0;
+  border-bottom-color: transparent;
+}
+
+.wizard > div.wizard-inner {
+  position: relative;
+}
+
+.connecting-line {
+  height: 2px;
+  background: #e0e0e0;
+  position: absolute;
+  width: 75%;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 50%;
+  z-index: 1;
+}
+
+.wizard .nav-tabs > li.active > a,
+.wizard .nav-tabs > li.active > a:hover,
+.wizard .nav-tabs > li.active > a:focus {
+  color: #555555;
+  cursor: default;
+  border: 0;
+  border-bottom-color: transparent;
+}
+
+span.round-tab {
+  width: 15px;
+  height: 15px;
+  line-height: 15px;
+  display: inline-block;
+  border-radius: 50%;
+  background: #fff;
+  z-index: 2;
+  position: absolute;
+  left: 0;
+  text-align: center;
+  font-size: 16px;
+  color: #0e214b;
+  font-weight: 500;
+  border: 1px solid #ddd;
+}
+
+span.round-tab i {
+  color: #555555;
+}
+
+.wizard li.active span.round-tab {
+  background: #0056a4;
+  color: #fff;
+  border-color: #0056a4;
+}
+
+.wizard li.active span.round-tab i {
+  color: #5bc0de;
+}
+
+.wizard .nav-tabs > li.active > a i {
+  color: #0056a4;
+}
+
+.wizard .nav-tabs > li {
+  width: 25%;
+}
+
+.nav-tabs > li > a:after {
+  background: transparent;
+}
+
+.wizard li:after {
+  content: " ";
+  position: absolute;
+  left: 46%;
+  opacity: 0;
+  margin: 0 auto;
+  bottom: 0px;
+  background: transparent;
+  border: 5px solid transparent;
+  border-bottom-color: red;
+  transition: 0.1s ease-in-out;
+}
+
+.wizard .nav-tabs > li a {
+  width: 15px;
+  height: 15px;
+  margin: 20px auto;
+  border-radius: 100%;
+  padding: 0;
+  background: transparent;
+  background-color: transparent;
+  position: relative;
+  top: 0;
+}
+
+.wizard .nav-tabs > li a i {
+  position: absolute;
+  top: -15px;
+  font-style: normal;
+  font-weight: 400;
+  white-space: nowrap;
+  background: transparent;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: 700;
+  color: #000;
+}
+
+.wizard .nav-tabs > li a:hover {
+  background: transparent;
+  background-color: transparent;
+}
+
+.wizard .tab-pane {
+  position: relative;
+  padding-top: 20px;
+}
+
+ol {
+  padding-left: 1.25rem !important;
+}
+
+.wizard h3 {
+  margin-top: 0;
+}
+
+.prev-step,
+.next-step {
+  font-size: 13px;
+  padding: 8px 24px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 30px;
+}
+
+.next-step {
+  background-color: #0056a4;
+}
+
+.skip-btn {
+  background-color: #cec12d;
+}
+
+.step-head {
+  font-size: 20px;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+  .wizard .wizard-inner {
+    display: none;
+  }
+
+  /* .wizard .nav-tabs>li {
+      display: none;
+  }
+  .connecting-line {
+      display: none;
+  } */
+}
+
+/* End Wizard Form */
+@media (max-width: 768px) {
+  .content-wrapper-history {
+    flex-direction: column-reverse;
+  }
+}
+
+.one {
+  flex: 2;
+}
+
+.two {
+  flex: 1;
+}

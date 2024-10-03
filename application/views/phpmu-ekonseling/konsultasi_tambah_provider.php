@@ -1,326 +1,6 @@
 <link rel="stylesheet" href="<?php echo base_url('asset/admin/plugins/vue-select/vue-select.css'); ?>">
 <link rel="stylesheet" href="<?= base_url(); ?>asset/css/konsultasiHostory.css">
 
-<style>
-    .pl-0 {
-        padding-left: 0px !important;
-    }
-
-    .mb-10 {
-        margin-bottom: 10px !important;
-    }
-
-    /* vue-select */
-    .vs__no-options {
-        text-align: left !important;
-        padding-left: 8px;
-    }
-
-    .vs__clear {
-        margin-bottom: 1px;
-    }
-
-    input[type="search"] {
-        border: none !important;
-        padding: 0px 10px 0px 10px !important;
-    }
-
-    .foto-dokter {
-        width: 250px;
-        height: 250px;
-        margin-right: 15px;
-        object-fit: cover;
-    }
-
-    .dokter-info h5 {
-        margin: 0;
-        font-size: 14px;
-        font-weight: bold;
-    }
-
-    .dokter-info p {
-        margin: 0;
-        font-size: 12px;
-        color: #0056a4;
-    }
-
-
-    .jadwal-dokter-text {
-        background-color: #e4eff9;
-        color: #000 !important;
-        font-weight: 400;
-        width: 135px;
-        border-radius: 0px !important;
-    }
-
-    .panel-dokter {
-        margin-bottom: 5px;
-    }
-
-    .panel-default-dokter {
-        border: none !important;
-    }
-
-    .timedifinfo {
-        font-weight: 400;
-        width: 230px;
-    }
-
-    .style2 {
-        color: #FFFFFF
-    }
-
-    .p-0 {
-        padding: 0;
-    }
-
-    .text-primary {
-        color: #0056a4;
-    }
-
-    .style5 {
-        font-size: 16px;
-        color: #FF0000;
-    }
-
-    .style15 {
-        font-size: 36
-    }
-
-    .dokter-item {
-        display: flex;
-        align-items: center;
-    }
-
-    .vs__no-options {
-        text-align: left !important;
-        padding-left: 8px;
-    }
-
-    .vs__clear {
-        margin-bottom: 1px;
-    }
-
-    input[type="search"] {
-        border: none !important;
-        padding: 0px 10px 0px 10px !important;
-    }
-
-    /* Voucher Input */
-
-    .my-auto {
-        margin-top: auto;
-        margin-bottom: auto;
-    }
-
-    .custom-hr {
-        width: 100%;
-        height: 2px;
-        background-color: #0056a4;
-        border: none;
-        margin: 20px auto;
-    }
-
-    .table-payment td {
-        border: none !important;
-        padding: 2px !important;
-    }
-
-    /* Wizard Form */
-    .d-flex {
-        display: flex;
-    }
-
-    .justify-content-center {
-        justify-content: center;
-    }
-
-    .align-items-center {
-        align-items: center;
-    }
-
-    .wizard .nav-tabs {
-        position: relative;
-        margin-bottom: 0;
-        border-bottom-color: transparent;
-    }
-
-    .wizard>div.wizard-inner {
-        position: relative;
-    }
-
-    .connecting-line {
-        height: 2px;
-        background: #e0e0e0;
-        position: absolute;
-        width: 75%;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
-        top: 50%;
-        z-index: 1;
-    }
-
-    .wizard .nav-tabs>li.active>a,
-    .wizard .nav-tabs>li.active>a:hover,
-    .wizard .nav-tabs>li.active>a:focus {
-        color: #555555;
-        cursor: default;
-        border: 0;
-        border-bottom-color: transparent;
-    }
-
-    span.round-tab {
-        width: 15px;
-        height: 15px;
-        line-height: 15px;
-        display: inline-block;
-        border-radius: 50%;
-        background: #fff;
-        z-index: 2;
-        position: absolute;
-        left: 0;
-        text-align: center;
-        font-size: 16px;
-        color: #0e214b;
-        font-weight: 500;
-        border: 1px solid #ddd;
-    }
-
-    span.round-tab i {
-        color: #555555;
-    }
-
-    .wizard li.active span.round-tab {
-        background: #0056a4;
-        color: #fff;
-        border-color: #0056a4;
-    }
-
-    .wizard li.active span.round-tab i {
-        color: #5bc0de;
-    }
-
-    .wizard .nav-tabs>li.active>a i {
-        color: #0056a4;
-    }
-
-    .wizard .nav-tabs>li {
-        width: 25%;
-    }
-
-    .nav-tabs>li>a:after {
-        background: transparent;
-    }
-
-    .wizard li:after {
-        content: " ";
-        position: absolute;
-        left: 46%;
-        opacity: 0;
-        margin: 0 auto;
-        bottom: 0px;
-        background: transparent;
-        border: 5px solid transparent;
-        border-bottom-color: red;
-        transition: 0.1s ease-in-out;
-    }
-
-
-
-    .wizard .nav-tabs>li a {
-        width: 15px;
-        height: 15px;
-        margin: 20px auto;
-        border-radius: 100%;
-        padding: 0;
-        background: transparent;
-        background-color: transparent;
-        position: relative;
-        top: 0;
-    }
-
-    .wizard .nav-tabs>li a i {
-        position: absolute;
-        top: -15px;
-        font-style: normal;
-        font-weight: 400;
-        white-space: nowrap;
-        background: transparent;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 12px;
-        font-weight: 700;
-        color: #000;
-    }
-
-    .wizard .nav-tabs>li a:hover {
-        background: transparent;
-        background-color: transparent;
-    }
-
-    .wizard .tab-pane {
-        position: relative;
-        padding-top: 20px;
-    }
-
-
-    .wizard h3 {
-        margin-top: 0;
-    }
-
-    .prev-step,
-    .next-step {
-        font-size: 13px;
-        padding: 8px 24px;
-        border: none;
-        border-radius: 4px;
-        margin-top: 30px;
-    }
-
-    .next-step {
-        background-color: #0056a4;
-    }
-
-    .skip-btn {
-        background-color: #cec12d;
-    }
-
-    .step-head {
-        font-size: 20px;
-        text-align: center;
-        font-weight: 500;
-        margin-bottom: 20px;
-    }
-
-    @media (max-width: 767px) {
-        .wizard .wizard-inner {
-            display: none;
-        }
-
-        /* .wizard .nav-tabs>li {
-            display: none;
-        }
-        .connecting-line {
-            display: none;
-        } */
-    }
-
-    /* End Wizard Form */
-    @media (max-width: 768px) {
-        .content-wrapper-history {
-            flex-direction: column-reverse;
-        }
-    }
-
-    .one {
-        flex: 2;
-    }
-
-    .two {
-        flex: 1;
-    }
-</style>
 <?php
 // Fetch user data
 $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session->username . "'")->row_array();
@@ -538,7 +218,65 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                             <div class="col-md-12">
                                 <h4 class="text-left text-primary">Konsultasi Dimulai</h4>
                                 <hr class="custom-hr">
-                                <p>Anda sudah memasuki sesi konsultasi. Silakan mulai bertanya!</p>
+                                <div class="provider-info">
+                                    <div class="col">
+                                        <label>Provinsi</label>
+                                        <span>Nusa Tenggara Timur</span>
+                                    </div>
+                                    <div class="col">
+                                        <label>Klinik</label>
+                                        <span>Nusa Tenggara Timur</span>
+                                    </div>
+                                    <div class="col">
+                                        <label>Provider</label>
+                                        <span>Nusa Tenggara Timur</span>
+                                    </div>
+                                </div>
+                                <hr class="custom-hr">
+                                <div class="complaint-form">
+                                    <div class="form-group">
+                                        <label for="keluhanSingkat">Keluhan Singkat</label>
+                                        <input type="text" id="keluhanSingkat" class="form-control" placeholder="Masukkan keluhan singkat Anda" value="Lorem ipsum dolor sit amet">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="penjelasanKeluhan">Penjelasan Keluhan</label>
+                                        <textarea id="penjelasanKeluhan" class="form-control" rows="5" placeholder="Jelaskan keluhan Anda secara rinci">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</textarea>
+                                    </div>
+                                </div>
+                                <hr class="custom-hr">
+                                <div class="consent-form">
+                                    <label for="">Lembar Persetujuan</label>
+                                    <div>
+                                        <label class="">
+                                            I Layanan Telemedicine PKBI adalah
+                                        </label><br>
+                                        <span class="text-sm"> Pelayanan kesehatan yang dilakukan oleh PKBI dengan metode pelayanan kesehatan jarak jauh yang dilakukan professional kesehatan kepada klien dengan menggunakan teknologi informasi dan komunikasi untuk kepentingan peningkatan kesehatan individu dan masyarakat, sesuai dengan kompetensi dan kewenangannya dengan tetap memperhatikan mutu pelayanan dan keselamatan pasien</span>
+                                        <!-- Isi persetujuan lainnya bisa ditambahkan di sini -->
+                                    </div>
+                                    <div>
+                                        <label class="">
+                                            II Pernyataan persetujuan terkait profil dan informasi yang disampaikan
+                                        </label><br>
+                                        <ol>
+                                            <li>Saya, menyatakan bahwa telah menyampaikan data diri: Demografi saya secara lengkap dan benar</li>
+                                            <li>Saya, setuju akan menyampaikan segala informasi melalui suara, dan atau tulisan, dan atau gambar dengan jujur untuk mendukung hasil diagnosa yang maksimal</li>
+                                            <li>Saya menyetujui bahwa segala percakapan melalui suara, tulisan, gambar dan video yang saya kirimkan akan direkam sebagai dokumentasi dan saya tidak berkeberatan akan hal tersebut.</li>
+                                            <li>Saya menyatakan bahwa saya memiliki hak untuk menghentikan konsultasi kapanpun tanpa menyebutkan alasan dan tidak akan mempengaruhi dan menyalahkan petugas telemedicine dalam proses pelayanan.</li>
+                                            <li>Saya menyatakan bahwa saya memiliki hak yang dilindungi atas semua informasi yang saya berikan untuk tidak disebarluaskan tanpa persetujuan, kecuali untuk kepentingan PKBI dalam proses pemberian layanan, pendidikan dan penelitian tanpa menyebutkan data diri.</li>
+                                        </ol>
+                                    </div>
+                                    <div>
+                                        <label class="">
+                                            III Risiko
+                                        </label><br>
+                                        <span>
+                                            Dalam keadaan tertentu kegagalan pelayanan informasi dan/atau konseling dan/atau konsultasi dan/atau pengobatan yang dikarenakan masalah digital (resolusi gambar, sinyal dan masalah digital lainnya) mungkin terjadi meskipun jarang <br>
+
+                                            Melalui dokumen surat pernyataan dan persetujuan umum untuk semua informasi dan layanan telemedicine ini saya (sesuai nama yang ada diregristrasi), telah membaca dan dengan sadar tanpa paksaan memberikan kewenangan pada petugas telemedicine PKBI untuk melakukan layanan informasi dan atau konseling dan atau konsultasi dan atau pengobatan pada permasalahan medis dan atau non medis dengan mengklik tanda kolom setuju dibawah ini
+                                    </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <ul class="list-inline pull-right">
@@ -562,70 +300,108 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
 <script src="<?php echo base_url(); ?>/asset/admin/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <script>
     var baseUrl = "<?php echo base_url(); ?>";
+
     $(document).ready(function() {
-        $('.nav-tabs > li a[title]').tooltip();
-
-        //Wizard
-        $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-
-            var $target = $(e.target);
-
-            if ($target.parent().hasClass('disabled')) {
+        // Disable all tabs except the first one on page load
+        $('.wizard .nav-tabs li').not(':first').addClass('disabled');
+        $('.wizard .nav-tabs li a').click(function(e) {
+            // Prevent navigation via clicking tab directly
+            if ($(this).parent().hasClass('disabled')) {
+                e.preventDefault();
                 return false;
             }
         });
 
+        // Function to save the active tab to localStorage
+        function saveActiveTab() {
+            var activeTab = $('.wizard .nav-tabs li.active a').attr('href');
+            localStorage.setItem('activeTab', activeTab); // Save active tab to localStorage
+        }
+
+        // Save the active tab whenever a tab is shown
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+            saveActiveTab();
+        });
+
+        // Validate step1 form before moving to the next step
         $(".next-step").click(function(e) {
             var $active = $('.wizard .nav-tabs li.active');
-            $active.next().removeClass('disabled');
-            nextTab($active);
+            var currentStep = $active.find('a').attr('href');
+
+            if (currentStep === '#step1') {
+                // Validate step1 form (e.g., ensure 'provinsi' and 'klinik' are selected)
+                if (validateStep1()) {
+                    // If step1 is valid, move to the next step
+                    $active.next().removeClass('disabled');
+                    nextTab($active);
+                    saveActiveTab(); // Save active tab when next button is clicked
+                } else {
+                    alert('Harap isi semua field yang diperlukan di langkah 1!');
+                }
+            } else if (currentStep === '#step2') {
+                // Add validation for step2 here if needed
+                if (validateStep2()) {
+                    $active.next().removeClass('disabled');
+                    nextTab($active);
+                    saveActiveTab();
+                } else {
+                    alert('Harap isi semua field yang diperlukan di langkah 2!');
+                }
+            } else if (currentStep === '#step3') {
+                // Add validation for step3 if necessary
+                nextTab($active);
+                saveActiveTab();
+            }
+            // Add more validation for additional steps if necessary
         });
+
         $(".prev-step").click(function(e) {
             var $active = $('.wizard .nav-tabs li.active');
             prevTab($active);
-        });
-    });
-
-    function nextTab(elem) {
-        $(elem).next().find('a[data-toggle="tab"]').click();
-    }
-
-    function prevTab(elem) {
-        $(elem).prev().find('a[data-toggle="tab"]').click();
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        // Misalnya, ketika tab step3 diaktifkan, nonaktifkan tab sebelumnya
-        $('#step3').on('shown.bs.tab', function(e) {
-            // Nonaktifkan tab step1 dan step2
-            disablePreviousTabs(['#step1', '#step2']);
-
-            // Disable Back Button
-            $(".prev-step").hide();
+            saveActiveTab(); // Save active tab when previous button is clicked
         });
 
-        // Ulangi logika serupa untuk step4 jika diperlukan
-        $('#step4').on('shown.bs.tab', function(e) {
-            // Nonaktifkan tab step1, step2, dan step3
-            disablePreviousTabs(['#step1', '#step2', '#step3']);
+        // Function to navigate to the next tab
+        function nextTab(elem) {
+            $(elem).next().find('a[data-toggle="tab"]').click();
+        }
 
-            // Disable Back Button
-            $(".prev-step").hide();
-        });
+        // Function to navigate to the previous tab
+        function prevTab(elem) {
+            $(elem).prev().find('a[data-toggle="tab"]').click();
+        }
 
-        function disablePreviousTabs(tabs) {
-            tabs.forEach(function(tab) {
-                $('a[href="' + tab + '"]').parent().addClass('disabled');
-            });
+        // On page load, retrieve the active tab from localStorage and show it
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('.wizard .nav-tabs a[href="' + activeTab + '"]').tab('show');
+        } else {
+            // Default to the first step if no tab is stored in localStorage
+            $('.wizard .nav-tabs a[href="#step1"]').tab('show');
+        }
 
-            // Opsional: Hapus kemampuan untuk klik pada tab yang dinonaktifkan
-            $('.disabled a').click(function(event) {
-                event.preventDefault(); // Mencegah tab berubah
-                return false; // Mencegah aksi default
-            });
+        // Validation function for step1 (example)
+        function validateStep1() {
+            var provinsi = $('input[name="prov_klinik"]').val(); // Replace with your field's name/ID
+            var klinik = $('input[name="klinik"]').val(); // Replace with your field's name/ID
+
+            if (provinsi === '' || klinik === '') {
+                return false; // Validation fails
+            }
+            return true; // Validation passes
+        }
+
+        // Validation function for step2 (add more validation as needed)
+        function validateStep2() {
+            var field2 = $('input[name="field2"]').val(); // Example field in step2
+            if (field2 === '') {
+                return false;
+            }
+            return true;
         }
     });
 </script>
+
 
 
 
