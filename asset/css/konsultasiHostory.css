@@ -114,6 +114,11 @@
   margin-bottom: 20px;
 }
 
+.btn-back {
+  color: #fff;
+  background-color: #5d5d5d;
+}
+
 /* .profile-user-btn {
   background-color: #007bff;
   margin-bottom: 10px;
@@ -249,8 +254,7 @@ p {
   flex-direction: column;
 }
 
-.profile-info h3,
-p {
+.profile-info h3 {
   text-align: left;
   font-size: 20px;
 }
@@ -581,6 +585,22 @@ ol {
   text-align: center;
   font-weight: 500;
   margin-bottom: 20px;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-check label {
+  margin: 0 !important;
+}
+
+.form-check-input {
+  margin: 0 !important;
+  width: 20px;
+  height: 20px;
 }
 
 @media (max-width: 767px) {
