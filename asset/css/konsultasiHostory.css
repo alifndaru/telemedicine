@@ -119,6 +119,15 @@
   background-color: #5d5d5d;
 }
 
+.btn-back:hover {
+  color: #fff !important;
+  background-color: #4e4e4e !important;
+}
+
+.complaint-form .form-group textarea {
+  max-width: 753px !important;
+}
+
 /* .profile-user-btn {
   background-color: #007bff;
   margin-bottom: 10px;
@@ -446,7 +455,6 @@ input[type="search"] {
   height: 2px;
   background: #e0e0e0;
   position: absolute;
-  width: 75%;
   margin: 0 auto;
   left: 0;
   right: 0;

@@ -221,38 +221,39 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                 <div class="provider-info">
                   <div class="col">
                     <label class="text-primary">Provinsi</label>
-                    <span>Nusa Tenggara Timur</span>
+                    <span>hehe</span>
                   </div>
                   <div class="col">
                     <label class="text-primary">Klinik</label>
-                    <span>Nusa Tenggara Timur</span>
+                    <span>hehe</span>
                   </div>
                   <div class="col">
                     <label class="text-primary">Provider</label>
-                    <span>Nusa Tenggara Timur</span>
+                    <span>hehe</span>
                   </div>
                 </div>
+
                 <hr class="custom-hr">
                 <div class="complaint-form">
                   <div class="form-group">
                     <label for="keluhanSingkat" class="text-primary">Keluhan Singkat</label>
-                    <input type="text" id="keluhanSingkat" class="form-control" placeholder="Masukkan keluhan singkat Anda" value="Lorem ipsum dolor sit amet">
+                    <input type="text" id="keluhanSingkat" class="form-control" placeholder="Masukkan keluhan singkat Anda" value="">
                   </div>
 
                   <div class="form-group">
                     <label for="penjelasanKeluhan" class="text-primary">Penjelasan Keluhan</label>
-                    <textarea id="penjelasanKeluhan" class="form-control" rows="5" placeholder="Jelaskan keluhan Anda secara rinci">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</textarea>
+                    <textarea id="penjelasanKeluhan" class="form-control" rows="5" placeholder="Jelaskan keluhan Anda secara rinci"></textarea>
                   </div>
                 </div>
-                <hr class="custom-hr">
-                <div class="consent-form">
-                  <h4 class="text-primary fw-bold mb-4">Lembar Persetujuan</h4>
+                <div class="consent-form mt-5">
+                  <h4 class="text-primary mb-4">
+                    <u>Lembar Persetujuan</u>
+                  </h4>
                   <div class="mb-2">
                     <p class="text-primary m-0">
                       I Layanan Telemedicine PKBI adalah
                     </p>
                     <span class="text-sm"> Pelayanan kesehatan yang dilakukan oleh PKBI dengan metode pelayanan kesehatan jarak jauh yang dilakukan professional kesehatan kepada klien dengan menggunakan teknologi informasi dan komunikasi untuk kepentingan peningkatan kesehatan individu dan masyarakat, sesuai dengan kompetensi dan kewenangannya dengan tetap memperhatikan mutu pelayanan dan keselamatan pasien</span>
-                    <!-- Isi persetujuan lainnya bisa ditambahkan di sini -->
                   </div>
                   <div class="mb-2">
                     <p class="text-primary m-0">
@@ -271,7 +272,7 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
                       III Risiko
                     </p>
                     <span>
-                      Dalam keadaan tertentu kegagalan pelayanan informasi dan/atau konseling dan/atau konsultasi dan/atau pengobatan yang dikarenakan masalah digital (resolusi gambar, sinyal dan masalah digital lainnya) mungkin terjadi meskipun jarang <br>
+                      Dalam keadaan tertentu kegagalan pelayanan informasi dan/atau konseling dan/atau konsultasi dan/atau pengobatan yang dikarenakan masalah digital (resolusi gambar, sinyal dan masalah digital lainnya) mungkin terjadi meskipun jarang. <br>
 
                       Melalui dokumen surat pernyataan dan persetujuan umum untuk semua informasi dan layanan telemedicine ini saya (sesuai nama yang ada diregristrasi), telah membaca dan dengan sadar tanpa paksaan memberikan kewenangan pada petugas telemedicine PKBI untuk melakukan layanan informasi dan atau konseling dan atau konsultasi dan atau pengobatan pada permasalahan medis dan atau non medis dengan mengklik tanda kolom setuju dibawah ini
                     </span>

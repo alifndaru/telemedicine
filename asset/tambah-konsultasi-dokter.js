@@ -7,6 +7,7 @@ var application = new Vue({
     axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
     this.users_id = localStorage.getItem("users_id") || null;
   },
+
   data: {
     baseUrl: baseUrl,
     disops: {
@@ -32,6 +33,23 @@ var application = new Vue({
     users_id: null,
     paymentStatus: null, // Deklarasikan paymentStatus di sini
   },
+
+  computed: {
+    selectedProviderInfo() {
+      return {
+        provinsi: this.provinsi ? this.provinsi.name : "",
+        klinik: this.klinik ? this.klinik.name : "",
+        provider: this.dokter_options.find(
+          (dokter) => dokter.id === this.selected_kuota[dokter.id]
+        )
+          ? this.dokter_options.find(
+              (dokter) => dokter.id === this.selected_kuota[dokter.id]
+            ).dokter
+          : "",
+      };
+    },
+  },
+
   watch: {
     klinik: function (newKlinik) {
       if (this.provinsi && newKlinik) {
@@ -39,6 +57,7 @@ var application = new Vue({
       }
     },
   },
+
   methods: {
     formatCurrency(value) {
       const numberValue = Number(value);
@@ -52,6 +71,7 @@ var application = new Vue({
         maximumFractionDigits: 2,
       }).format(numberValue);
     },
+
     handleKuotaChange(dokter, kuotaIndex) {
       console.log("dokter", dokter);
       this.$set(this.selected_kuota, dokter.id, kuotaIndex);
@@ -70,6 +90,7 @@ var application = new Vue({
         this.atas_nama = null;
       }
     },
+
     fetchOptionsProvinsi(search) {
       axios
         .post(
