@@ -24,14 +24,14 @@ var application = new Vue({
     bank: null,
     rekening: null,
     atas_nama: null,
-    kodeVoucher: "", // Voucher code input
-    voucher_info: null, // To store voucher information after applying
-    discount: 0, // New property to hold the discount amount
-    total_biaya: 0, // New property to hold the total amount after discount
+    kodeVoucher: "",
+    voucher_info: null,
+    discount: 0,
+    total_biaya: 0,
     discountAmount: 0,
     jadwalId: 0,
     users_id: null,
-    paymentStatus: null, // Deklarasikan paymentStatus di sini
+    paymentStatus: null,
   },
 
   computed: {
@@ -43,11 +43,11 @@ var application = new Vue({
       return selectedDokter
         ? {
             klinik: selectedDokter.klinik || "N/A",
-            dokter: selectedDokter.dokter || "N/A", // Nama dokter
-            foto_dokter: selectedDokter.foto_dokter || "N/A", // Foto dokter
-            tend: selectedDokter.tend || "N/A", // Waktu akhir kerja (end time)
-            tstart: selectedDokter.tstart || "N/A", // Waktu mulai kerja (start time)
-            jabatan: selectedDokter.jabatan || "N/A", // Jabatan dokter
+            dokter: selectedDokter.dokter || "N/A",
+            foto_dokter: selectedDokter.foto_dokter || "N/A",
+            tend: selectedDokter.tend || "N/A",
+            tstart: selectedDokter.tstart || "N/A",
+            jabatan: selectedDokter.jabatan || "N/A",
           }
         : {
             klinik: "N/A",
@@ -74,8 +74,7 @@ var application = new Vue({
         provinsi: this.provinsi,
         klinik: this.klinik,
         selected_kuota: this.selected_kuota,
-        selectedProviderInfo: this.selectedProviderInfo, // Menyimpan selectedProviderInfo
-        // Tambahkan properti lain yang ingin disimpan
+        selectedProviderInfo: this.selectedProviderInfo,
       };
       localStorage.setItem("formData", JSON.stringify(dataToSave));
     },
@@ -91,18 +90,15 @@ var application = new Vue({
           provinsi: null,
           klinik: null,
           provider: null,
-        }; // Memuat selectedProviderInfo
-        // Tambahkan properti lain yang ingin dimuat
+        };
       }
     },
 
     formatProviderTime(tstart, tend) {
       // Cek apakah tstart dan tend tersedia
       if (!tstart || !tend || tstart.length === 0 || tend.length === 0) {
-        return "N/A"; // Mengembalikan "N/A" jika salah satu tidak ada
+        return "N/A";
       }
-
-      // Format dan kembalikan waktu
       return `${tstart[0].slice(0, 5)} - ${tend[0].slice(0, 5)} WIB`;
     },
 
@@ -136,11 +132,11 @@ var application = new Vue({
 
         this.selectedProviderInfo = {
           klinik: dokter.klinik || "N/A",
-          dokter: dokter.dokter || "N/A", // Nama dokter
-          foto_dokter: dokter.foto_dokter || "N/A", // Foto dokter
-          tstart: dokter.tstart || "N/A", // Waktu mulai kerja (start time)
-          tend: dokter.tend || "N/A", // Waktu akhir kerja (end time)
-          jabatan: dokter.jabatan || "N/A", // Jabatan dokter
+          dokter: dokter.dokter || "N/A",
+          foto_dokter: dokter.foto_dokter || "N/A",
+          tstart: dokter.tstart || "N/A",
+          tend: dokter.tend || "N/A",
+          jabatan: dokter.jabatan || "N/A",
         };
       } else {
         this.biaya_tarif = null;
@@ -281,7 +277,6 @@ var application = new Vue({
           this.discountAmount = discountAmount;
           this.total_biaya = this.biaya_tarif - this.discountAmount;
         } else {
-          // Jika tidak ada diskon, total_biaya sama dengan biaya_tarif
           this.total_biaya = this.biaya_tarif;
         }
       }
@@ -292,29 +287,25 @@ var application = new Vue({
     checkPaymentStatus() {
       if (!this.paymentId) {
         alert("ID Pembayaran tidak tersedia.");
-        clearInterval(this.paymentCheckInterval); // Hentikan interval jika tidak ada paymentId
+        clearInterval(this.paymentCheckInterval);
         return;
       }
 
       axios
         .get(`../administrator/checkPaymentStatus/${this.paymentId}`)
         .then((response) => {
-          this.paymentStatus = response.data.aktif; // Simpan status pembayaran
+          this.paymentStatus = response.data.aktif;
           if (this.paymentStatus === "aktif") {
-            clearInterval(this.paymentCheckInterval); // Hentikan pengecekan
-
-            // Pindah ke step 4 jika status pembayaran aktif
+            clearInterval(this.paymentCheckInterval);
             var active = document.querySelector(".wizard .nav-tabs li.active");
             if (active.nextElementSibling) {
               active.nextElementSibling.classList.remove("disabled");
             }
-
-            // Simulate a click event on the next tab link (step 4)
             var nextTab = active.nextElementSibling.querySelector(
               'a[data-toggle="tab"]'
             );
             if (nextTab) {
-              nextTab.click(); // Pindah ke step selanjutnya (step 4)
+              nextTab.click();
             }
           }
         })
@@ -326,23 +317,19 @@ var application = new Vue({
 
     submitForm() {
       this.calculateTotal();
-      // Ensure that required data is present
       if (!this.provinsi || !this.klinik || !this.selected_kuota) {
         alert("Please complete all required fields.");
         return;
       }
-      // Create FormData object
       let formData = new FormData();
 
-      // Append the basic form data
       formData.append("provinsi_id", this.provinsi);
       formData.append("klinik_id", this.klinik);
       formData.append("jadwal_id", this.jadwalId);
       formData.append("biaya", this.total_biaya);
       formData.append("aktif", "tidak aktif");
-      formData.append("users_id", this.users_id); // Tambahkan users_id ke FormData
+      formData.append("users_id", this.users_id);
 
-      // Append the uploaded image
       if (this.total_biaya > 0) {
         const imageFile = document.querySelector('input[name="image"]')
           .files[0];
@@ -356,7 +343,6 @@ var application = new Vue({
 
       console.log("formdata", formData);
 
-      // Send form data via Axios
       axios
         .post("../administrator/insertPayment", formData, {
           headers: {
