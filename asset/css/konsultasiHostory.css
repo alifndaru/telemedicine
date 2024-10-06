@@ -378,6 +378,7 @@ input[type="search"] {
 
 .text-primary {
   color: #0056a4;
+  font-weight: 500 !important;
 }
 
 .style5 {

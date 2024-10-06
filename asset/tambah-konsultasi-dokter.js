@@ -36,17 +36,27 @@ var application = new Vue({
 
   computed: {
     selectedProviderInfo() {
-      return {
-        provinsi: this.provinsi ? this.provinsi.name : "",
-        klinik: this.klinik ? this.klinik.name : "",
-        provider: this.dokter_options.find(
-          (dokter) => dokter.id === this.selected_kuota[dokter.id]
-        )
-          ? this.dokter_options.find(
-              (dokter) => dokter.id === this.selected_kuota[dokter.id]
-            ).dokter
-          : "",
-      };
+      const selectedDokter = this.dokter_options.find((dokter) => {
+        return dokter.id in this.selected_kuota;
+      });
+
+      return selectedDokter
+        ? {
+            klinik: selectedDokter.klinik || "N/A",
+            dokter: selectedDokter.dokter || "N/A", // Nama dokter
+            foto_dokter: selectedDokter.foto_dokter || "N/A", // Foto dokter
+            tend: selectedDokter.tend || "N/A", // Waktu akhir kerja (end time)
+            tstart: selectedDokter.tstart || "N/A", // Waktu mulai kerja (start time)
+            jabatan: selectedDokter.jabatan || "N/A", // Jabatan dokter
+          }
+        : {
+            klinik: "N/A",
+            dokter: "N/A",
+            foto_dokter: "N/A",
+            tend: "N/A",
+            tstart: "N/A",
+            jabatan: "N/A",
+          };
     },
   },
 
@@ -59,6 +69,43 @@ var application = new Vue({
   },
 
   methods: {
+    saveDataToLocalStorage() {
+      const dataToSave = {
+        provinsi: this.provinsi,
+        klinik: this.klinik,
+        selected_kuota: this.selected_kuota,
+        selectedProviderInfo: this.selectedProviderInfo, // Menyimpan selectedProviderInfo
+        // Tambahkan properti lain yang ingin disimpan
+      };
+      localStorage.setItem("formData", JSON.stringify(dataToSave));
+    },
+
+    loadDataFromLocalStorage() {
+      const savedData = localStorage.getItem("formData");
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        this.provinsi = parsedData.provinsi;
+        this.klinik = parsedData.klinik;
+        this.selected_kuota = parsedData.selected_kuota;
+        this.selectedProviderInfo = parsedData.selectedProviderInfo || {
+          provinsi: null,
+          klinik: null,
+          provider: null,
+        }; // Memuat selectedProviderInfo
+        // Tambahkan properti lain yang ingin dimuat
+      }
+    },
+
+    formatProviderTime(tstart, tend) {
+      // Cek apakah tstart dan tend tersedia
+      if (!tstart || !tend || tstart.length === 0 || tend.length === 0) {
+        return "N/A"; // Mengembalikan "N/A" jika salah satu tidak ada
+      }
+
+      // Format dan kembalikan waktu
+      return `${tstart[0].slice(0, 5)} - ${tend[0].slice(0, 5)} WIB`;
+    },
+
     formatCurrency(value) {
       const numberValue = Number(value);
       if (isNaN(numberValue)) {
@@ -74,21 +121,50 @@ var application = new Vue({
 
     handleKuotaChange(dokter, kuotaIndex) {
       console.log("dokter", dokter);
+
       this.$set(this.selected_kuota, dokter.id, kuotaIndex);
       const selectedKuotaIndex = this.selected_kuota[dokter.id];
+
       this.jadwalId = dokter.jadwal_id[selectedKuotaIndex];
       console.log("this.jadwalId", this.jadwalId);
+
       if (selectedKuotaIndex !== undefined) {
         this.biaya_tarif = dokter.biaya_tarif[selectedKuotaIndex] || null;
         this.bank = dokter.bank[selectedKuotaIndex] || null;
         this.rekening = dokter.rekening[selectedKuotaIndex] || null;
         this.atas_nama = dokter.atas_nama[selectedKuotaIndex] || null;
+
+        this.selectedProviderInfo = {
+          klinik: dokter.klinik || "N/A",
+          dokter: dokter.dokter || "N/A", // Nama dokter
+          foto_dokter: dokter.foto_dokter || "N/A", // Foto dokter
+          tstart: dokter.tstart || "N/A", // Waktu mulai kerja (start time)
+          tend: dokter.tend || "N/A", // Waktu akhir kerja (end time)
+          jabatan: dokter.jabatan || "N/A", // Jabatan dokter
+        };
       } else {
         this.biaya_tarif = null;
         this.bank = null;
         this.rekening = null;
         this.atas_nama = null;
+
+        // Reset selectedProviderInfo jika kuota tidak valid
+        this.selectedProviderInfo = {
+          klinik: null,
+          dokter: null,
+          foto_dokter: null,
+          tstart: null,
+          tend: null,
+          jabatan: null,
+        };
       }
+
+      console.log("selectedProviderInfo", this.selectedProviderInfo);
+      this.saveDataToLocalStorage();
+    },
+
+    mounted() {
+      this.loadDataFromLocalStorage();
     },
 
     fetchOptionsProvinsi(search) {

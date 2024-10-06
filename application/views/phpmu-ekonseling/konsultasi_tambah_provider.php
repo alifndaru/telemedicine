@@ -218,26 +218,50 @@ $usr = $this->db->query("SELECT * FROM users WHERE username='" . $this->session-
               <div class="col-md-12">
                 <h4 class="text-left text-primary">Konsultasi Dimulai</h4>
                 <hr class="custom-hr">
-                <div class="provider-info">
-                  <div class="col">
-                    <label class="text-primary">Provinsi</label>
-                    <span>hehe</span>
-                  </div>
-                  <div class="col">
-                    <label class="text-primary">Klinik</label>
-                    <span>hehe</span>
-                  </div>
-                  <div class="col">
-                    <label class="text-primary">Provider</label>
-                    <span>hehe</span>
-                  </div>
+                <div class="provider-info" v-if="selectedProviderInfo">
+                  <table style="width: 50%; border-collapse: collapse;">
+                    <tr>
+                      <td style="padding:5px 5px 5px 0; vertical-align: top;">
+                        <label class="text-primary">Klinik:</label>
+                      </td>
+                      <td style="padding:5px 5px 5px 0; vertical-align: top;">
+                        {{ selectedProviderInfo.klinik }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:5px 5px 5px 0; vertical-align: top;">
+                        <label class="text-primary">Provider:</label>
+                      </td>
+                      <td style="padding:5px 5px 5px 0; vertical-align: top;">
+                        <div class="provider-details" style="display: flex; align-items: center;">
+                          <!-- Tampilkan foto dokter -->
+                          <img
+                            :src="selectedProviderInfo.foto_dokter ? `${baseUrl}asset/foto_user/${selectedProviderInfo.foto_dokter}` : `${baseUrl}asset/foto_user/blank.png`"
+                            alt="Foto Dokter"
+                            class="provider-photo"
+                            width="80"
+                            style="margin-right: 10px; border-radius: 50%;" />
+
+                          <div class="provider-desc">
+                            <div class="provider-name">
+                              <strong>{{ selectedProviderInfo.dokter }}</strong><br>
+                              <span>{{ selectedProviderInfo.jabatan }}</span>
+                            </div>
+                            <div class="provider-time">
+                              <span>{{ formatProviderTime(selectedProviderInfo.tstart, selectedProviderInfo.tend) }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
 
                 <hr class="custom-hr">
                 <div class="complaint-form">
                   <div class="form-group">
                     <label for="keluhanSingkat" class="text-primary">Keluhan Singkat</label>
-                    <input type="text" id="keluhanSingkat" class="form-control" placeholder="Masukkan keluhan singkat Anda" value="">
+                    <input type="text" id="keluhanSingkat" class="form-control p-3" placeholder="Masukkan keluhan singkat Anda" value="">
                   </div>
 
                   <div class="form-group">
